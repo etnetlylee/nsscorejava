@@ -4,7 +4,7 @@ import java.util.List;
 
 import api.ContextProvider;
 
-abstract class Decoder extends ContextProvider {
+public class Decoder extends ContextProvider {
     static final String uniqueId = "default";
 
     NssCoreContext _context;
@@ -14,23 +14,23 @@ abstract class Decoder extends ContextProvider {
         this._context = context;
     }
 
-    NssCoreContext getContext() {
+    public NssCoreContext getContext() {
         return this._context;
     }
 
-    NssData decodeRaw(String code, RawData rawData) {
+    public NssData decodeRaw(String code, RawData rawData) {
         return null;
     }
 
-    NssData decodeSnapshot(String code, RawData rawData) {
+    public NssData decodeSnapshot(String code, RawData rawData) {
         return null;
     }
 
-    NssData decodeStream(String code, RawData rawData) {
+    public NssData decodeStream(String code, RawData rawData) {
         return null;
     }
 
-    NssData decodeList(
+    public NssData decodeList(
             String code, String fieldId, List<String> value, boolean fromSnapshot,
             String name) {
         return null;

@@ -6,9 +6,10 @@ public class DataBundle {
     String _code;
     Map<String, String> fields;
 
-    public DataBundle(String code){
+    public DataBundle(String code) {
         this._code = code;
     }
 
-    public void add(String fieldId, String value) {}
+    public void add(String fieldId, String value) {
+    }
 }

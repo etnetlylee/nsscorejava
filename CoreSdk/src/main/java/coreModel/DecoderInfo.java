@@ -11,9 +11,9 @@ public class DecoderInfo {
     boolean _composite;
 
     public DecoderInfo(String fieldId, List<String> realIds, String name,
-                String uniqueId, Decoder ifAbsent) {
+                       String uniqueId, Decoder ifAbsent) {
         this._fieldId = fieldId;
-        if (realIds != null){
+        if (realIds != null) {
             this._realIds = realIds;
         }
         this._name = name;

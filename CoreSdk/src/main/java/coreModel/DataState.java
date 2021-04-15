@@ -11,27 +11,27 @@ public class DataState {
         this._count = 1;
     }
 
-    public boolean getDataReady (){
+    public boolean getDataReady() {
         return this._dataReady;
     }
 
-    public void setDataReady(boolean dataReady){
+    public void setDataReady(boolean dataReady) {
         this._dataReady = dataReady;
     }
 
-    public boolean getFirstNotify(){
-        return  this._firstNotify;
+    public boolean getFirstNotify() {
+        return this._firstNotify;
     }
 
-    public void setFirstNotify(boolean firstNotify){
+    public void setFirstNotify(boolean firstNotify) {
         this._firstNotify = firstNotify;
     }
 
-    public int getCount(){
+    public int getCount() {
         return this._count;
     }
 
-    public void setCount(int count){
+    public void setCount(int count) {
         this._count = count;
     }
 

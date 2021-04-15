@@ -1,10 +1,10 @@
 package coreModel;
 
-public class BrokerData extends DataSubscription{
-    BrokerData(int seqNo, NssData nssData) {
+public class BrokerData extends DataSubscription {
+    BrokerData(int seqNo) {
         super(seqNo);
-        _nssData = nssData;
     }
+
     public NssData _nssData;
 
 
@@ -13,6 +13,6 @@ public class BrokerData extends DataSubscription{
     }
 
     public void setNssData(NssData nssData) {
-        _nssData = nssData;
+        this._nssData = nssData;
     }
 }
