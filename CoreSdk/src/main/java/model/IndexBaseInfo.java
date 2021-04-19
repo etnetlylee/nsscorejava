@@ -12,6 +12,20 @@ public class IndexBaseInfo {
     String _fullTcName;
     String _fullEnName;
 
+//    public IndexBaseInfo(String code, String level, String enName, String scName, String tcName, String position,
+//                         int underlyingStockCode, String fullScName, String fullTcName, String fullEnName) {
+//        this._code = code;
+//        this._level = level;
+//        this._enName = enName;
+//        this._scName = scName;
+//        this._tcName = tcName;
+//        this._position = position;
+//        this._underlyingStockCode = underlyingStockCode;
+//        this._fullScName = fullScName;
+//        this._fullTcName = fullTcName;
+//        this._fullEnName = fullEnName;
+//    }
+
     public String getCode() {
         return this._code;
     }

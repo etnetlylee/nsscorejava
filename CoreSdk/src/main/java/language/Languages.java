@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Languages {
-
-    public final Map<String, String> LangEn  = new HashMap<String, String>() {{
+    public static final Map<String, String> LangEn  = new HashMap<String, String>() {{
         put("LINK_NO", "No Link");
         put("LINK_ALL", "Link All");
         put("LINK_RED", "Red");
@@ -16,7 +15,7 @@ public class Languages {
         put("ASA_OPTION_NAME", "Option");
     }};
 
-    public final Map<String, String> LangSc  = new HashMap<String, String>() {{
+    public static final Map<String, String> LangSc  = new HashMap<String, String>() {{
         put("LINK_NO", "沒有連繫");
         put("LINK_ALL", "连系所有");
         put("LINK_RED", "红色连系");
@@ -27,7 +26,7 @@ public class Languages {
         put("ASA_OPTION_NAME", "期权");
     }};
 
-    public final Map<String, String> LangTc  = new HashMap<String, String>() {{
+    public static final Map<String, String> LangTc  = new HashMap<String, String>() {{
         put("LINK_NO", "沒有連繫");
         put("LINK_ALL", "連繫所有");
         put("LINK_RED", "紅色連繫");

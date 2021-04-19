@@ -3,6 +3,8 @@ package coreModel;
 import java.util.Map;
 
 import config.AsaConfig;
+import config.ProcessorConfig;
+import coreController.Controller;
 import coreStorage.model.AsaStorage;
 
 public class NssCoreContext {
@@ -19,7 +21,7 @@ public class NssCoreContext {
     DecoderConfig _decoderConfig;
 
     public NssCoreContext() {
-        _controller = Controller();
+        _controller = new Controller();
         _controller.setContext(this);
         _events = EventBus();
         _asaConfig = new AsaConfig();
@@ -29,7 +31,7 @@ public class NssCoreContext {
         _storage.setContext(this);
         _storageDecodeDispatcher = StorageDecodeDispatcher();
         _storageDecodeDispatcher.setContext(this);
-        _asaStorage = AsaStorage();
+        _asaStorage = new AsaStorage();
     }
 
     public void setConfig(CoreConfig config) {

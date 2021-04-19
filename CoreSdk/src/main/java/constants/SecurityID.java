@@ -1,6 +1,6 @@
 package constants;
 
-public class SecurityId {
+public class SecurityID {
     public static final int SECURITYID_STOCK = 0;
     public static final int SECURITYID_FUTURE = 1;
     public static final int SECURITYID_INDEX = 2;

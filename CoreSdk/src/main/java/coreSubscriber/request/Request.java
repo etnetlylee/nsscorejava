@@ -1,5 +1,6 @@
 package coreSubscriber.request;
 
+import coreModel.NssCoreContext;
 import coreSubscriber.Subscriber;
 
 abstract class Request {

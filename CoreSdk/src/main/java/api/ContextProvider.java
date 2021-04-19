@@ -3,5 +3,5 @@ package api;
 import coreModel.NssCoreContext;
 
 public class ContextProvider {
-    public void setContext(NssCoreContext context) {}
+    public void setContext(NssCoreContext context){};
 }

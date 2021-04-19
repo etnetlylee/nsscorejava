@@ -5,16 +5,19 @@ import java.util.Arrays;
 import coreModel.Decoder;
 import coreModel.NssData;
 import coreModel.RawData;
+import coreStorage.model.AsaStorage;
 
-public class Decoder9 extends Decoder {
-    static final String uniqueID = "9";
+public class DecoderRFR extends Decoder {
+    static final String uniqueID = "RFR";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {
         final String value = (rawData.getData()).toString();
+        AsaStorage data = getContext().getAsaStorage();
         if (value != null && value.trim() != "") {
-            getContext().getAsaStorage().ADR_LIST = Arrays.asList(value.split("|"));
+            data.RISK_FREE_VALUE = Arrays.asList(value.split("|"));
         }
+
         return null;
     }
 }

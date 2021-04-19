@@ -1,19 +1,23 @@
 package decoder;
 
 import java.util.Arrays;
+import java.util.List;
 
 import coreModel.Decoder;
 import coreModel.NssData;
 import coreModel.RawData;
 
-public class Decoder9 extends Decoder {
-    static final String uniqueID = "9";
+import static constants.SecurityType.SECURITYTYPE_ETF;
+
+public class Decoder20 extends Decoder {
+    static final String uniqueID = "20";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {
         final String value = (rawData.getData()).toString();
-        if (value != null && value.trim() != "") {
-            getContext().getAsaStorage().ADR_LIST = Arrays.asList(value.split("|"));
+        if (value != null) {
+            // TODO: ???
+            // getContext().getAsaStorage()[code] = value;
         }
         return null;
     }

@@ -53,7 +53,7 @@ public class DataHelper {
         return format;
     }
 
-    static boolean isSameIndexBaseInfo(IndexBaseInfo src, IndexBaseInfo target) {
+    public static boolean isSameIndexBaseInfo(IndexBaseInfo src, IndexBaseInfo target) {
         boolean ret = true;
 
         ret = ret && src.getCode().toLowerCase() == target.getCode().toLowerCase();

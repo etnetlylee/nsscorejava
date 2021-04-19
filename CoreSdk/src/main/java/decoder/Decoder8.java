@@ -91,7 +91,6 @@ public class Decoder8 extends Decoder {
                 if (valueCodes.size() == 1) {
                     data.UNDERLYINGMAP.put(securityCode, new HashMap<String, List<String>>());
                 } else {
-//                    RegExp valideCodeRegEx = RegExp(r"/^[0-9]+$/i");
                     Pattern valideCodeRegEx = Pattern.compile("[0-9]*");
                     if (!valideCodeRegEx.matcher(securityCode).matches()) {
                         data.SPECIAL_UNDERLYING_LIST.add(securityCode);
@@ -145,68 +144,67 @@ public class Decoder8 extends Decoder {
                         } else if (typeString.contains(Decoder8.TYPE_BULL)) {
                             bullList.add(types.get(0));
                             data.STKTYPEMAP.put(types.get(0), SECURITYTYPE_CBBC);
-                            data.UNDERLYINGDETIAL[types[0]] = Decoder8.STKINFO_TYPE_BULL;
-                            if (types.length == 3 && types[2] == "R") {
-                                data.CBBC_RN_MAP[types[0]] = Decoder8.CBBC_TYPE_BULL_R;
-                            } else if (types.length == 3 && types[2] == "N") {
-                                data.CBBC_RN_MAP[types[0]] = Decoder8.CBBC_TYPE_BULL_N;
+                            data.UNDERLYINGDETIAL.put(types.get(0), Decoder8.STKINFO_TYPE_BULL);
+                            if (types.size() == 3 && types.get(2) == "R") {
+                                data.CBBC_RN_MAP.put(types.get(0), Decoder8.CBBC_TYPE_BULL_R);
+                            } else if (types.size() == 3 && types.get(2) == "N") {
+                                data.CBBC_RN_MAP.put(types.get(0), Decoder8.CBBC_TYPE_BULL_N);
                             }
-                            StockInfo info = data.STOCK_INFO_MAP[types[0]];
+                            StockInfo info = data.STOCK_INFO_MAP.get(types.get(0));
                             if (info == null) {
-                                info = StockInfo(null, null, null, null);
-                                data.STOCK_INFO_MAP[types[0]] = info;
+                                info = new StockInfo(null, null, null, null, null, null);
+                                data.STOCK_INFO_MAP.put(types.get(0), info);
                             }
                             info.setType(Decoder8.STKINFO_TYPE_BULL);
                         } else if (typeString.contains(Decoder8.TYPE_BEAR)) {
-                            bearList.add(types[0]);
-                            data.STKTYPEMAP[types[0]] = SECURITYTYPE_CBBC;
-                            data.UNDERLYINGDETIAL[types[0]] = Decoder8.STKINFO_TYPE_BEAR;
-                            if (types.length == 3 && types[2] == "R") {
-                                data.CBBC_RN_MAP[types[0]] = Decoder8.CBBC_TYPE_BEAR_R;
-                            } else if (types.length == 3 && types[2] == "N") {
-                                data.CBBC_RN_MAP[types[0]] = Decoder8.CBBC_TYPE_BEAR_N;
+                            bearList.add(types.get(0));
+                            data.STKTYPEMAP.put(types.get(0), SECURITYTYPE_CBBC);
+                            data.UNDERLYINGDETIAL.put(types.get(0), Decoder8.STKINFO_TYPE_BEAR);
+                            if (types.size() == 3 && types.get(2) == "R") {
+                                data.CBBC_RN_MAP.put(types.get(0), Decoder8.CBBC_TYPE_BEAR_R);
+                            } else if (types.size() == 3 && types.get(2) == "N") {
+                                data.CBBC_RN_MAP.put(types.get(0), Decoder8.CBBC_TYPE_BEAR_N);
                             }
-                            StockInfo info = data.STOCK_INFO_MAP[types[0]];
+                            StockInfo info = data.STOCK_INFO_MAP.get(types.get(0));
                             if (info == null) {
-                                info = StockInfo(null, null, null, null);
-                                data.STOCK_INFO_MAP[types[0]] = info;
+                                info = new StockInfo(null, null, null, null, null, null);
+                                data.STOCK_INFO_MAP.put(types.get(0), info);
                             }
                             info.setType(Decoder8.STKINFO_TYPE_BEAR);
                         } else if (typeString.contains(Decoder8.TYPE_WAR_INL)) {
-                            inlineWarrantList.add(types[0]);
-                            data.STKTYPEMAP[types[0]] = Decoder8.STKINFO_TYPE_WARRANT;
-                            data.UNDERLYINGDETIAL[types[0]] = Decoder8.TYPE_WAR_INL;
-                            StockInfo info = data.STOCK_INFO_MAP[types[0]];
+                            inlineWarrantList.add(types.get(0));
+                            data.STKTYPEMAP.put(types.get(0), Decoder8.STKINFO_TYPE_WARRANT);
+                            data.UNDERLYINGDETIAL.put(types.get(0), Decoder8.TYPE_WAR_INL);
+                            StockInfo info = data.STOCK_INFO_MAP.get(types.get(0));
                             if (info == null) {
-                                info = StockInfo(null, null, null, null);
-                                data.STOCK_INFO_MAP[types[0]] = info;
+                                info = new StockInfo(null, null, null, null, null, null);
+                                data.STOCK_INFO_MAP.put(types.get(0), info);
                             }
                             info.setType(Decoder8.TYPE_WAR_INL);
                         }
                     }
-                    if (allList.length != 0) {
-                        relatedMap[Decoder8.TYPE_ALL] = allList;
+                    if (allList.size() != 0) {
+                        relatedMap.put(Decoder8.TYPE_ALL, allList);
                     }
-                    if (callList.length != 0) {
-                        relatedMap[Decoder8.TYPE_CALL] = callList;
+                    if (callList.size() != 0) {
+                        relatedMap.put(Decoder8.TYPE_CALL, callList);
                     }
-                    if (putList.length != 0) {
-                        relatedMap[Decoder8.TYPE_PUT] = putList;
+                    if (putList.size() != 0) {
+                        relatedMap.put(Decoder8.TYPE_PUT, putList);
                     }
-                    if (bullList.length != 0) {
-                        relatedMap[Decoder8.TYPE_BULL] = bullList;
+                    if (bullList.size() != 0) {
+                        relatedMap.put(Decoder8.TYPE_BULL, bullList);
                     }
-                    if (bearList.length != 0) {
-                        relatedMap[Decoder8.TYPE_BEAR] = bearList;
+                    if (bearList.size() != 0) {
+                        relatedMap.put(Decoder8.TYPE_BEAR, bearList);
                     }
-                    if (inlineWarrantList.length > 0) {
-                        relatedMap[Decoder8.TYPE_WAR_INL] = inlineWarrantList;
+                    if (inlineWarrantList.size() > 0) {
+                        relatedMap.put(Decoder8.TYPE_WAR_INL, inlineWarrantList);
                     }
-                    data.UNDERLYINGMAP[securityCode] = relatedMap;
+                    data.UNDERLYINGMAP.put(securityCode, relatedMap);
                 }
             }
-
-            return null;
         }
+        return null;
     }
 }
