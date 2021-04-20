@@ -4,7 +4,11 @@ import java.util.Map;
 
 import config.AsaConfig;
 import config.ProcessorConfig;
+import coreConfigInterface.CoreConfig;
 import coreController.Controller;
+import coreEnvironment.Environment;
+import coreStorage.Storage;
+import coreStorage.StorageDecodeDispatcher;
 import coreStorage.model.AsaStorage;
 
 public class NssCoreContext {
@@ -15,7 +19,8 @@ public class NssCoreContext {
     Controller _controller;
     Storage _storage;
     User _user;
-    EventBus _events;
+    // todo: change event bus
+//    EventBus _events;
     StorageDecodeDispatcher _storageDecodeDispatcher;
     AsaStorage _asaStorage;
     DecoderConfig _decoderConfig;
@@ -23,7 +28,7 @@ public class NssCoreContext {
     public NssCoreContext() {
         _controller = new Controller();
         _controller.setContext(this);
-        _events = EventBus();
+//        _events = EventBus();
         _asaConfig = new AsaConfig();
         _processorConfig = ProcessorConfig();
         _decoderConfig = DecoderConfig();
@@ -36,7 +41,7 @@ public class NssCoreContext {
 
     public void setConfig(CoreConfig config) {
         _config = config;
-        Environment.mIsDebug = _config.debug || false;
+        Environment.mIsDebug = _config._debug || false;
     }
 
     public CoreConfig getConfig() {

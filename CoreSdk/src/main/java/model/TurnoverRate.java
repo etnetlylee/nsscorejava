@@ -2,10 +2,10 @@ package model;
 
 public class TurnoverRate {
     int _volume;
-    float _loatISC;
-    float _turnoverRate;
+    double _loatISC;
+    double _turnoverRate;
 
-    public TurnoverRate(int volume, float loatISC, float rate) {
+    public TurnoverRate(Integer volume, Double loatISC, Double rate) {
         this._volume = volume;
         this._loatISC = loatISC;
         this._turnoverRate = rate;
@@ -23,15 +23,15 @@ public class TurnoverRate {
         this._loatISC = loatISC;
     }
 
-    public float getLoatISC() {
+    public double getLoatISC() {
         return this._loatISC;
     }
 
-    public void setTurnoverRate(float rate) {
+    public void setTurnoverRate(double rate) {
         this._turnoverRate = rate;
     }
 
-    public float getTurnoverRate() {
+    public double getTurnoverRate() {
         return this._turnoverRate;
     }
 }

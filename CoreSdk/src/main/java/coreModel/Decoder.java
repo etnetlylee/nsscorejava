@@ -5,7 +5,7 @@ import java.util.List;
 import api.ContextProvider;
 
 public class Decoder extends ContextProvider {
-    static final String uniqueId = "default";
+    public static final String uniqueId = "default";
 
     NssCoreContext _context;
 

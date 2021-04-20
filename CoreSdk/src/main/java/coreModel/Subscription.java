@@ -11,11 +11,11 @@ public class Subscription {
         this._subscriber = subscriber;
     }
 
-    Subscriber getSubsciber() {
-        return _subscriber;
+    public Subscriber getSubsciber() {
+        return this._subscriber;
     }
 
-    boolean isSnapshot() {
-        return _isSnapshot;
+    public boolean isSnapshot() {
+        return this._isSnapshot;
     }
 }

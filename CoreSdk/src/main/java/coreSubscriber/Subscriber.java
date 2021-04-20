@@ -2,6 +2,8 @@ package coreSubscriber;
 
 import java.util.List;
 
+import coreModel.NssCoreContext;
+
 public class Subscriber {
     String _viewId;
     NssCoreContext _nssCoreContext;

@@ -4,7 +4,7 @@ public class QuoteData extends DataSubscription {
     String _code;
     NssData _nssData;
 
-    public QuoteData(int seqNo, NssData nssData) {
+    public QuoteData(Integer seqNo, NssData nssData) {
         super(seqNo);
         if (nssData != null) {
             setNssData(nssData);

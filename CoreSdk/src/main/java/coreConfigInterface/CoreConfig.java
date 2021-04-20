@@ -14,9 +14,9 @@ public class CoreConfig {
     String _market;
     String _timezone;
     String _corpName;
-    boolean _debug;
+    public boolean _debug;
 
-    CoreConfig(
+    public CoreConfig(
             String productName,
             String lang,
             ServerUrls server,
@@ -29,35 +29,114 @@ public class CoreConfig {
             String timezone,
             String corpName,
             boolean debug) {
-        _productName = productName;
-        _lang = lang;
-        _server = server;
-        _initiator = initiator;
-        _region = region;
-        _enableCensor = enableCensor;
-        _apiEndpoints = apiEndpoints;
-        _useRandomWSIP = useRandomWSIP;
-        _market = market;
-        _timezone = timezone;
-        _corpName = corpName;
-        _debug = debug;
+        this._productName = productName;
+        this._lang = lang;
+        this._server = server;
+        this._initiator = initiator;
+        this._region = region;
+        this._enableCensor = enableCensor;
+        this._apiEndpoints = apiEndpoints;
+        this._useRandomWSIP = useRandomWSIP;
+        this._market = market;
+        this._timezone = timezone;
+        this._corpName = corpName;
+        this._debug = debug;
     }
 
-    String get productName => _productName;
-    String get lang => _lang;
-    ServerUrls get server => _server;
-    InitiatorConfig get initiator => _initiator;
+    public String getProductName() {
+        return this._productName;
+    }
 
-    String get region => _region;
-    set region(String region) => _region = region;
+    public void setUseASA(String productName) {
+        this._productName = productName;
+    }
 
-    boolean get enableCensor => _enableCensor;
-    set enableCensor(boolean enableCensor) => _enableCensor = enableCensor;
+    public String getLang() {
+        return this._lang;
+    }
 
-    Map<String, String> get apiEndpoints => _apiEndpoints;
-    boolean get useRandomWSIP => _useRandomWSIP;
-    String get market => _market;
-    String get timezone => _timezone;
-    String get corpName => _corpName;
-    boolean get debug => _debug;
+    public void setLang(String lang) {
+        this._lang = lang;
+    }
+
+    public ServerUrls getServer() {
+        return this._server;
+    }
+
+    public void setServer(ServerUrls server) {
+        this._server = server;
+    }
+
+    public InitiatorConfig getInitiator() {
+        return this._initiator;
+    }
+
+    public void setInitiator(InitiatorConfig initiator) {
+        this._initiator = initiator;
+    }
+
+    public String getRegion() {
+        return this._region;
+    }
+
+    public void setRegion(String region) {
+        this._region = region;
+    }
+
+    public boolean getEnableCensor() {
+        return this._enableCensor;
+    }
+
+    public void setEnableCensor(boolean enableCensor) {
+        this._enableCensor = enableCensor;
+    }
+
+    public Map<String, String> getApiEndpoints() {
+        return this._apiEndpoints;
+    }
+
+    public void setApiEndpoints(Map<String, String> apiEndpoints) {
+        this._apiEndpoints = apiEndpoints;
+    }
+
+    public boolean getUseRandomWSIP() {
+        return this._useRandomWSIP;
+    }
+
+    public void setUseRandomWSIP(boolean useRandomWSIP) {
+        this._useRandomWSIP = useRandomWSIP;
+    }
+
+    public String getMarket() {
+        return this._market;
+    }
+
+    public void setMarket(String market) {
+        this._market = market;
+    }
+
+    public String getTimezone() {
+        return this._timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this._timezone = timezone;
+    }
+
+    public String getCorpName() {
+        return this._corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this._corpName = corpName;
+    }
+
+    public boolean getDebug() {
+        return this._debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this._debug = debug;
+    }
+
 }

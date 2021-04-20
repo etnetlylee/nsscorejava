@@ -34,7 +34,7 @@ public class DataHelper {
         return value;
     }
 
-    static double formatNumber(double value) {
+    public static double formatNumber(double value) {
         double format;
         if (value == 0) {
             format = 0;
