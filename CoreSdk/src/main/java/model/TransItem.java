@@ -1,36 +1,37 @@
 package model;
 
 public class TransItem {
-    float _price;
-    int _volumeAMS;
-    int _volumeNonAMS;
+    Double _price;
+    Double _volumeAMS;
+    Double _volumeNonAMS;
 
-    public TransItem(float price, int volumeAMS, int volumeNonAMS) {
+    public TransItem(Double price, Double volumeAMS, Double volumeNonAMS) {
         this._price = price;
         this._volumeAMS = volumeAMS;
         this._volumeNonAMS = volumeNonAMS;
     }
-    public void setPrice(float value) {
+
+    public void setPrice(Double value) {
         this._price = value;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return this._price;
     }
 
-    public void setVolumeAMS(int value) {
+    public void setVolumeAMS(Double value) {
         this._volumeAMS = value;
     }
 
-    public int getVolumeAMS() {
+    public Double getVolumeAMS() {
         return this._volumeAMS;
     }
 
-    public void setVolumeNonAMS(int value) {
+    public void setVolumeNonAMS(Double value) {
         this._volumeNonAMS = value;
     }
 
-    public int getVolumeNonAMS() {
+    public Double getVolumeNonAMS() {
         return this._volumeNonAMS;
     }
 }

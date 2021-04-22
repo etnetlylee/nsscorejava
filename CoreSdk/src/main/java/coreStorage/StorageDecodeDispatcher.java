@@ -5,41 +5,44 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import api.ContextProvider;
+import coreEnvironment.Environment;
 import coreModel.Decoder;
 import coreModel.DecoderInfo;
 import coreModel.NssCoreContext;
+import coreModel.NssData;
+import coreModel.QuoteData;
+import coreModel.RawData;
 import coreStorage.data.decoder.StringDecoder;
 
 import static coreConfig.DefaultDecoderConfig.DefaultDecoderConfig;
 
 public class StorageDecodeDispatcher extends ContextProvider {
-    final Logger log = Logger.getLogger(""StorageDecodeDispatcher"");
+    final Logger log = Logger.getLogger("StorageDecodeDispatcher");
 
     NssCoreContext _context;
     Map<String, Decoder> decoderPool = new HashMap<String, Decoder>(); // fieldId => Decoder
     Map<String, DecoderInfo> decoders = DefaultDecoderConfig;
     Decoder defaultDecoder = new StringDecoder();
 
-    StorageDecodeDispatcher() {
-        log.info("supported decoders: " + decoders.length.toString());
-        decoders.forEach((String key, DecoderInfo decoderInfo) {
-            log.fine("   - key: " +
-                    key +
-                    " , processor_type: " +
-                    decoderInfo.getUniqueId());
-        });
+    public StorageDecodeDispatcher() {
+        log.info("supported decoders: " + decoders.size());
+        for (Map.Entry<String, DecoderInfo> entry : decoders.entrySet()) {
+            log.fine("   - key: " + entry.getKey() + " , processor_type: " + entry.getValue().getUniqueId());
+        }
     }
 
     Decoder getDecoder(String code, String fieldId) {
         Decoder decoder;
         if (decoders.containsKey(fieldId)) {
-            DecoderInfo decoderInfo = decoders[fieldId];
+            DecoderInfo decoderInfo = decoders.get(fieldId);
             if (decoderPool.containsKey(decoderInfo.getUniqueId())) {
-                decoder = decoderPool[decoderInfo.getUniqueId()];
+                decoder = decoderPool.get(decoderInfo.getUniqueId());
             } else {
-                decoder = decoders[fieldId].ifAbsent();
+                decoder = decoders.get(fieldId).ifAbsent();
                 decoder.setContext(_context);
-                decoderPool.putIfAbsent(fieldId, () = > decoder);
+                if (decoderPool.get(fieldId) == null) {
+                    decoderPool.put(fieldId, decoder);
+                }
             }
         } else {
             decoder = defaultDecoder;
@@ -47,19 +50,15 @@ public class StorageDecodeDispatcher extends ContextProvider {
         return decoder;
     }
 
-    NssData decode(String code, RawData rawData) {
+    public NssData decode(String code, RawData rawData) {
         Decoder decoder = getDecoder(code, rawData.getFieldID());
         DecoderInfo decoderInfo =
-                _context.getDecoderConfig().getConfig()[rawData.getFieldID()];
-        dynamic rawValue = rawData.getData();
-        NssData nssData;
+                _context.getDecoderConfig().getConfig().get(rawData.getFieldID());
+        RawData rawValue = (RawData) rawData.getData();
+        NssData nssData = new NssData(null);
 
         try {
-            if (rawValue is String){
-                nssData = decoder.decodeStream(code, rawData);
-            } else if (rawValue is List){
-                nssData = decoder.decodeSnapshot(code, rawData);
-            }
+            nssData = decoder.decodeStream(code, rawData);
 
             if (nssData == null) {
                 nssData = decoder.decodeRaw(code, rawData);
@@ -76,17 +75,17 @@ public class StorageDecodeDispatcher extends ContextProvider {
             } else {
                 log.info("please return NssData for field: ${rawData.getFieldID()}");
             }
-        } catch (e) {
+        } catch (Exception e) {
             if (Environment.isDebug()) {
-                log.info(e);
+                log.info(e.getMessage());
             }
         }
 
         return nssData;
     }
 
-    @override
-    void setContext(NssCoreContext context) {
+    @Override
+    public void setContext(NssCoreContext context) {
         _context = context;
         defaultDecoder.setContext(context);
     }

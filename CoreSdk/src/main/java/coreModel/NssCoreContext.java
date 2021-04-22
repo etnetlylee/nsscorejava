@@ -4,6 +4,9 @@ import java.util.Map;
 
 import config.AsaConfig;
 import config.ProcessorConfig;
+import coreConfig.DecoderConfig;
+import coreConfigInterface.AsaConfigInfo;
+import coreConfigInterface.AsaDecodersConfig;
 import coreConfigInterface.CoreConfig;
 import coreController.Controller;
 import coreEnvironment.Environment;
@@ -30,11 +33,11 @@ public class NssCoreContext {
         _controller.setContext(this);
 //        _events = EventBus();
         _asaConfig = new AsaConfig();
-        _processorConfig = ProcessorConfig();
-        _decoderConfig = DecoderConfig();
-        _storage = Storage();
+        _processorConfig = new ProcessorConfig();
+        _decoderConfig = new DecoderConfig();
+        _storage = new Storage();
         _storage.setContext(this);
-        _storageDecodeDispatcher = StorageDecodeDispatcher();
+        _storageDecodeDispatcher = new StorageDecodeDispatcher();
         _storageDecodeDispatcher.setContext(this);
         _asaStorage = new AsaStorage();
     }
@@ -45,7 +48,7 @@ public class NssCoreContext {
     }
 
     public CoreConfig getConfig() {
-        return _config;
+        return this._config;
     }
 
     public void addAsaConfig(AsaDecodersConfig asa) {
@@ -69,23 +72,23 @@ public class NssCoreContext {
     }
 
     public boolean getRandWSIP() {
-        return _config.useRandomWSIP;
+        return _config.getUseRandomWSIP();
     }
 
     public void enableCensored(String region) {
-        _config.region = region;
+        _config.setRegion(region);
     }
 
     public String getMarket() {
-        return _config.market;
+        return _config.getMarket();
     }
 
     public String getUMSUrl() {
-        return _config.server.ums;
+        return _config.getServer().getUms();
     }
 
     public String getProductName() {
-        return _config.productName;
+        return _config.getProductName();
     }
 
     public User getUser() {
@@ -96,7 +99,8 @@ public class NssCoreContext {
         _user = user;
     }
 
-    EventBus get events => _events;
+    // todo : need to discuss
+//    EventBus get events => _events;
 
     public StorageDecodeDispatcher getStorageDecoderDispatcher() {
         return _storageDecodeDispatcher;
@@ -106,7 +110,7 @@ public class NssCoreContext {
         _processorConfig.setConfig(processorConfig);
     }
 
-    public Map<Object, Object> getProcessorConfig() {
+    public Map<String, ProcessorInfo> getProcessorConfig() {
         return _processorConfig.getConfig();
     }
 

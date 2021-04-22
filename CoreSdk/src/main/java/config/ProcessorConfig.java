@@ -10,7 +10,7 @@ public class ProcessorConfig {
     final Logger log = Logger.getLogger("ProcessorConfig");
     Map<String, ProcessorInfo> _processorConfig = new HashMap<String, ProcessorInfo>();
 
-    Map<String, ProcessorInfo> getConfig() {
+    public Map<String, ProcessorInfo> getConfig() {
         return _processorConfig;
     }
 

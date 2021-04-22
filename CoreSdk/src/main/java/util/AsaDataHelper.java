@@ -331,7 +331,6 @@ public class AsaDataHelper {
 
         for (Map.Entry<String, String> entry : ahftMap.entrySet()) {
 
-            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
             if (futCode != null && futCode.length() == 5) {
                 if (futCode.substring(1, 4) == entry.getValue()) {
                     result = true;

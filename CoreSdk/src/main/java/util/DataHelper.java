@@ -11,7 +11,7 @@ import coreStorage.model.Transaction;
 import model.IndexBaseInfo;
 
 public class DataHelper {
-    static double stringToDouble(String str) {
+    public static double stringToDouble(String str) {
         double value = 0.0;
         if (str != null) {
             str = str.trim();
