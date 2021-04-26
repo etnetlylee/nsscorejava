@@ -8,6 +8,7 @@ import coreInterfaceNetwork.ConnectionHandler;
 import coreModel.NssCoreContext;
 import coreNetwork.Ajax;
 import coreNetwork.NssConnection;
+import okhttp3.Response;
 
 public class NetworkController extends ContextProvider implements ConnectionHandler {
     final Logger log = Logger.getLogger("NetworkController");
@@ -91,21 +92,20 @@ public class NetworkController extends ContextProvider implements ConnectionHand
         return _context.getUser() != null && _context.getUser().isSessionEnd();
     }
 
-    void send(String cmd) {
+    public void send(String cmd) {
         if (getConnection() != null) {
             getConnection().send(cmd);
         } else {
             log.info("connection lost, drop cmd: " + cmd);
         }
     }
-  // todo need to discuss : Robin
 
-//    Future<Response> sendHttpGetRequest(String url) {
-//        return _ajax.sendRequest(url, null);
-//    }
-//
-//    Future<Response> sendHttpPostRequest(String url, dynamic postData) {
-//        return _ajax.sendRequest(url, postData);
-//    }
+   public Response sendHttpGetRequest(String url) {
+        return _ajax.sendRequest(url, null);
+    }
+
+   public Response sendHttpPostRequest(String url, Object postData) {
+        return _ajax.sendRequest(url, postData);
+    }
 
 }

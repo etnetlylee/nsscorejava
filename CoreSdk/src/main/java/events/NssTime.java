@@ -1,4 +1,4 @@
-package event;
+package events;
 
 public class NssTime {
     int _serverTime;

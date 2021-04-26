@@ -316,7 +316,7 @@ public class AsaDataHelper {
         return context.getAsaStorage().AHFT_VALUE_MAP.get(futCode);
     }
 
-    static List<String> getFutureMonth(String code, NssCoreContext context) {
+    public static List<String> getFutureMonth(String code, NssCoreContext context) {
         return context.getAsaStorage().FUTURE_MONTH_MAP_FROM_ASA.get(code);
     }
 
@@ -324,7 +324,7 @@ public class AsaDataHelper {
         return context.getAsaStorage().OPTION_MONTH_MAP_FROM_ASA.get(option);
     }
 
-    static boolean isFutureT1Code(String futCode, NssCoreContext context) {
+    public static boolean isFutureT1Code(String futCode, NssCoreContext context) {
         boolean result = false;
         Map<String, String> ahftMap = context.getAsaStorage().AHFT_VALUE_MAP;
 

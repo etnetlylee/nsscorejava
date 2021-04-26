@@ -19,7 +19,7 @@ public class IndustryAnalysisDecoder extends Decoder {
         IndustryTrace industryTrace = new IndustryTrace();
         for (int i = 1; i < value.length(); i++) {
             IndustryAnalysis industryAnalysis = new IndustryAnalysis();
-            final List<String> values = Arrays.asList(value.split(","));
+            final List<String> values = Arrays.asList(Character.toString(value.charAt(i)).split(","));
             final String indCode = values.get(0);
             industryAnalysis.setIndCode(indCode);
             final int fundInflow = Integer.parseInt(values.get(1));

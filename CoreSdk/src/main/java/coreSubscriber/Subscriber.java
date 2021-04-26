@@ -3,6 +3,9 @@ package coreSubscriber;
 import java.util.List;
 
 import coreModel.NssCoreContext;
+import coreModel.QuoteData;
+import coreSubscriber.listener.UpdateListener;
+import coreSubscriber.request.Request;
 
 public class Subscriber {
     String _viewId;
@@ -17,8 +20,8 @@ public class Subscriber {
         _updateListener = updateListener;
     }
 
-    public String getViewId(){
-        return  this._viewId;
+    public String getViewId() {
+        return this._viewId;
     }
 
     public void subscribe(Request request) {
@@ -26,45 +29,51 @@ public class Subscriber {
         request.subscribe(this);
     }
 
-    void unsubscribe(Request request) {
+    public void unsubscribe(Request request) {
         request.setSubscriber(this);
         request.unsubscribe(this);
     }
 
-    void informUpdate(dynamic data) {
+    public void informUpdate(List<QuoteData> data) {
         _updateListener.onDataUpdated(data);
     }
 
-    set nssCoreContext(NssCoreContext nssCoreContext) => _nssCoreContext = nssCoreContext;
-    NssCoreContext get nssCoreContext => _nssCoreContext;
-
-    void setInternal(bool internal) {
-        _internal = internal;
+    public void setNssCoreContext(NssCoreContext nssCoreContext) {
+        this._nssCoreContext = nssCoreContext;
     }
 
-    bool isInternal() {
-        return _internal;
+    public NssCoreContext getNssCoreContext() {
+        return this._nssCoreContext;
     }
 
-    void setViewId(String viewId) {
-        _viewId = viewId;
+    public void setInternal(boolean internal) {
+        this._internal = internal;
     }
 
-    List<String> getCodes() {
-        return _codes;
+    public boolean isInternal() {
+        return this._internal;
     }
 
-    void setCodes(List<String> codes) {
-        _codes = codes;
+    public void setViewId(String viewId) {
+        this._viewId = viewId;
     }
 
-    List<String> getFields() {
-        return _fields;
+    public List<String> getCodes() {
+        return this._codes;
     }
 
-    void setFields(List<String> fields) {
-        _fields = fields;
+    public void setCodes(List<String> codes) {
+        this._codes = codes;
+    }
+
+    public List<String> getFields() {
+        return this._fields;
+    }
+
+    public void setFields(List<String> fields) {
+        this._fields = fields;
     }
 }
 
-class DateListener {}
+class DateListener {
+}

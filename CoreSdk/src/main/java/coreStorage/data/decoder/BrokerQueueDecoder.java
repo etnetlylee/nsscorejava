@@ -18,7 +18,7 @@ import model.BrokerFirm;
 
 public class BrokerQueueDecoder extends Decoder {
     public static final String uniqueID = "brokerqueue";
-    final Logger log = Logger.getLogger("'StorageDecodeDispatcher'");
+    final Logger log = Logger.getLogger("StorageDecodeDispatcher");
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

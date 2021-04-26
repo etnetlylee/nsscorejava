@@ -244,7 +244,7 @@ public class SecurityCodeHelper {
      *
      * @param code full code
      */
-    static boolean isSHCode(String code) {
+    public static boolean isSHCode(String code) {
         return SecurityCodeHelper.getSecurityID(code) ==
                 SecurityID.SECURITYID_STOCK_SH;
     }
@@ -254,7 +254,7 @@ public class SecurityCodeHelper {
      *
      * @param code full code
      */
-    static boolean isSZCode(String code) {
+    public static boolean isSZCode(String code) {
         return SecurityCodeHelper.getSecurityID(code) ==
                 SecurityID.SECURITYID_STOCK_SZ;
     }

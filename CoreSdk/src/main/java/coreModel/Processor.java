@@ -2,7 +2,7 @@ package coreModel;
 
 import api.ContextProvider;
 
-abstract class Processor extends ContextProvider {
+public abstract class Processor extends ContextProvider {
     public Object process(NssPacket nssPacket) {
         return nssPacket;
     }

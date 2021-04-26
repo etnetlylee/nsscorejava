@@ -48,15 +48,15 @@ public class Controller extends ContextProvider {
         _heartbeatController.setContext(context);
     }
 
-    NetworkController getNetworkController() {
+    public NetworkController getNetworkController() {
         return _networkController;
     }
 
-    ProcessorController getProcessorController() {
+    public ProcessorController getProcessorController() {
         return _processorController;
     }
 
-    CommandController getCommandController() {
+    public CommandController getCommandController() {
         return _commandController;
     }
 
@@ -64,11 +64,11 @@ public class Controller extends ContextProvider {
     //   return _staticDataController;
     // }
 
-    SubscriberController getSubscriberController() {
+    public SubscriberController getSubscriberController() {
         return _subscriberController;
     }
 
-    RequestController getRequestController() {
+    public RequestController getRequestController() {
         return _requestController;
     }
 

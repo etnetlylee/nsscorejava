@@ -1,9 +1,10 @@
 package coreSubscriber.request;
 
+import coreController.SubscriberController;
 import coreModel.NssCoreContext;
 import coreSubscriber.Subscriber;
 
-abstract class Request {
+public class Request {
     int _requestId;
     int _commandId;
     int _sequenceNo;
