@@ -101,7 +101,7 @@ public class SubscriberController extends ContextProvider {
                 .hasChartSubscription(subscriber, code, paramHash);
     }
 
-    Subscriber removeChartSubscription(
+    public Subscriber removeChartSubscription(
             Subscriber subscriber, String code, String paramHash) {
         return this._context
                 .getStorage()

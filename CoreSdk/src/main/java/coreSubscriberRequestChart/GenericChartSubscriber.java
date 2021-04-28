@@ -1,42 +1,46 @@
 package coreSubscriberRequestChart;
 
+import coreSubscriber.QuoteSubscriber;
+
 public class GenericChartSubscriber extends QuoteSubscriber {
     String _period;
     boolean _tradingDayOnly;
     boolean _isSnapshot;
     int _range;
 
-    GenericChartSubscriber(String name) : super(name);
+    public GenericChartSubscriber(String name){
+        super(name);
+    };
 
-    String getPeriod() {
-        return _period;
+    public String getPeriod() {
+        return this._period;
     }
 
-    void setPeriod(String period) {
-        _period = period;
+    public void setPeriod(String period) {
+        this._period = period;
     }
 
-    void setTradingDayOnly(bool tradingDayOnly) {
-        _tradingDayOnly = tradingDayOnly;
+    public void setTradingDayOnly(boolean tradingDayOnly) {
+        this._tradingDayOnly = tradingDayOnly;
     }
 
-    bool isTradingDayOnly() {
-        return _tradingDayOnly;
+    public boolean isTradingDayOnly() {
+        return this._tradingDayOnly;
     }
 
-    void setRange(int limit) {
-        _range = limit;
+    public void setRange(int limit) {
+        this._range = limit;
     }
 
-    int getRange() {
-        return _range;
+    public int getRange() {
+        return this._range;
     }
 
-    void setSnapshot(bool snapshot) {
-        _isSnapshot = snapshot;
+    public void setSnapshot(boolean snapshot) {
+        this._isSnapshot = snapshot;
     }
 
-    bool getSnapshot() {
-        return _isSnapshot;
+    public boolean getSnapshot() {
+        return this._isSnapshot;
     }
 }

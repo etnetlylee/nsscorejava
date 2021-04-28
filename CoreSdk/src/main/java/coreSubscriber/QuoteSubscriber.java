@@ -29,7 +29,7 @@ public class QuoteSubscriber extends CommonSubscriber {
 
     OnQuoteDataReceived _onQuoteDataReceived;
 
-    public void QuoteSubscriber(String name) {
+    public QuoteSubscriber(String name) {
         this._subscriber = new Subscriber(name, this);
     }
 

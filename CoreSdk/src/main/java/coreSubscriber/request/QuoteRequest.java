@@ -2,15 +2,23 @@ package coreSubscriber.request;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import coreController.CommandController;
+import coreModel.DecoderInfo;
+import coreModel.NssData;
+import coreModel.QuoteData;
 import coreSubscriber.Subscriber;
 import util.DecodeHelper;
 
 import static constants.Command.COMMAND_ADD_BOTH;
+import static constants.Command.COMMAND_ADD_SNAPSHOT;
 
 public class QuoteRequest extends Request {
     final Logger log = Logger.getLogger("QuoteRequest");
@@ -29,7 +37,7 @@ public class QuoteRequest extends Request {
         final List<String> denormalizeCodes = new ArrayList<String>();
         final Map<String, List<String>> futureMonthMap =
                 getNssCoreContext().getAsaStorage().FUTURE_MONTH_MAP_FROM_ASA;
-        for (String code : _codes){
+        for (String code : _codes) {
             denormalizeCodes.add(DecodeHelper.denormalizeCode(code, futureMonthMap));
         }
         return denormalizeCodes;
@@ -62,271 +70,281 @@ public class QuoteRequest extends Request {
     @Override
     public void subscribe(Subscriber subscriber) {
         // server scope code-field checking
-        List<String> willSubscribeCodes = [];
+        List<String> willSubscribeCodes = new ArrayList<String>();
         // List<String> willSubscribeFields = _fields;
-        Map<String, List<String>> willSeperateSubscribe = {};
-        Map<String, List<String>> willFetchFromCache = {};
-        Map<String, List<String>> willWaitFromCache = {};
+        Map<String, List<String>> willSeperateSubscribe = new HashMap<String, List<String>>();
+        Map<String, List<String>> willFetchFromCache = new HashMap<String, List<String>>();
+        Map<String, List<String>> willWaitFromCache = new HashMap<String, List<String>>();
         final Map<String, DecoderInfo> decoderConfig =
                 getNssCoreContext().getDecoderConfig().getConfig();
 
-        if (_codes == null || _codes.length == 0) {
-            return null;
-        }
-        if (_fields == null || _fields.length == 0) {
-            return null;
-        }
+        final boolean snap = _commandId == COMMAND_ADD_SNAPSHOT;
 
-        final snap =_commandId == COMMAND_ADD_SNAPSHOT;
-
-        _codes.forEach((code) {
-                List < String > willSubscribeFieldsInThisLoop =[];
-        _fields.forEach((field) {
-                bool isSubscribed = getSubscriberController().hasQuoteData(code, field);
-        // add it immediately
-        getSubscriberController()
-                .addQuoteSubscriber(code, field, subscriber, snap);
-        if (isSubscribed) {
-            // from cache?
-            NssData nssData =
-                    getSubscriberController().getQuoteData(code, field).getNssData();
-            bool isDataReady = nssData.getReady();
-            if (isDataReady) {
-                // update From cache directly
-                willFetchFromCache.putIfAbsent(code, () = > []);
-                willFetchFromCache[code].add(field);
-            } else {
-                // wait data return
-                willWaitFromCache.putIfAbsent(code, () = > []);
-                willWaitFromCache[code].add(field);
-            }
-        } else {
-            // from nss
-            final DecoderInfo decoder = decoderConfig[field];
-            final List<String> serverFieldIds = decoder.getServerFieldIds();
-            if (serverFieldIds != null) {
-                if (decoder.isComposite()) {
-                    bool allServerFieldSubscribed = true;
-                    serverFieldIds.forEach((serverFieldId) {
-                    final bool isServerFieldIdSubscribed =
-                            getSubscriberController().hasQuoteData(code, serverFieldId);
-                    if (isServerFieldIdSubscribed) {
-                        this
-                                .getSubscriberController()
-                                .addCompositeDeps(code, serverFieldId);
-                        // would like to trigger decoder again...
-                        willSubscribeFieldsInThisLoop.add(serverFieldId);
+        for (String code : _codes) {
+            List<String> willSubscribeFieldsInThisLoop = new ArrayList<String>();
+            for (String field : _fields) {
+                boolean isSubscribed = getSubscriberController().hasQuoteData(code, field);
+                // add it immediately
+                getSubscriberController()
+                        .addQuoteSubscriber(code, field, subscriber, snap);
+                if (isSubscribed) {
+                    // from cache?
+                    NssData nssData =
+                            getSubscriberController().getQuoteData(code, field).getNssData();
+                    boolean isDataReady = nssData.getReady();
+                    if (isDataReady) {
+                        // update From cache directly
+                        if (willFetchFromCache.get(code) != null) {
+                            willFetchFromCache.put(code, new ArrayList<String>());
+                        }
+                        willFetchFromCache.get(code).add(field);
                     } else {
-                        final quoteData =getSubscriberController()
-                                .createQuoteData(code, serverFieldId);
-                        quoteData.plusCompositeDepsCount();
-                        allServerFieldSubscribed = false;
-                        willSubscribeFieldsInThisLoop.add(serverFieldId);
+                        // wait data return
+                        if (willWaitFromCache.get(code) != null) {
+                            willWaitFromCache.put(code, new ArrayList<String>());
+                        }
+                        willWaitFromCache.get(code).add(field);
                     }
-              });
                 } else {
-                    willSubscribeFieldsInThisLoop.add(field);
+                    // from nss
+                    final DecoderInfo decoder = decoderConfig.get(field);
+                    final List<String> serverFieldIds = decoder.getServerFieldIds();
+                    if (serverFieldIds != null) {
+                        if (decoder.isComposite()) {
+                            boolean allServerFieldSubscribed = true;
+                            for (String serverFieldId : serverFieldIds) {
+                                final boolean isServerFieldIdSubscribed =
+                                        getSubscriberController().hasQuoteData(code, serverFieldId);
+                                if (isServerFieldIdSubscribed) {
+                                    this
+                                            .getSubscriberController()
+                                            .addCompositeDeps(code, serverFieldId);
+                                    // would like to trigger decoder again...
+                                    willSubscribeFieldsInThisLoop.add(serverFieldId);
+                                } else {
+                                    final QuoteData quoteData = getSubscriberController()
+                                            .createQuoteData(code, serverFieldId);
+                                    quoteData.plusCompositeDepsCount();
+                                    allServerFieldSubscribed = false;
+                                    willSubscribeFieldsInThisLoop.add(serverFieldId);
+                                }
+                            }
+                        } else {
+                            willSubscribeFieldsInThisLoop.add(field);
+                        }
+                    } else {
+                        willSubscribeFieldsInThisLoop.add(field);
+                    }
                 }
-            } else {
-                willSubscribeFieldsInThisLoop.add(field);
             }
-        }
-      });
 
-        if (willSubscribeFieldsInThisLoop.length == _fields.length) {
-            // new code
-            willSubscribeCodes.add(code);
-        } else {
-            if (willSubscribeFieldsInThisLoop.length > 0) {
-                willSeperateSubscribe.putIfAbsent(code, () = > []);
-                willSeperateSubscribe[code].addAll(willSubscribeFieldsInThisLoop);
+            if (willSubscribeFieldsInThisLoop.size() == _fields.size()) {
+                // new code
+                willSubscribeCodes.add(code);
+            } else {
+                if (willSubscribeFieldsInThisLoop.size() > 0) {
+                    if (willSeperateSubscribe.get(code) != null) {
+                        willSeperateSubscribe.put(code, new ArrayList<String>());
+                    }
+                    willSeperateSubscribe.get(code).addAll(willSubscribeFieldsInThisLoop);
+                }
             }
         }
-    });
+
 
         log.info("will wait cache ready:");
-        willWaitFromCache.forEach((String code, List < String > fieldIds) {
-            log.info("    - " + code + " = " + fieldIds.join("|"));
-        });
+
+        for (Map.Entry<String, List<String>> entry : willWaitFromCache.entrySet()) {
+            log.info("    - " + entry.getKey() + " = " + StringUtils.join(entry.getValue(), "|"));
+        }
+
         log.info("end");
 
         log.info("will fetch from cache:");
-        willFetchFromCache.forEach((String code, List < String > fieldIds) {
-            log.info("    - " + code + " = " + fieldIds.join("|"));
-            List<QuoteData> data = [];
-            fieldIds.forEach((fieldId) {
-            final cachedQuoteData =
-            getSubscriberController().getQuoteData(code, fieldId);
-            if (cachedQuoteData != null &&
-                    cachedQuoteData.getNssData().getReady()) {
-                data.add(cachedQuoteData);
-            } else {
-                // final DecoderInfo decoder = decoderConfig[fieldId];
-                // if (decoder.composite) {
-                // } else {
-                // }
+
+        for (Map.Entry<String, List<String>> entry : willFetchFromCache.entrySet()) {
+            log.info("    - " + entry.getKey() + " = " + StringUtils.join(entry.getValue(), "|"));
+            List<QuoteData> data = new ArrayList<QuoteData>();
+            for (String fieldId : entry.getValue()) {
+                final QuoteData cachedQuoteData =
+                        getSubscriberController().getQuoteData(entry.getKey(), fieldId);
+                if (cachedQuoteData != null &&
+                        cachedQuoteData.getNssData().getReady()) {
+                    data.add(cachedQuoteData);
+                } else {
+                    // final DecoderInfo decoder = decoderConfig[fieldId];
+                    // if (decoder.composite) {
+                    // } else {
+                    // }
+                }
             }
-      });
             subscriber.informUpdate(data);
             // getSubscriberController().fetchQuoteDataFromCache(subscriber, code, fieldIds, snap);
-        });
+        }
+
         log.info("end");
 
         log.info("will subscribe from nss:");
         // use server field ids to subscribe
-        List<String> fieldList = [];
-        _fields.forEach((fid) {
-        final DecoderInfo decoder = decoderConfig[fid];
-        final List<String> serverFieldIds = decoder.getServerFieldIds();
-        if (serverFieldIds != null && serverFieldIds.isNotEmpty) {
-            serverFieldIds.forEach((serverFieldId) {
-            if (!fieldList.contains(serverFieldId)) {
-                fieldList.add(serverFieldId);
+        List<String> fieldList = new ArrayList<String>();
+        for (String fid : _fields) {
+            final DecoderInfo decoder = decoderConfig.get(fid);
+            final List<String> serverFieldIds = decoder.getServerFieldIds();
+            if (serverFieldIds != null && !serverFieldIds.isEmpty()) {
+                for (String serverFieldId : serverFieldIds) {
+                    if (!fieldList.contains(serverFieldId)) {
+                        fieldList.add(serverFieldId);
+                    }
+                }
+            } else {
+                fieldList.add(fid);
             }
-        });
-        } else {
-            fieldList.add(fid);
         }
-    });
         log.info("end");
 
         log.info("ready to send nss command");
         log.info("[FU] = Full set of code-field, [SE] = Partial code-field");
         // Common code-fields
-        if (willSubscribeCodes.length > 0) {
+        if (willSubscribeCodes.size() > 0) {
             // Command controller
             log.info(
-                    "[FU]  " + willSubscribeCodes.join("|") + " = " + _fields.join("|"));
+                    "[FU]  " + StringUtils.join(willSubscribeCodes, "|") + " = " + StringUtils.join(_fields, "|"));
             getNssCoreContext()
                     .getController()
                     .getCommandController()
                     .sendAddQuoteCommand(
                             getRequestId(), willSubscribeCodes, fieldList, _commandId);
         }
-        if (willSeperateSubscribe.length > 0) {
+        if (willSeperateSubscribe.size() > 0) {
             // Each code-fields will send seperately
-            willSeperateSubscribe.forEach((String code, List < String > fieldIds) {
-                log.info(" [SE] " + code + " = " + fieldIds.join("|"));
+            for (Map.Entry<String, List<String>> entry : willSeperateSubscribe.entrySet()) {
+                log.info(" [SE] " + entry.getKey() + " = " + StringUtils.join(entry.getValue(), ("|")));
                 getNssCoreContext()
                         .getController()
                         .getCommandController()
-                        .sendAddQuoteCommand(getRequestId(),[code], fieldIds, _commandId);
-            });
+                        .sendAddQuoteCommand(getRequestId(), Arrays.asList(entry.getKey()), entry.getValue(),
+                                _commandId);
+            }
         }
-
-        return null;
     }
 
-    @override
-    unsubscribe(Subscriber subscriber) {
-        List<String> willUnsubscribeCodes = [];
-        Map<String, List<String>> willSeperateUnsubscribe = {};
+    @Override
+    public void unsubscribe(Subscriber subscriber) {
+        List<String> willUnsubscribeCodes = new ArrayList<String>();
+        Map<String, List<String>> willSeperateUnsubscribe = new HashMap<String, List<String>>();
         final Map<String, DecoderInfo> decoderConfig =
                 getNssCoreContext().getDecoderConfig().getConfig();
 
-        final snap =_commandId == COMMAND_ADD_SNAPSHOT;
-        _codes.forEach((code) {
-                List < String > willUnSubscribeFieldsInThisLoop =[];
-        _fields.forEach((fieldId) {
+        final boolean snap = _commandId == COMMAND_ADD_SNAPSHOT;
+        for (String code : _codes) {
+            List<String> willUnSubscribeFieldsInThisLoop = new ArrayList<String>();
+            for (String fieldId : _fields) {
                 // remove struct
-        int count = getSubscriberController()
-                .removeQuoteSubscriber(code, fieldId, subscriber);
-        if (count == -1) {
-            // skip snapshot?
-        } else if (count == 0) {
-            if (willUnSubscribeFieldsInThisLoop.contains(fieldId)) {
-                willUnSubscribeFieldsInThisLoop
-                        .add(fieldId); // need send remove cmd
-            } else {
-                final DecoderInfo decoder = decoderConfig[fieldId];
-                if (decoder.isComposite()) {
-                    final List<String> serverFieldIds = decoder.getServerFieldIds();
-                    serverFieldIds.forEach((serverFieldID) {
-                    if (getSubscriberController()
-                            .hasQuoteData(code, serverFieldID)) {
-                        final QuoteData quoteData = getSubscriberController()
-                                .getQuoteData(code, serverFieldID);
-                        final int depsCount = quoteData.minusCompositeDepsCount();
-                        // if no composite field depends on this server field and no subscriber listen to this server
-                    // field
-                        // e.g. 82S1 and I60S deps on server field id 161
-                        if (depsCount == 0 &&
-                                quoteData.getSubscription().length == 0) {
-                            // we could remove subscription from server e.g. server field 161
-                            willUnSubscribeFieldsInThisLoop.add(fieldId);
-                        }
+                int count = getSubscriberController()
+                        .removeQuoteSubscriber(code, fieldId, subscriber);
+                if (count == -1) {
+                    // skip snapshot?
+                } else if (count == 0) {
+                    if (willUnSubscribeFieldsInThisLoop.contains(fieldId)) {
+                        willUnSubscribeFieldsInThisLoop
+                                .add(fieldId); // need send remove cmd
                     } else {
-                        // should be an error, as we have to add deps server field to quote cache in subscribe()
+                        final DecoderInfo decoder = decoderConfig.get(fieldId);
+                        if (decoder.isComposite()) {
+                            final List<String> serverFieldIds = decoder.getServerFieldIds();
+                            for (String serverFieldID : serverFieldIds) {
+                                if (getSubscriberController()
+                                        .hasQuoteData(code, serverFieldID)) {
+                                    final QuoteData quoteData = getSubscriberController()
+                                            .getQuoteData(code, serverFieldID);
+                                    final int depsCount = quoteData.minusCompositeDepsCount();
+                                    // if no composite field depends on this server field and no subscriber listen to
+                                    // this
+                                    // server
+                                    // field
+                                    // e.g. 82S1 and I60S deps on server field id 161
+                                    if (depsCount == 0 &&
+                                            quoteData.getSubscription().size() == 0) {
+                                        // we could remove subscription from server e.g. server field 161
+                                        willUnSubscribeFieldsInThisLoop.add(fieldId);
+                                    }
+                                } else {
+                                    // should be an error, as we have to add deps server field to quote cache in
+                                    // subscribe()
+                                }
+                            }
+                        } else {
+                            willUnSubscribeFieldsInThisLoop
+                                    .add(fieldId); // need send remove cmd
+                        }
                     }
-              });
-                } else {
-                    willUnSubscribeFieldsInThisLoop
-                            .add(fieldId); // need send remove cmd
                 }
             }
-        }
-      });
+            if (willUnSubscribeFieldsInThisLoop.size() != _fields.size()) {
+                // some no nned to be unsubscribed
+                if (willSeperateUnsubscribe.get(code) != null) {
+                    willSeperateUnsubscribe.put(code, new ArrayList<String>());
 
-        if (willUnSubscribeFieldsInThisLoop.length != _fields.length) {
-            // some no nned to be unsubscribed
-            willSeperateUnsubscribe.putIfAbsent(code, () = > []);
-            willSeperateUnsubscribe[code].addAll(willUnSubscribeFieldsInThisLoop);
-        } else {
-            willUnsubscribeCodes.add(code);
+                }
+                willSeperateUnsubscribe.get(code).addAll(willUnSubscribeFieldsInThisLoop);
+            } else {
+                willUnsubscribeCodes.add(code);
+            }
         }
-    });
-
         if (!snap) {
             log.info("will unsubscribe from nss");
             // Common code-fields
-            if (willUnsubscribeCodes.length > 0) {
+            if (willUnsubscribeCodes.size() > 0) {
                 // Command controller
-                final codes =willUnsubscribeCodes.join("|");
-                final fields =_fields.join("|");
-                if (codes.isNotEmpty && fields.isNotEmpty) {
+                final String codes = StringUtils.join(willUnsubscribeCodes, "|");
+                final String fields = StringUtils.join(_fields, "|");
+                if (!codes.isEmpty() && !fields.isEmpty()) {
                     log.info("    - " + codes + " = " + fields);
-                    final commandController =
-                    getNssCoreContext().getController().getCommandController();
+                    final CommandController commandController =
+                            getNssCoreContext().getController().getCommandController();
                     commandController.sendRemoveQuoteCommand(
                             getRequestId(), willUnsubscribeCodes, _fields);
                 } else {
                     log.info("codes or fields are empty");
                 }
             }
-            if (willSeperateUnsubscribe.length > 0) {
+            if (willSeperateUnsubscribe.size() > 0) {
                 // Each code-fields will send seperately
-                willSeperateUnsubscribe.forEach((String code, List < String > fieldIds) {
-                    if (code.isNotEmpty && fieldIds.length > 0) {
-                        log.info("    - " + code + " = " + fieldIds.join("|"));
+                for (Map.Entry<String, List<String>> entry : willSeperateUnsubscribe.entrySet()) {
+                    if (!entry.getKey().isEmpty() && entry.getValue().size() > 0) {
+                        log.info("    - " + entry.getKey() + " = " + StringUtils.join(entry.getValue(), "|"));
                         getNssCoreContext()
                                 .getController()
                                 .getCommandController()
-                                .sendRemoveQuoteCommand(getRequestId(),[code], fieldIds);
+                                .sendRemoveQuoteCommand(getRequestId(), Arrays.asList(entry.getKey()),
+                                        entry.getValue());
                     }
-                });
+                }
             }
         } else {
             log.info("skill unsubscribe command in snapshot request");
         }
         log.info("done");
         // detect storage!
-        return null;
     }
 
-    List<String> convertToServerFieldIds(List<String> fieldIDs) {
-        final fieldList = [];
+    public List<String> convertToServerFieldIds(List<String> fieldIDs) {
+        final List<String> fieldList = new ArrayList<String>();
         final Map<String, DecoderInfo> decoderConfig =
                 getNssCoreContext().getDecoderConfig().getConfig();
-        fieldIDs.forEach((fid) {
-        final DecoderInfo decoder = decoderConfig[fid];
-        final List<String> serverFieldIds = decoder.getServerFieldIds();
-        if (serverFieldIds != null && serverFieldIds.isNotEmpty) {
-            fieldList.addAll(serverFieldIds
-                    .where((serverFieldId) = > !fieldList.contains(serverFieldId)));
-        } else {
-            fieldList.add(fid);
+        for (String fid : fieldIDs){
+            final DecoderInfo decoder = decoderConfig.get(fid);
+            final List<String> serverFieldIds = decoder.getServerFieldIds();
+            if (serverFieldIds != null && !serverFieldIds.isEmpty()) {
+                for (String serverFieldId : serverFieldIds){
+                    if (!fieldList.contains(serverFieldId)){
+                        fieldList.add(serverFieldId);
+                    }
+                }
+            } else {
+                fieldList.add(fid);
+            }
         }
-    });
         return fieldList;
     }
 }

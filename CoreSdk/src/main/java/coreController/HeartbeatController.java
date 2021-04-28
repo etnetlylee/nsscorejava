@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import api.ContextProvider;
 import coreModel.NssCoreContext;
 import events.NssEvent;
+import events.NssTime;
 
 public class HeartbeatController extends ContextProvider {
     final Logger log = Logger.getLogger("HeartbeatController");
@@ -72,40 +73,46 @@ public class HeartbeatController extends ContextProvider {
         };
         Timer timer = new Timer();
         timer.schedule(task, 15);
-}
+    }
 
-   public void startWatchDog() {
+    public void startWatchDog() {
         if (_mWatchDog != null) {
             log.info("watchdog is already running");
         } else {
             Calendar t = Calendar.getInstance();
             _beforeDate = (int) t.getTimeInMillis();
-      const oneSec = const Duration(seconds:1);
-            _localDateUpdater = new Timer.periodic(oneSec, (Timer t) {
-                _localDate =DateTime.now().millisecondsSinceEpoch;
-                final elapsed =_localDate -_beforeDate;
-        if(elapsed >1500)
 
-                {
-                    log.info(" Timer drop time segment, elapsed = ", elapsed);
-                } else
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    Calendar t = Calendar.getInstance();
+                    _localDate = (int) Calendar.getInstance().getTimeInMillis();
+                    final int elapsed = _localDate - _beforeDate;
+                    if (elapsed > 1500) {
+                        log.info(" Timer drop time segment, elapsed = " + elapsed);
+                    } else {
+                        final int fixedTimestamp = _localDate + _timeDiff;
 
-                {
-                    final int fixedTimestamp = _localDate + _timeDiff;
+                        if (_context.getController().getNetworkController().isSessionEnd()) {
+                            // todo : need to discuss Event Bus
+//                            _context.events.fire(new NssEvent(
+//                                    NssEvent.NssTime, new NssTime(fixedTimestamp, _timeDiff)));
+                        }
+                    }
 
-                    if (_context.getController().getNetworkController().isSessionEnd())
-                        _context.events.fire(new NssEvent(
-                                NssEvent.NssTime, new NssTime(fixedTimestamp, _timeDiff)));
+                    _beforeDate = _localDate;
                 }
+            };
+            Timer timer = new Timer();
+            timer.schedule(task, 1);
 
-                _beforeDate =_localDate;
-            });
+
             _lastFedTime = _beforeDate;
             _waitHungry();
         }
     }
 
-    stopWatchDog() {
+    public void stopWatchDog() {
         if (_localDateUpdater != null) {
             _localDateUpdater.cancel();
         }

@@ -7,6 +7,7 @@ import api.ContextProvider;
 import coreModel.NssCoreContext;
 import coreModel.SortOrder;
 import coreSubscriber.SortRequest;
+import coreSubscriber.request.ChartRequest;
 import coreSubscriber.request.HttpRequest;
 import coreSubscriber.request.QuoteRequest;
 
@@ -96,22 +97,22 @@ public class RequestController extends ContextProvider {
     }
 
     public ChartRequest createChartRequest(List<String> codes, String period,
-                                    bool tradingDayOnly, int range, bool snapshot) {
+                                           boolean tradingDayOnly, int range, boolean snapshot) {
         int commandId = COMMAND_ADD_BOTH;
         if (snapshot) {
             commandId = COMMAND_ADD_SNAPSHOT;
         }
-        ChartRequest request = ChartRequest(
+        ChartRequest request = new ChartRequest(
                 commandId, codes, period, tradingDayOnly, range);
         request.setNssCoreContext(_context);
 
         return request;
     }
 
-    ChartRequest createRemoveChartRequest(List<String> codes, String period,
-                                          bool tradingDayOnly, int range, bool snapshot) {
+    public ChartRequest createRemoveChartRequest(List<String> codes, String period,
+                                                 boolean tradingDayOnly, int range, boolean snapshot) {
         int commandId = COMMAND_REMOVE;
-        ChartRequest request = ChartRequest(
+        ChartRequest request = new ChartRequest(
                 commandId, codes, period, tradingDayOnly, range);
         request.setNssCoreContext(_context);
 

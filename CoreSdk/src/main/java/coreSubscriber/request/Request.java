@@ -12,7 +12,7 @@ public class Request {
     NssCoreContext _nssCoreContext;
     Subscriber _subscriber;
 
-    public Request(int requestId, int commandId, int sequenceNo) {
+    public Request(Integer requestId, Integer commandId, Integer sequenceNo) {
         this._requestId = requestId;
         this._commandId = commandId;
         this._sequenceNo = sequenceNo;
