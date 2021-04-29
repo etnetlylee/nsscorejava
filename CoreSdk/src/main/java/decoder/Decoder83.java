@@ -12,7 +12,7 @@ import coreStorage.model.AsaStorage;
 import model.StockInfo;
 
 public class Decoder83 extends Decoder {
-    static final String uniqueID = "83";
+    public static final String uniqueID = "83";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

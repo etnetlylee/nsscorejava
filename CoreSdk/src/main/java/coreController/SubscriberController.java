@@ -82,7 +82,7 @@ public class SubscriberController extends ContextProvider {
         return this._context.getStorage().removeSequenceListener(seqNo, subscriber);
     }
 
-    List<Subscriber> getSequenceSubscribers(int seqNo) {
+    public List<Subscriber> getSequenceSubscribers(int seqNo) {
         return this._context.getStorage().getSequenceSubscribers(seqNo);
     }
 

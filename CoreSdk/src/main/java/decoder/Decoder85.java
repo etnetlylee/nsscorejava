@@ -15,7 +15,7 @@ import static constants.AsaConstant.LANG_SC;
 import static constants.AsaConstant.LANG_TC;
 
 public class Decoder85 extends Decoder {
-    static final String uniqueID = "85";
+    public static final String uniqueID = "85";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

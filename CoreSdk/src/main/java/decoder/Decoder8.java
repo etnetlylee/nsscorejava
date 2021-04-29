@@ -20,7 +20,7 @@ import static constants.SecurityType.SECURITYTYPE_STOCK;
 import static constants.SecurityType.SECURITYTYPE_WARRANT;
 
 public class Decoder8 extends Decoder {
-    static final String uniqueID = "8";
+    public static final String uniqueID = "8";
 
     static final String TYPE_ALL = "ALL";
     static final String TYPE_WAR_OTHER = "WAR_OTHER";

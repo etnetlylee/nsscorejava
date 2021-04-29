@@ -178,7 +178,7 @@ public class SecurityCodeHelper {
      *
      * @param code Security code of server side
      */
-    static int getGeneralSecurityID(String code) {
+    public static int getGeneralSecurityID(String code) {
         int t = SecurityCodeHelper.getSecurityID(code);
         int r;
         switch (t) {
@@ -273,7 +273,7 @@ public class SecurityCodeHelper {
      *
      * @param code full code
      */
-    static boolean isAShareCode(String code) {
+    public static boolean isAShareCode(String code) {
         return SecurityCodeHelper.isSHCode(code) ||
                 SecurityCodeHelper.isSZCode(code) ||
                 SecurityCodeHelper.isACode(code);
@@ -314,7 +314,7 @@ public class SecurityCodeHelper {
      *
      * @param code code with dot e.g. SH.601398, HSHS.HSI
      */
-    static String formatSecurityCodeForHttp(String code) {
+    public static String formatSecurityCodeForHttp(String code) {
         final List<String> splitedCode = Arrays.asList(code.split("."));
         String codeForHttp = code;
         if (Pattern.compile("^\\d{1,5}$").matcher(code).matches()) {

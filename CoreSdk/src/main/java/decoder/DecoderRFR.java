@@ -8,7 +8,7 @@ import coreModel.RawData;
 import coreStorage.model.AsaStorage;
 
 public class DecoderRFR extends Decoder {
-    static final String uniqueID = "RFR";
+    public static final String uniqueID = "RFR";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

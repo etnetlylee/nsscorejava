@@ -13,7 +13,7 @@ import util.DataHelper;
 import static constants.SecurityType.SECURITYTYPE_STOCK;
 
 public class Decoder60 extends Decoder {
-    static final String uniqueID = "60";
+    public static final String uniqueID = "60";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

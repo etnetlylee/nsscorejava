@@ -13,7 +13,7 @@ public class AppEvent {
         return this._event;
     }
 
-    Object data() {
+    public Object data() {
         return this._data;
     }
 }

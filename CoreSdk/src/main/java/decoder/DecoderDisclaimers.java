@@ -15,7 +15,7 @@ import model.Disclaimer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DecoderDisclaimers extends Decoder {
-    static final String uniqueID = "disclaimers";
+    public static final String uniqueID = "disclaimers";
 
     final Logger log = Logger.getLogger("DecoderDisclaimers");
 

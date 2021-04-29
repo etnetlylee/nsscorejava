@@ -12,7 +12,7 @@ import coreStorage.model.AsaStorage;
 import static constants.SecurityType.SECURITYTYPE_ETF;
 
 public class Decoder19 extends Decoder {
-    static final String uniqueID = "19";
+    public static final String uniqueID = "19";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

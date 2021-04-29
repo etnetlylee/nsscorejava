@@ -13,7 +13,7 @@ import coreStorage.model.AsaStorage;
 import model.InstrumentInfo;
 
 public class DecoderInstrument extends Decoder {
-    static final String uniqueID = "instrument";
+    public static final String uniqueID = "instrument";
 
     final Logger log = Logger.getLogger("DecoderInstrument");
 

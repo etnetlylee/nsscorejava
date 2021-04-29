@@ -4,6 +4,6 @@ import java.util.List;
 
 import coreModel.QuoteData;
 
-public class OnQuoteDataReceived {
-    public void onQuoteDataReceived(List<QuoteData> bundle){};
+public interface  OnQuoteDataReceived {
+    void onQuoteDataReceived(List<QuoteData> bundle);
 }

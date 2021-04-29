@@ -14,8 +14,8 @@ import model.TradingTimeInfo;
 
 import static constants.AsaConstant.TRADING_TIME_TYPE_FOR_STOCK;
 
-class Decoder18 extends Decoder {
-    static final String uniqueID = "18";
+public class Decoder18 extends Decoder {
+    public static final String uniqueID = "18";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

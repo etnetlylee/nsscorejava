@@ -13,7 +13,7 @@ import coreStorage.model.AsaStorage;
 import model.SearchListItem;
 
 public class DecoderSearchList extends Decoder {
-    static final String uniqueID = "search-list";
+    public static final String uniqueID = "search-list";
     final Logger log = Logger.getLogger("DecoderDisclaimers");
 
     @Override

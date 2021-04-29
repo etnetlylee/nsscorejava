@@ -3,7 +3,6 @@ package coreSubscriber;
 import java.util.List;
 
 import coreModel.NssCoreContext;
-import coreModel.QuoteData;
 import coreSubscriber.listener.UpdateListener;
 import coreSubscriber.request.Request;
 
@@ -34,7 +33,7 @@ public class Subscriber {
         request.unsubscribe(this);
     }
 
-    public void informUpdate(List<QuoteData> data) {
+    public void informUpdate(Object data) {
         _updateListener.onDataUpdated(data);
     }
 

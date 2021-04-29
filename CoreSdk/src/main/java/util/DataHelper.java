@@ -122,8 +122,8 @@ public class DataHelper {
      * @param fieldId        field
      * @param groupTimestamp search key
      */
-    static Transaction getTransaction(List<Transaction> source, String dataName,
-                                      String fieldId, int groupTimestamp) {
+    public static Transaction getTransaction(List<Transaction> source, String dataName,
+                                             String fieldId, int groupTimestamp) {
         Transaction item = null;
         if (source == null) {
             return null;

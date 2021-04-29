@@ -12,7 +12,7 @@ import model.Industry;
 import model.StockInfo;
 
 public class Decoder73 extends Decoder {
-    static final String uniqueID = "73";
+    public static final String uniqueID = "73";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

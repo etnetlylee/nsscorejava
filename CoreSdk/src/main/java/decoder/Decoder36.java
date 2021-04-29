@@ -17,7 +17,7 @@ import static constants.AsaConstant.SCREENLIST_FUTURESPRICEDEPTH;
 import static constants.AsaConstant.SCREENLIST_FUTURESQUOTE;
 
 public class Decoder36 extends Decoder {
-    static final String uniqueID = "36";
+    public static final String uniqueID = "36";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

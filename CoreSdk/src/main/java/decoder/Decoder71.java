@@ -15,7 +15,7 @@ import static constants.AsaConstant.STOCK_EXCHANGE_HKEXSZ;
 import static constants.AsaConstant.STOCK_EXCHANGE_SZSE;
 
 public class Decoder71 extends Decoder {
-    static final String uniqueID = "71";
+    public static final String uniqueID = "71";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

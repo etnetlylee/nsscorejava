@@ -76,7 +76,7 @@ public class Controller extends ContextProvider {
         return _cultureController;
     }
 
-    GroupingController getGroupingController() {
+    public GroupingController getGroupingController() {
         return _groupingController;
     }
 
@@ -88,7 +88,7 @@ public class Controller extends ContextProvider {
     //   return _limitAlarmController;
     // }
 
-    HeartbeatController getHeartbeatController() {
+    public HeartbeatController getHeartbeatController() {
         return _heartbeatController;
     }
 }

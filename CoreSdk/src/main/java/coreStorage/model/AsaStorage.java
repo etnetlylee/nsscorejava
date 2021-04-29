@@ -215,7 +215,7 @@ public class AsaStorage {
     // SearchListItemList
     public Map<String, List<Disclaimer>> DISCLAIMERS = new HashMap<String, List<Disclaimer>>(); // name => Disclaimer list
 
-    void clear() {
+    public void clear() {
         clearArray();
         clearMap();
     }

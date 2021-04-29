@@ -2,7 +2,7 @@ package api;
 
 import coreSubscriber.listener.UpdateListener;
 
-public class CommonSubscriber extends ContextProvider implements DataSubscriber , UpdateListener {
+public class CommonSubscriber extends ContextProvider implements UpdateListener, DataSubscriber {
     @Override
     public void subscribe() {
 

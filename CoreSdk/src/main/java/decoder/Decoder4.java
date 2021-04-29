@@ -15,7 +15,7 @@ import static constants.AsaConstant.STOCK_EXCHANGE_SSE;
 import static constants.AsaConstant.STOCK_EXCHANGE_SZSE;
 
 public class Decoder4 extends Decoder {
-    static final String uniqueID = "4";
+    public static final String uniqueID = "4";
 
     @Override
     public NssData decodeStream(String code, RawData rawData) {

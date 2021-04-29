@@ -1,32 +1,32 @@
 package coreStorage.model;
 
 public class Transaction {
-    int _displayTimestamp;
-    int _groupTimestamp;
-    int _timestamp;
-    double _open;
-    double _high;
-    double _low;
-    double _close;
-    double _nominal;
-    double _volume;
-    double _baseVolume;
+    Integer _displayTimestamp;
+    Integer _groupTimestamp;
+    Integer _timestamp;
+    Double _open;
+    Double _high;
+    Double _low;
+    Double _close;
+    Double _nominal;
+    Double _volume;
+    Double _baseVolume;
     String _tranType;
-    int _transNo;
+    Integer _transNo;
 
     public Transaction(
-            int displayTimestamp,
-            int groupTimestamp,
-            int timestamp,
-            double open,
-            double high,
-            double low,
-            double close,
-            double nominal,
-            double volume,
-            double baseVolume,
+            Integer displayTimestamp,
+            Integer groupTimestamp,
+            Integer timestamp,
+            Double open,
+            Double high,
+            Double low,
+            Double close,
+            Double nominal,
+            Double volume,
+            Double baseVolume,
             String tranType,
-            int transNo) {
+            Integer transNo) {
         this._displayTimestamp = displayTimestamp;
         this._groupTimestamp = groupTimestamp;
         this._timestamp = timestamp;
@@ -41,83 +41,83 @@ public class Transaction {
         this._transNo = transNo;
     }
 
-    public int getDisplayTimestamp() {
+    public Integer getDisplayTimestamp() {
         return this._displayTimestamp;
     }
 
-    public void setDisplayTimestamp(int displayTimestamp) {
+    public void setDisplayTimestamp(Integer displayTimestamp) {
         this._displayTimestamp = displayTimestamp;
     }
 
-    public int getGroupTimestamp() {
+    public Integer getGroupTimestamp() {
         return this._groupTimestamp;
     }
 
-    public void setGroupTimestamp(int groupTimestamp) {
+    public void setGroupTimestamp(Integer groupTimestamp) {
         this._groupTimestamp = groupTimestamp;
     }
 
-    public int getTimestamp() {
+    public Integer getTimestamp() {
         return this._timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(Integer timestamp) {
         this._timestamp = timestamp;
     }
 
-    public double getOpen() {
+    public Double getOpen() {
         return this._open;
     }
 
-    public void setOpen(double open) {
+    public void setOpen(Double open) {
         this._open = open;
     }
 
-    public double getHigh() {
+    public Double getHigh() {
         return this._high;
     }
 
-    public void setHigh(double high) {
+    public void setHigh(Double high) {
         this._high = high;
     }
 
-    public double getLow() {
+    public Double getLow() {
         return this._low;
     }
 
-    public void setLow(double low) {
+    public void setLow(Double low) {
         this._low = low;
     }
 
-    public double getClose() {
+    public Double getClose() {
         return this._close;
     }
 
-    public void setClose(double close) {
+    public void setClose(Double close) {
         this._close = close;
     }
 
-    public double getNominal() {
+    public Double getNominal() {
         return this._nominal;
     }
 
-    public void setNominal(double nominal) {
+    public void setNominal(Double nominal) {
         this._nominal = nominal;
     }
 
-    public double getVolume() {
+    public Double getVolume() {
         return this._volume;
     }
 
-    public void setVolume(double volume) {
+    public void setVolume(Double volume) {
         this._volume = volume;
     }
 
-    public double getBaseVolume() {
+    public Double getBaseVolume() {
         return this._baseVolume;
     }
 
-    public void setBaseVolume(double baseVolume) {
+    public void setBaseVolume(Double baseVolume) {
         this._baseVolume = baseVolume;
     }
 
@@ -129,11 +129,11 @@ public class Transaction {
         this._tranType = tranType;
     }
 
-    public int getTransNo() {
+    public Integer getTransNo() {
         return this._transNo;
     }
 
-    public void setTransNo(int transNo) {
+    public void setTransNo(Integer transNo) {
         this._transNo = transNo;
     }
 }
