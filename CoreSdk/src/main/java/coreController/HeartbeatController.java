@@ -15,6 +15,8 @@ import api.ContextProvider;
 import coreModel.NssCoreContext;
 import events.NssEvent;
 import events.NssTime;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
 public class HeartbeatController extends ContextProvider {
     final Logger log = Logger.getLogger("HeartbeatController");
@@ -39,8 +41,14 @@ public class HeartbeatController extends ContextProvider {
         _timeDiff = serverTime - currentLocalTime;
         _fed = true;
         _waitHungry();
-        // todo : need to discuss EventBus
-//        _context.events.fire(new NssEvent(NssEvent.NssHeartbeat, serverTime));
+        this._context.getObservable().create(new ObservableOnSubscribe<NssEvent>() {
+            @Override
+            public void subscribe(ObservableEmitter<NssEvent> e) throws Exception {
+                e.onNext(new NssEvent(NssEvent.NssHeartbeat, serverTime));
+                e.onComplete();
+            }
+        });
+//        _context.getEvents().getDefault().register(new NssEvent(NssEvent.NssHeartbeat, serverTime));
     }
 
     public void _waitHungry() {
@@ -63,8 +71,14 @@ public class HeartbeatController extends ContextProvider {
                         log.info("The dog is not being fed, hungry for " +
                                 currentTime +
                                 " ms");
-                        // todo : need to discuss EventBus
-//                    _context.events.fire(new NssEvent(NssEvent.NssHeartbeatTimeout, null));
+                        _context.getObservable().create(new ObservableOnSubscribe<NssEvent>() {
+                            @Override
+                            public void subscribe(ObservableEmitter<NssEvent> e) throws Exception {
+                                e.onNext(new NssEvent(NssEvent.NssHeartbeatTimeout, null));
+                                e.onComplete();
+                            }
+                        });
+//                        _context.getEvents().getDefault().register(new NssEvent(NssEvent.NssHeartbeatTimeout, null));
                     }
                     _fed = false;
                 }
@@ -94,8 +108,15 @@ public class HeartbeatController extends ContextProvider {
                         final int fixedTimestamp = _localDate + _timeDiff;
 
                         if (_context.getController().getNetworkController().isSessionEnd()) {
-                            // todo : need to discuss Event Bus
-//                            _context.events.fire(new NssEvent(
+                            _context.getObservable().create(new ObservableOnSubscribe<NssEvent>() {
+                                @Override
+                                public void subscribe(ObservableEmitter<NssEvent> e) throws Exception {
+                                    e.onNext(new NssEvent(
+                                            NssEvent.NssTime, new NssTime(fixedTimestamp, _timeDiff)));
+                                    e.onComplete();
+                                }
+                            });
+//                            _context.getEvents().getDefault().register(new NssEvent(
 //                                    NssEvent.NssTime, new NssTime(fixedTimestamp, _timeDiff)));
                         }
                     }

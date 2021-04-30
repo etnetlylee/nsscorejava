@@ -9,7 +9,7 @@ import coreCommand.QuoteCommand;
 import coreCommand.SortCommand;
 import coreModel.NssCoreContext;
 import coreModel.SortOrder;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 
 public class CommandController extends ContextProvider {
     LoginCommand _loginCommand;
@@ -87,8 +87,8 @@ public class CommandController extends ContextProvider {
     }
 
     public void sendHttpGetRequest(
-            String url, String code, String fieldID, Subscriber subscriber) {
-        _httpCommand.sendHttpGetRequest(url, code, fieldID, subscriber);
+            String url, String code, String fieldID, SubscriberJava subscriberJava) {
+        _httpCommand.sendHttpGetRequest(url, code, fieldID, subscriberJava);
     }
 
     public void setCoreContext(NssCoreContext nssCoreContext) {

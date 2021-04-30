@@ -14,7 +14,7 @@ import coreModel.NssData;
 import coreModel.QuoteData;
 import coreModel.SortData;
 import coreModel.Subscription;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 
 public class Storage extends ContextProvider {
     final Logger log = Logger.getLogger("Storage");
@@ -123,7 +123,7 @@ public class Storage extends ContextProvider {
     }
 
     public void addQuoteListener(
-            String code, String fieldId, Subscriber subscriber, boolean snap) {
+            String code, String fieldId, SubscriberJava subscriberJava, boolean snap) {
         QuoteData quoteData = getQuoteData(code, fieldId);
 
         if (quoteData == null) {
@@ -133,12 +133,12 @@ public class Storage extends ContextProvider {
         // quoteData.subscription
 
         Subscription subscription =
-                new Subscription(snap, subscriber); // every subscription is new?
+                new Subscription(snap, subscriberJava); // every subscription is new?
         assert (quoteData != null);
         quoteData.getSubscription().add(subscription);
     }
 
-    public int removeQuoteListener(String code, String fieldId, Subscriber subscriber) {
+    public int removeQuoteListener(String code, String fieldId, SubscriberJava subscriberJava) {
         QuoteData quoteData = getQuoteData(code, fieldId);
         // abnormal case
         // assert(quoteData != null);
@@ -148,7 +148,7 @@ public class Storage extends ContextProvider {
         }
 
         for (Subscription subscription : quoteData.getSubscription()) {
-            if (subscription.getSubsciber() == subscriber) {
+            if (subscription.getSubsciber() == subscriberJava) {
                 log.info(
                         "remove subscriber viewId=" + subscription.getSubsciber().getViewId());
             }
@@ -184,7 +184,7 @@ public class Storage extends ContextProvider {
     }
 
     public boolean containsQuoteListener(
-            String code, String fieldId, Subscriber subscriber, boolean snap) {
+            String code, String fieldId, SubscriberJava subscriberJava, boolean snap) {
         QuoteData quoteData = getQuoteData(code, fieldId);
         if (quoteData == null) {
             return false;
@@ -192,7 +192,7 @@ public class Storage extends ContextProvider {
         int count = 0;
 
         for (Subscription subscription : quoteData.getSubscription()) {
-            if (subscription.getSubsciber() == subscriber && subscription.isSnapshot() == snap) {
+            if (subscription.getSubsciber() == subscriberJava && subscription.isSnapshot() == snap) {
 
                 count++;
             }
@@ -204,12 +204,12 @@ public class Storage extends ContextProvider {
         }
     }
 
-    public void addSequenceListener(int seqNo, Subscriber subscriber) {
+    public void addSequenceListener(int seqNo, SubscriberJava subscriberJava) {
         assert (_seqNoStore.containsKey(seqNo) == false);
         if (!_seqNoStore.containsKey(seqNo)) {
             if (_seqNoStore.get(seqNo) == null) {
                 SortData sortData = new SortData(seqNo);
-                Subscription subscription = new Subscription(false, subscriber);
+                Subscription subscription = new Subscription(false, subscriberJava);
                 sortData.getSubscription().add(subscription);
                 _seqNoStore.put(seqNo, sortData);
             }
@@ -220,27 +220,27 @@ public class Storage extends ContextProvider {
 
     // addNewsListener
 
-    public Subscriber removeSequenceListener(int seqNo, Subscriber subscriber) {
+    public SubscriberJava removeSequenceListener(int seqNo, SubscriberJava subscriberJava) {
         if (_seqNoStore.containsKey(seqNo)) {
             DataSubscription data = _seqNoStore.get(seqNo);
-            Subscriber removeSubscriber = data.getSubscription().get(0).getSubsciber();
+            SubscriberJava removeSubscriberJava = data.getSubscription().get(0).getSubsciber();
             _seqNoStore.remove(seqNo);
-            return removeSubscriber;
+            return removeSubscriberJava;
         } else {
             return null;
         }
     }
 
-    public List<Subscriber> getSequenceSubscribers(int seqNo) {
-        final List<Subscriber> SubscriberList = new ArrayList<Subscriber>();
+    public List<SubscriberJava> getSequenceSubscribers(int seqNo) {
+        final List<SubscriberJava> subscriberJavaList = new ArrayList<SubscriberJava>();
         if (_seqNoStore.containsKey(seqNo)) {
             final List<Subscription> subscriptions =
                     _seqNoStore.get(seqNo).getSubscription();
             for (Subscription subscription : subscriptions) {
-                SubscriberList.add(subscription.getSubsciber());
+                subscriberJavaList.add(subscription.getSubsciber());
             }
         }
-        return SubscriberList;
+        return subscriberJavaList;
     }
 
     public DataSubscription getSequenceData(int seqNo) {
@@ -269,13 +269,13 @@ public class Storage extends ContextProvider {
     }
 
     public boolean hasChartSubscription(
-            Subscriber subscriber, String code, String paramHash) {
+            SubscriberJava subscriberJava, String code, String paramHash) {
         if (isChartSubscribed(code, paramHash)) {
             QuoteData quoteData = _quoteStore.get(code).get(paramHash);
             int _count = 0;
             for (Subscription subscription : quoteData
                     .getSubscription()) {
-                if (subscription.getSubsciber() == subscriber) {
+                if (subscription.getSubsciber() == subscriberJava) {
                     _count++;
                 }
             }
@@ -293,7 +293,7 @@ public class Storage extends ContextProvider {
     }
 
     public void addChartSubscription(
-            Subscriber subscriber, String code, String paramHash) {
+            SubscriberJava subscriberJava, String code, String paramHash) {
         // _addQuoteListener(code, paramHash, subscriber, false);
         if (!_quoteStore.containsKey(code)) {
             _quoteStore.put(code, new HashMap<String, QuoteData>());
@@ -305,7 +305,7 @@ public class Storage extends ContextProvider {
 
         int subCount = 0;
         for (Subscription v : _quoteStore.get(code).get(paramHash).getSubscription()) {
-            if (v.getSubsciber() == subscriber) {
+            if (v.getSubsciber() == subscriberJava) {
                 subCount++;
             }
         }
@@ -318,20 +318,20 @@ public class Storage extends ContextProvider {
                         code);
             }
         } else {
-            Subscription subscription = new Subscription(false, subscriber);
+            Subscription subscription = new Subscription(false, subscriberJava);
             _quoteStore.get(code).get(paramHash).getSubscription().add(subscription);
         }
     }
 
-    public Subscriber removeChartSubscription(
-            Subscriber subscriber, String code, String paramHash) {
+    public SubscriberJava removeChartSubscription(
+            SubscriberJava subscriberJava, String code, String paramHash) {
         if (_quoteStore.containsKey(code) &&
                 _quoteStore.get(code).containsKey(paramHash)) {
             QuoteData quoteData = _quoteStore.get(code).get(paramHash);
             int i = quoteData.getSubscription().size();
             while (i-- > 0) {
                 Subscription subscription = quoteData.getSubscription().get(i);
-                if (subscription.getSubsciber() == subscriber) {
+                if (subscription.getSubsciber() == subscriberJava) {
                     quoteData.getSubscription().remove(i);
                 }
             }
@@ -352,7 +352,7 @@ public class Storage extends ContextProvider {
             }
         }
 
-        return subscriber;
+        return subscriberJava;
     }
 
     public List<Subscription> getChartSubscription(String code, String paramHash) {
@@ -372,7 +372,7 @@ public class Storage extends ContextProvider {
         // TODO
     }
 
-    public void informNewsUpdate(Subscriber listener) {
+    public void informNewsUpdate(SubscriberJava listener) {
         // TODO
     }
 

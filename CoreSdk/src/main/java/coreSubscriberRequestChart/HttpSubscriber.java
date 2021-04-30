@@ -7,13 +7,13 @@ import api.CommonSubscriber;
 import api.OnQuoteDataReceived;
 import coreModel.NssCoreContext;
 import coreModel.QuoteData;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 import coreSubscriber.request.HttpRequest;
 
 public class HttpSubscriber extends CommonSubscriber {
     NssCoreContext _nssCoreContext;
 
-    Subscriber _subscriber;
+    SubscriberJava _subscriberJava;
     String _code;
     String _fieldID;
     String _apiType;
@@ -23,7 +23,7 @@ public class HttpSubscriber extends CommonSubscriber {
     OnQuoteDataReceived _onQuoteDataReceived;
 
     public HttpSubscriber(String name) {
-        _subscriber = new Subscriber(name, this);
+        _subscriberJava = new SubscriberJava(name, this);
     }
 
     public NssCoreContext getContext() {
@@ -33,7 +33,7 @@ public class HttpSubscriber extends CommonSubscriber {
     @Override
     public void setContext(NssCoreContext context) {
         this._nssCoreContext = context;
-        this._subscriber.setNssCoreContext(context);
+        this._subscriberJava.setNssCoreContext(context);
     }
 
     public void setEndPoint(String endPoint) {
@@ -61,7 +61,7 @@ public class HttpSubscriber extends CommonSubscriber {
         HttpRequest httpRequest =
                 new HttpRequest(_endPoint, _code, _fieldID, _params);
         httpRequest.setNssCoreContext(_nssCoreContext);
-        this._subscriber.subscribe(httpRequest);
+        this._subscriberJava.subscribe(httpRequest);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class HttpSubscriber extends CommonSubscriber {
         HttpRequest httpRequest =
                 new HttpRequest(_endPoint, _code, _fieldID, _params);
         httpRequest.setNssCoreContext(_nssCoreContext);
-        this._subscriber.unsubscribe(httpRequest);
+        this._subscriberJava.unsubscribe(httpRequest);
     }
 
     @Override

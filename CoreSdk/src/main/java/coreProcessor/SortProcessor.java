@@ -12,7 +12,7 @@ import coreModel.Processor;
 import coreModel.SortChanged;
 import coreModel.SortCodes;
 import coreModel.SortData;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 
 public class SortProcessor extends Processor {
     public static final String id = "sort";
@@ -81,14 +81,14 @@ public class SortProcessor extends Processor {
 
     @Override
     public void notify(NssPacket nssPacket, Object sortData) {
-        List<Subscriber> subscribers = _context
+        List<SubscriberJava> subscriberJavas = _context
                 .getController()
                 .getSubscriberController()
                 .getSequenceSubscribers(nssPacket.getSeqNo());
         if (sortData != null) {
-            if (subscribers != null) {
-                for (Subscriber subscriber : subscribers){
-                    subscriber.informUpdate(sortData);
+            if (subscriberJavas != null) {
+                for (SubscriberJava subscriberJava : subscriberJavas){
+                    subscriberJava.informUpdate(sortData);
                 }
             } else {
                 log.info("no subscriber(s) found");

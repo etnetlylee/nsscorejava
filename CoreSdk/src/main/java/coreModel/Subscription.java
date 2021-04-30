@@ -1,18 +1,18 @@
 package coreModel;
 
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 
 public class Subscription {
     boolean _isSnapshot;
-    Subscriber _subscriber;
+    SubscriberJava _subscriberJava;
 
-    public Subscription(boolean isSnapshot, Subscriber subscriber) {
+    public Subscription(boolean isSnapshot, SubscriberJava subscriberJava) {
         this._isSnapshot = isSnapshot;
-        this._subscriber = subscriber;
+        this._subscriberJava = subscriberJava;
     }
 
-    public Subscriber getSubsciber() {
-        return this._subscriber;
+    public SubscriberJava getSubsciber() {
+        return this._subscriberJava;
     }
 
     public boolean isSnapshot() {

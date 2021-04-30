@@ -18,11 +18,15 @@ import coreModel.Decoder;
 import coreModel.NssCoreContext;
 import coreModel.QuoteData;
 import coreModel.RawData;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 import coreSubscriber.listener.UpdateListener;
 import coreSubscriber.request.HttpRequest;
 import coreSubscriber.request.QuoteRequest;
 import events.AsaProgressStatus;
+import events.NssEvent;
+import events.NssTime;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
 import static constants.AsaConstant.RESOURCE_DISCLAIMERS;
 import static constants.AsaConstant.RESOURCE_INSTRUMENT_NAME;
@@ -31,7 +35,7 @@ import static constants.AsaConstant.RESOURCE_SEARCH_LIST;
 public class AsaInitiator extends ContextProvider implements UpdateListener {
     final Logger log = Logger.getLogger("AsaInitiator");
     NssCoreContext _context;
-    Subscriber _subscriber;
+    SubscriberJava _subscriberJava;
     AsaConfigInfo _asaConfig;
     Map<String, Decoder> _decoderPool = new HashMap<String, Decoder>();
     Map<String, List<String>> _codeList = new HashMap<String, List<String>>(); // name => array
@@ -70,7 +74,7 @@ public class AsaInitiator extends ContextProvider implements UpdateListener {
         if (Environment.isDebug()) {
             log.info("initDecoders: ${_codeList}");
         }
-        _subscriber = new Subscriber("asa-initiator", this);
+        _subscriberJava = new SubscriberJava("asa-initiator", this);
     }
 
     public boolean anyAsaData() {
@@ -118,7 +122,7 @@ public class AsaInitiator extends ContextProvider implements UpdateListener {
                             .getRequestController()
                             .createHttpRequest(endPoint, code, field, new HashMap<String, String>());
                     _totalDataCount++;
-                    _subscriber.subscribe(jsonHR);
+                    _subscriberJava.subscribe(jsonHR);
                 } else {
                     if (_streamCodeList.contains(code)) {
                         log.info("load from nss stream");
@@ -127,7 +131,7 @@ public class AsaInitiator extends ContextProvider implements UpdateListener {
                                 .getRequestController()
                                 .createStreamQuoteRequest(Arrays.asList(code), Arrays.asList(field));
                         _totalDataCount++;
-                        _subscriber.subscribe(streamQR);
+                        _subscriberJava.subscribe(streamQR);
                     } else {
                         if (_freshLoad == true) {
                             log.info("load from nss snapshot");
@@ -136,7 +140,7 @@ public class AsaInitiator extends ContextProvider implements UpdateListener {
                                     .getRequestController()
                                     .createSnapshotQuoteRequest(Arrays.asList(code), Arrays.asList(field));
                             _totalDataCount++;
-                            _subscriber.subscribe(snapQR);
+                            _subscriberJava.subscribe(snapQR);
                         } else {
                             // keep using cache
                             _totalDataCount++;
@@ -150,8 +154,14 @@ public class AsaInitiator extends ContextProvider implements UpdateListener {
 
         if (_cachedDataCount == _totalDataCount) {
             log.info("no asa will be subscribed again, asa loaded");
-            // todo: related to event bus
-//            _context.events.fire(new NssEvent(NssEvent.NssAsaLoad, _lastLoadTime));
+            _context.getObservable().create(new ObservableOnSubscribe<NssEvent>() {
+                @Override
+                public void subscribe(ObservableEmitter<NssEvent> e) throws Exception {
+                    e.onNext(new NssEvent(NssEvent.NssAsaLoad, _lastLoadTime));
+                    e.onComplete();
+                }
+            });
+//            _context.getEvents().getDefault().register(new NssEvent(NssEvent.NssAsaLoad, _lastLoadTime));
         }
     }
 
@@ -182,8 +192,14 @@ public class AsaInitiator extends ContextProvider implements UpdateListener {
             //     () => {
             final AsaProgressStatus progress =
             new AsaProgressStatus(code, finishedTasks, totalDataTask, percent);
-            // todo : related to event bus
-//            _context.events.fire(new NssEvent(NssEvent.NssAsaProgress, progress));
+            _context.getObservable().create(new ObservableOnSubscribe<NssEvent>() {
+                @Override
+                public void subscribe(ObservableEmitter<NssEvent> e) throws Exception {
+                    e.onNext(new NssEvent(NssEvent.NssAsaProgress, progress));
+                    e.onComplete();
+                }
+            });
+//            _context.getEvents().getDefault().register(new NssEvent(NssEvent.NssAsaProgress, progress));
             int benchEndTime = (int) Calendar.getInstance().getTimeInMillis();
             int timeUsed = benchEndTime - benchStartTime;
             log.info("progress code:" +
@@ -203,8 +219,14 @@ public class AsaInitiator extends ContextProvider implements UpdateListener {
                 _freshLoad =
                         false; // will not load snap quote anymore within this session
                 _lastLoadTime = (int) Calendar.getInstance().getTimeInMillis();
-                // todo : related to event bus
-//                _context.events.fire(new NssEvent(NssEvent.NssAsaLoad, _lastLoadTime));
+                _context.getObservable().create(new ObservableOnSubscribe<NssEvent>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<NssEvent> e) throws Exception {
+                        e.onNext(new NssEvent(NssEvent.NssAsaLoad, _lastLoadTime));
+                        e.onComplete();
+                    }
+                });
+//                _context.getEvents().getDefault().register(new NssEvent(NssEvent.NssAsaLoad, _lastLoadTime));
             }
         }
     }
@@ -251,7 +273,7 @@ public class AsaInitiator extends ContextProvider implements UpdateListener {
                             .getController()
                             .getRequestController()
                             .createRemoveQuoteRequest(Arrays.asList(code), Arrays.asList(field));
-                    _subscriber.unsubscribe(streamQR);
+                    _subscriberJava.unsubscribe(streamQR);
                 }
             }
         }

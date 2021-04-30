@@ -10,7 +10,7 @@ import coreModel.NssCoreContext;
 import coreModel.NssData;
 import coreModel.QuoteData;
 import coreModel.RawData;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 import okhttp3.Response;
 import util.DecodeHelper;
 
@@ -19,7 +19,7 @@ public class HttpCommand extends ContextProvider {
     NssCoreContext _context;
 
     public void sendHttpGetRequest(
-            String url, String code, String fieldID, Subscriber subscriber) {
+            String url, String code, String fieldID, SubscriberJava subscriberJava) {
         Response result = _context
                 .getController()
                 .getNetworkController()
@@ -41,10 +41,10 @@ public class HttpCommand extends ContextProvider {
                 nssData.setSnapshot(true);
                 nssData.setReady(true);
                 List<QuoteData> _tempList = Arrays.asList(quoteData);
-                subscriber.informUpdate(_tempList);
+                subscriberJava.informUpdate(_tempList);
             } else {
                 log.info("status code != 200 (" + String.valueOf(result.code()) + ")");
-                subscriber.informUpdate(new ArrayList<QuoteData>());
+                subscriberJava.informUpdate(new ArrayList<QuoteData>());
             }
     }
 

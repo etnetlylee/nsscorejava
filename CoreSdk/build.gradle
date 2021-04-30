@@ -42,7 +42,12 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'com.opencsv:opencsv:4.6'
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation group: 'org.reactivestreams', name: 'reactive-streams', version: '1.0.3'
+//    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

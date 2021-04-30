@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 
 public class HttpRequest extends Request {
     final Logger log = Logger.getLogger("HttpRequest");
@@ -36,7 +36,7 @@ public class HttpRequest extends Request {
     }
 
     @Override
-    public void subscribe(Subscriber subscriber) {
+    public void subscribe(SubscriberJava subscriberJava) {
         log.info("always create new http request, even using the same params");
         String apiUrl = getNssCoreContext().getConfig().getServer().getWeb() + _endPoint;
         String urlParam = "?";
@@ -56,11 +56,11 @@ public class HttpRequest extends Request {
                 .getController()
                 .getCommandController()
                 .sendHttpGetRequest(
-                        apiUrl + urlParam, this.getCode(), this.getFieldID(), subscriber);
+                        apiUrl + urlParam, this.getCode(), this.getFieldID(), subscriberJava);
     }
 
     @Override
-    public void unsubscribe(Subscriber subscriber) {
+    public void unsubscribe(SubscriberJava subscriberJava) {
         log.info("http request do not need to unsubscribe");
     }
 }

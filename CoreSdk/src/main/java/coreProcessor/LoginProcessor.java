@@ -7,6 +7,8 @@ import coreModel.NssCoreContext;
 import coreModel.NssPacket;
 import coreModel.Processor;
 import events.UserEvent;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
 public class LoginProcessor extends Processor {
     public static final String id = "login";
@@ -60,7 +62,13 @@ public class LoginProcessor extends Processor {
             _context.getController().getNetworkController().detachConnection();
             _context.getController().getNetworkController().onDisConnected(1000, "duplicated login");
         }
-        // todo : related to event bus
-//        _context.events.fire(data);
+        this._context.getObservable().create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                e.onNext(data);
+                e.onComplete();
+            }
+        });
+//        _context.getEvents().getDefault().register(data);
     }
 }

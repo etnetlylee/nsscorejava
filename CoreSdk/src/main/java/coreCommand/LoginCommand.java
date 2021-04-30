@@ -11,6 +11,9 @@ import api.ContextProvider;
 import coreInterfaceLogin.LoginResponse;
 import coreModel.NssCoreContext;
 import events.UserEvent;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import okhttp3.Response;
 import util.CommandBuilder;
 
@@ -44,9 +47,16 @@ public class LoginCommand extends ContextProvider {
     }
 
     public void sendIntegratedLoginCommand(String username, String token, Object result) {
-        // todo ： need to discuss involved EventBus
 //        result.username = username;
-//        this._context.events.fire(new UserEvent(UserEvent.HttpLoginSuccess, result));
+
+//        this._context.getEvents().getDefault().register(new UserEvent(UserEvent.HttpLoginSuccess, result));
+        this._context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
+            @Override
+            public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
+                e.onNext(new UserEvent(UserEvent.HttpLoginSuccess, result));
+                e.onComplete();
+            }
+        });
     }
 
     public void sendHttpLoginCommand(String username, String password, boolean encrypted) throws Exception {

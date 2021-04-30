@@ -6,7 +6,7 @@ import coreModel.NssCoreContext;
 import coreSubscriber.listener.UpdateListener;
 import coreSubscriber.request.Request;
 
-public class Subscriber {
+public class SubscriberJava {
     String _viewId;
     NssCoreContext _nssCoreContext;
     UpdateListener _updateListener;
@@ -14,7 +14,7 @@ public class Subscriber {
     List<String> _fields;
     boolean _internal;
 
-    public Subscriber(String viewId, UpdateListener updateListener) {
+    public SubscriberJava(String viewId, UpdateListener updateListener) {
         _viewId = viewId;
         _updateListener = updateListener;
     }

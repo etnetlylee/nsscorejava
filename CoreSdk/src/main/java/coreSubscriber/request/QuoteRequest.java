@@ -2,7 +2,6 @@ package coreSubscriber.request;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import coreController.CommandController;
 import coreModel.DecoderInfo;
 import coreModel.NssData;
 import coreModel.QuoteData;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 import util.DecodeHelper;
 
 import static constants.Command.COMMAND_ADD_BOTH;
@@ -68,7 +67,7 @@ public class QuoteRequest extends Request {
     }
 
     @Override
-    public void subscribe(Subscriber subscriber) {
+    public void subscribe(SubscriberJava subscriberJava) {
         // server scope code-field checking
         List<String> willSubscribeCodes = new ArrayList<String>();
         // List<String> willSubscribeFields = _fields;
@@ -86,7 +85,7 @@ public class QuoteRequest extends Request {
                 boolean isSubscribed = getSubscriberController().hasQuoteData(code, field);
                 // add it immediately
                 getSubscriberController()
-                        .addQuoteSubscriber(code, field, subscriber, snap);
+                        .addQuoteSubscriber(code, field, subscriberJava, snap);
                 if (isSubscribed) {
                     // from cache?
                     NssData nssData =
@@ -178,7 +177,7 @@ public class QuoteRequest extends Request {
                     // }
                 }
             }
-            subscriber.informUpdate(data);
+            subscriberJava.informUpdate(data);
             // getSubscriberController().fetchQuoteDataFromCache(subscriber, code, fieldIds, snap);
         }
 
@@ -229,7 +228,7 @@ public class QuoteRequest extends Request {
     }
 
     @Override
-    public void unsubscribe(Subscriber subscriber) {
+    public void unsubscribe(SubscriberJava subscriberJava) {
         List<String> willUnsubscribeCodes = new ArrayList<String>();
         Map<String, List<String>> willSeperateUnsubscribe = new HashMap<String, List<String>>();
         final Map<String, DecoderInfo> decoderConfig =
@@ -241,7 +240,7 @@ public class QuoteRequest extends Request {
             for (String fieldId : _fields) {
                 // remove struct
                 int count = getSubscriberController()
-                        .removeQuoteSubscriber(code, fieldId, subscriber);
+                        .removeQuoteSubscriber(code, fieldId, subscriberJava);
                 if (count == -1) {
                     // skip snapshot?
                 } else if (count == 0) {

@@ -1,7 +1,6 @@
 package coreSubscriber;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -10,14 +9,13 @@ import api.OnQuoteDataReceived;
 import coreEnvironment.Environment;
 import coreModel.NssCoreContext;
 import coreModel.QuoteData;
-import coreStorage.model.Transaction;
 import coreSubscriber.request.QuoteRequest;
 
 public class QuoteSubscriber extends CommonSubscriber {
     final Logger log = Logger.getLogger("QuoteScriber");
     NssCoreContext _nssCoreContext;
 
-    Subscriber _subscriber;
+    SubscriberJava _subscriberJava;
     boolean _isSnapshot = false;
     boolean _isBroadcast = false;
 
@@ -30,7 +28,7 @@ public class QuoteSubscriber extends CommonSubscriber {
     OnQuoteDataReceived _onQuoteDataReceived;
 
     public QuoteSubscriber(String name) {
-        this._subscriber = new Subscriber(name, this);
+        this._subscriberJava = new SubscriberJava(name, this);
     }
 
     public NssCoreContext getContext() {
@@ -40,7 +38,7 @@ public class QuoteSubscriber extends CommonSubscriber {
     @Override
     public void setContext(NssCoreContext context) {
         this._nssCoreContext = context;
-        this._subscriber.setNssCoreContext(context);
+        this._subscriberJava.setNssCoreContext(context);
     }
 
     public List<String> currentCodes() {
@@ -63,8 +61,8 @@ public class QuoteSubscriber extends CommonSubscriber {
         this._onQuoteDataReceived = onQuoteDataReceived;
     }
 
-    public Subscriber getSubscriber() {
-        return this._subscriber;
+    public SubscriberJava getSubscriber() {
+        return this._subscriberJava;
     }
 
     public QuoteSubscriber clear() {
@@ -182,20 +180,20 @@ public class QuoteSubscriber extends CommonSubscriber {
                         .getController()
                         .getRequestController()
                         .createSnapshotQuoteRequest(willAddCodes, willAddFields);
-                _subscriber.subscribe(snapQuoteRequest);
+                _subscriberJava.subscribe(snapQuoteRequest);
             } else {
                 if (isBroadcast) {
                     final QuoteRequest streamQuoteRequest = _nssCoreContext
                             .getController()
                             .getRequestController()
                             .createBroadcastQuoteRequest(willAddCodes, willAddFields);
-                    _subscriber.subscribe(streamQuoteRequest);
+                    _subscriberJava.subscribe(streamQuoteRequest);
                 } else {
                     final QuoteRequest streamQuoteRequest = _nssCoreContext
                             .getController()
                             .getRequestController()
                             .createStreamQuoteRequest(willAddCodes, willAddFields);
-                    _subscriber.subscribe(streamQuoteRequest);
+                    _subscriberJava.subscribe(streamQuoteRequest);
                 }
             }
         }
@@ -208,7 +206,7 @@ public class QuoteSubscriber extends CommonSubscriber {
                     .getController()
                     .getRequestController()
                     .createRemoveQuoteRequest(willRemoveCodes, willRemoveFields);
-            _subscriber.unsubscribe(quoteRequest);
+            _subscriberJava.unsubscribe(quoteRequest);
         }
     }
 
@@ -325,7 +323,7 @@ public class QuoteSubscriber extends CommonSubscriber {
                             " = " +
                             quoteRequest.getSerializedField());
                 }
-                _subscriber.unsubscribe(quoteRequest);
+                _subscriberJava.unsubscribe(quoteRequest);
             } else {
                 log.info("unsubscribe nothing as codes and fields are empty");
             }

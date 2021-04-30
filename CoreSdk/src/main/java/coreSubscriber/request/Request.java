@@ -2,7 +2,7 @@ package coreSubscriber.request;
 
 import coreController.SubscriberController;
 import coreModel.NssCoreContext;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 
 public class Request {
     int _requestId;
@@ -10,7 +10,7 @@ public class Request {
     int _sequenceNo;
 
     NssCoreContext _nssCoreContext;
-    Subscriber _subscriber;
+    SubscriberJava _subscriberJava;
 
     public Request(Integer requestId, Integer commandId, Integer sequenceNo) {
         this._requestId = requestId;
@@ -42,17 +42,17 @@ public class Request {
         this._sequenceNo = sequenceNo;
     }
 
-    public Subscriber getSubscriber() {
-        return this._subscriber;
+    public SubscriberJava getSubscriber() {
+        return this._subscriberJava;
     }
 
-    public void setSubscriber(Subscriber subscriber) {
-        this._subscriber = subscriber;
+    public void setSubscriber(SubscriberJava subscriberJava) {
+        this._subscriberJava = subscriberJava;
     }
 
-    public void subscribe(Subscriber subscriber){};
+    public void subscribe(SubscriberJava subscriberJava){};
 
-    public void unsubscribe(Subscriber subscriber){};
+    public void unsubscribe(SubscriberJava subscriberJava){};
 
     public SubscriberController getSubscriberController() {
         return this._nssCoreContext.getController().getSubscriberController();

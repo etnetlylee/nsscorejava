@@ -9,7 +9,7 @@ import constants.Command;
 import coreController.SubscriberController;
 import coreEnvironment.Environment;
 import coreModel.QuoteData;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 import util.ChartHelper;
 
 public class ChartRequest extends Request {
@@ -37,28 +37,28 @@ public class ChartRequest extends Request {
     }
 
     @Override
-    public void subscribe(Subscriber subscriber) {
+    public void subscribe(SubscriberJava subscriberJava) {
         SubscriberController subscriberController =
                 getNssCoreContext().getController().getSubscriberController();
         for (String code : _codes){
             String paramHash = ChartHelper.makeClientFieldID(
                     _period, _tradingDayOnly, _range, _snapshot);
             if (subscriberController.isChartSubscribed(code, paramHash)) {
-                subscriberController.addChartSubscription(subscriber, code, paramHash);
+                subscriberController.addChartSubscription(subscriberJava, code, paramHash);
                 QuoteData chartData =
                         getNssCoreContext().getStorage().getQuoteData(code, paramHash);
                 if (chartData.getNssData().getReady()) {
                     if (Environment.isDebug()) {
                         log.info("chart data is ready, notify the subscriber");
                     }
-                    subscriber.informUpdate(Arrays.asList(chartData));
+                    subscriberJava.informUpdate(Arrays.asList(chartData));
                 } else {
                     if (Environment.isDebug()) {
                         log.info("chart data is not ready yet, wait *-chart-subscriber");
                     }
                 }
             } else {
-                subscriberController.addChartSubscription(subscriber, code, paramHash);
+                subscriberController.addChartSubscription(subscriberJava, code, paramHash);
                 // we need to create new subscription as there are no same params subscriber in existing map
                 if (_onDataSubscription != null) {
                     _onDataSubscription.onAddSubscription(
@@ -69,13 +69,13 @@ public class ChartRequest extends Request {
     }
 
     @Override
-    public void unsubscribe(Subscriber subscriber) {
+    public void unsubscribe(SubscriberJava subscriberJava) {
         SubscriberController subscriberController =
                 getNssCoreContext().getController().getSubscriberController();
         String paramHash = ChartHelper.makeClientFieldID(
                 _period, _tradingDayOnly, _range, _snapshot);
         for (String code : _codes){
-            subscriberController.removeChartSubscription(subscriber, code, paramHash);
+            subscriberController.removeChartSubscription(subscriberJava, code, paramHash);
 
             if (subscriberController.getChartSubscription(code, paramHash).size() ==
                     0) {

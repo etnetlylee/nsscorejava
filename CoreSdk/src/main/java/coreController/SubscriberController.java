@@ -10,7 +10,7 @@ import coreModel.NssCoreContext;
 import coreModel.NssData;
 import coreModel.QuoteData;
 import coreModel.Subscription;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 import coreSubscriberRequestChart.GenericChartSubscriber;
 
 public class SubscriberController extends ContextProvider {
@@ -30,10 +30,10 @@ public class SubscriberController extends ContextProvider {
     }
 
     boolean containsQuoteSubscriber(
-            String code, String fieldId, Subscriber subscriber, boolean snap) {
+            String code, String fieldId, SubscriberJava subscriberJava, boolean snap) {
         return this._context
                 .getStorage()
-                .containsQuoteListener(code, fieldId, subscriber, snap);
+                .containsQuoteListener(code, fieldId, subscriberJava, snap);
     }
 
     public QuoteData createQuoteData(String code, String fieldId) {
@@ -65,29 +65,29 @@ public class SubscriberController extends ContextProvider {
     }
 
     public void addQuoteSubscriber(
-            String code, String fieldId, Subscriber subscriber, boolean snap) {
-        this._context.getStorage().addQuoteListener(code, fieldId, subscriber, snap);
+            String code, String fieldId, SubscriberJava subscriberJava, boolean snap) {
+        this._context.getStorage().addQuoteListener(code, fieldId, subscriberJava, snap);
     }
 
     public int removeQuoteSubscriber(
-            String code, String fieldId, Subscriber subscriber) {
-        return this._context.getStorage().removeQuoteListener(code, fieldId, subscriber);
+            String code, String fieldId, SubscriberJava subscriberJava) {
+        return this._context.getStorage().removeQuoteListener(code, fieldId, subscriberJava);
     }
 
-    public void addSortSubscriber(int seqNo, Subscriber subscriber) {
-        this._context.getStorage().addSequenceListener(seqNo, subscriber);
+    public void addSortSubscriber(int seqNo, SubscriberJava subscriberJava) {
+        this._context.getStorage().addSequenceListener(seqNo, subscriberJava);
     }
 
-    public Subscriber removeSortSubscriber(int seqNo, Subscriber subscriber) {
-        return this._context.getStorage().removeSequenceListener(seqNo, subscriber);
+    public SubscriberJava removeSortSubscriber(int seqNo, SubscriberJava subscriberJava) {
+        return this._context.getStorage().removeSequenceListener(seqNo, subscriberJava);
     }
 
-    public List<Subscriber> getSequenceSubscribers(int seqNo) {
+    public List<SubscriberJava> getSequenceSubscribers(int seqNo) {
         return this._context.getStorage().getSequenceSubscribers(seqNo);
     }
 
-    public void addChartSubscription(Subscriber subscriber, String code, String paramHash) {
-        this._context.getStorage().addChartSubscription(subscriber, code, paramHash);
+    public void addChartSubscription(SubscriberJava subscriberJava, String code, String paramHash) {
+        this._context.getStorage().addChartSubscription(subscriberJava, code, paramHash);
     }
 
     public boolean isChartSubscribed(String code, String paramHash) {
@@ -95,17 +95,17 @@ public class SubscriberController extends ContextProvider {
     }
 
     public boolean hasChartSubscription(
-            Subscriber subscriber, String code, String paramHash) {
+            SubscriberJava subscriberJava, String code, String paramHash) {
         return this._context
                 .getStorage()
-                .hasChartSubscription(subscriber, code, paramHash);
+                .hasChartSubscription(subscriberJava, code, paramHash);
     }
 
-    public Subscriber removeChartSubscription(
-            Subscriber subscriber, String code, String paramHash) {
+    public SubscriberJava removeChartSubscription(
+            SubscriberJava subscriberJava, String code, String paramHash) {
         return this._context
                 .getStorage()
-                .removeChartSubscription(subscriber, code, paramHash);
+                .removeChartSubscription(subscriberJava, code, paramHash);
     }
 
     public List<Subscription> getChartSubscription(String code, String paramHash) {

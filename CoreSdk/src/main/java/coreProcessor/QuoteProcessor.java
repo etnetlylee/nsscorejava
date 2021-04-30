@@ -16,7 +16,7 @@ import coreModel.Processor;
 import coreModel.QuoteData;
 import coreModel.RawData;
 import coreModel.Subscription;
-import coreSubscriber.Subscriber;
+import coreSubscriber.SubscriberJava;
 import util.SecurityCodeHelper;
 
 public class QuoteProcessor extends Processor {
@@ -75,7 +75,7 @@ public class QuoteProcessor extends Processor {
 
     @Override
     public void notify(NssPacket nssPacket, Object data) {
-        Map<Subscriber, List<QuoteData>> subscriberUpdateList = new HashMap<Subscriber, List<QuoteData>>();
+        Map<SubscriberJava, List<QuoteData>> subscriberUpdateList = new HashMap<SubscriberJava, List<QuoteData>>();
         Map<String, Map<String, String>> instrumentMap = (Map<String, Map<String, String>>) data;
         Map<String, Map<String, DecoderInfo>> reversedConfig =
                 _context.getDecoderConfig().getReversedConfig();
@@ -121,18 +121,18 @@ public class QuoteProcessor extends Processor {
                         if (quoteData != null && quoteData.getNssData().getReady()) {
                             List<Subscription> subscriptionList = quoteData.getSubscription();
                             for (Subscription subscription : subscriptionList) {
-                                Subscriber subscriber = subscription.getSubsciber();
-                                if (subscriberUpdateList.containsKey(subscriber)) {
-                                    if (!subscriberUpdateList.get(subscriber).contains(quoteData)) {
-                                        subscriberUpdateList.get(subscriber).add(quoteData);
+                                SubscriberJava subscriberJava = subscription.getSubsciber();
+                                if (subscriberUpdateList.containsKey(subscriberJava)) {
+                                    if (!subscriberUpdateList.get(subscriberJava).contains(quoteData)) {
+                                        subscriberUpdateList.get(subscriberJava).add(quoteData);
                                     }
                                 } else {
-                                    subscriberUpdateList.put(subscriber, Arrays.asList(quoteData));
+                                    subscriberUpdateList.put(subscriberJava, Arrays.asList(quoteData));
                                 }
                                 if (subscription.isSnapshot()) {
                                     _context.getStorage()
                                             .removeQuoteListener(normalizedCode, nssData.getFieldID(),
-                                                    subscriber);
+                                                    subscriberJava);
                                 }
                             }
                         }
@@ -142,10 +142,10 @@ public class QuoteProcessor extends Processor {
             }
         }
 
-        for (Map.Entry<Subscriber, List<QuoteData>> entry4 : subscriberUpdateList.entrySet()) {
-            Subscriber subscriber = entry4.getKey();
+        for (Map.Entry<SubscriberJava, List<QuoteData>> entry4 : subscriberUpdateList.entrySet()) {
+            SubscriberJava subscriberJava = entry4.getKey();
             List<QuoteData> data4 = entry4.getValue();
-            subscriber.informUpdate(data4);
+            subscriberJava.informUpdate(data4);
         }
     }
 }

@@ -73,7 +73,7 @@ public class SortRequest extends Request {
     }
 
     @Override
-    public void subscribe(Subscriber subscriber) {
+    public void subscribe(SubscriberJava subscriberJava) {
         this._seqNo = getNssCoreContext()
                 .getController()
                 .getCommandController()
@@ -89,13 +89,13 @@ public class SortRequest extends Request {
                         _sortOrder,
                         _filters);
         setSequenceNo(_seqNo);
-        getSubscriberController().addSortSubscriber(_seqNo, subscriber);
+        getSubscriberController().addSortSubscriber(_seqNo, subscriberJava);
     }
 
     @Override
-    public void unsubscribe(Subscriber subscriber) {
+    public void unsubscribe(SubscriberJava subscriberJava) {
         if (getSequenceNo() != -1) {
-            getSubscriberController().removeSortSubscriber(_seqNo, subscriber);
+            getSubscriberController().removeSortSubscriber(_seqNo, subscriberJava);
             getNssCoreContext()
                     .getController()
                     .getCommandController()

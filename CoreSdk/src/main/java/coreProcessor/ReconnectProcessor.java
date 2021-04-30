@@ -7,6 +7,8 @@ import coreModel.NssCoreContext;
 import coreModel.NssPacket;
 import coreModel.Processor;
 import events.NssEvent;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
 public class ReconnectProcessor extends Processor {
     public static final String id = "reconnect";
@@ -35,8 +37,14 @@ public class ReconnectProcessor extends Processor {
     public void notify(NssPacket nssPacket, Object data) {
         boolean _tempData = (boolean) data;
         if (_tempData) {
-            // todo : related to event bus
-//            _context.events.fire(data);
+            this._context.getObservable().create(new ObservableOnSubscribe<Object>() {
+                @Override
+                public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                    e.onNext(data);
+                    e.onComplete();
+                }
+            });
+//            _context.getEvents().getDefault().register(data);
         }
     }
 }

@@ -35,7 +35,7 @@ public class ChartSubscriber extends CommonSubscriber
 
     NssCoreContext _context;
     String _name;
-    Subscriber _subscriber;
+    SubscriberJava _subscriberJava;
     Map<String, SubscriptionParam> _subscriptionParamMap = new HashMap<String, SubscriptionParam>();
     boolean _snapshot;
     List<String> _codes;
@@ -53,7 +53,7 @@ public class ChartSubscriber extends CommonSubscriber
         _range = 0; // unlimit
         _snapshot = false;
         _tradingDayOnly = false;
-        _subscriber = new Subscriber("ChartSubscriber@" + name, this);
+        _subscriberJava = new SubscriberJava("ChartSubscriber@" + name, this);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class ChartSubscriber extends CommonSubscriber
                 }
 
                 chartRequest.setOnDataSubscription(this);
-                _subscriber.subscribe(chartRequest);
+                _subscriberJava.subscribe(chartRequest);
                 _subscriptionParamMap.put(code, new SubscriptionParam(
                         code,
                         _period,
@@ -204,7 +204,7 @@ public class ChartSubscriber extends CommonSubscriber
                                     sp.getSnapshot());
 
                     chartRequest.setOnDataSubscription(this);
-                    _subscriber.unsubscribe(chartRequest);
+                    _subscriberJava.unsubscribe(chartRequest);
 
                     _subscriptionParamMap.remove(code);
                     _streamTransListCache.remove(code);
@@ -233,7 +233,7 @@ public class ChartSubscriber extends CommonSubscriber
                                 sp.getSnapshot());
 
                 chartRequest.setOnDataSubscription(this);
-                _subscriber.unsubscribe(chartRequest);
+                _subscriberJava.unsubscribe(chartRequest);
 
                 String paramHash = ChartHelper.makeClientFieldID(
                         _period, _tradingDayOnly, _range, _snapshot);

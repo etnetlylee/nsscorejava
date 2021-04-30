@@ -1,5 +1,7 @@
 package coreModel;
 
+//import org.greenrobot.eventbus.EventBus;
+
 import java.util.Map;
 
 import config.AsaConfig;
@@ -13,6 +15,14 @@ import coreEnvironment.Environment;
 import coreStorage.Storage;
 import coreStorage.StorageDecodeDispatcher;
 import coreStorage.model.AsaStorage;
+import events.AppEvent;
+import events.NssEvent;
+import events.UserEvent;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.core.Observer;
 
 public class NssCoreContext {
     AsaConfig _asaConfig;
@@ -22,16 +32,16 @@ public class NssCoreContext {
     Controller _controller;
     Storage _storage;
     User _user;
-    // todo: change event bus
-//    EventBus _events;
+    //    EventBus _events;
     StorageDecodeDispatcher _storageDecodeDispatcher;
     AsaStorage _asaStorage;
     DecoderConfig _decoderConfig;
+    Observable _mObservable;
 
     public NssCoreContext() {
         _controller = new Controller();
         _controller.setContext(this);
-//        _events = EventBus();
+//        _events = new EventBus();
         _asaConfig = new AsaConfig();
         _processorConfig = new ProcessorConfig();
         _decoderConfig = new DecoderConfig();
@@ -40,6 +50,13 @@ public class NssCoreContext {
         _storageDecodeDispatcher = new StorageDecodeDispatcher();
         _storageDecodeDispatcher.setContext(this);
         _asaStorage = new AsaStorage();
+        _mObservable = new Observable() {
+            @Override
+            protected void subscribeActual(@NonNull Observer observer) {
+
+            }
+        };
+
     }
 
     public void setConfig(CoreConfig config) {
@@ -99,8 +116,12 @@ public class NssCoreContext {
         _user = user;
     }
 
-    // todo : need to discuss
-//    EventBus get events => _events;
+//    public EventBus getEvents(){
+//      return  this._events;
+//    }
+    public Observable getObservable(){
+      return  this._mObservable;
+    }
 
     public StorageDecodeDispatcher getStorageDecoderDispatcher() {
         return _storageDecodeDispatcher;
