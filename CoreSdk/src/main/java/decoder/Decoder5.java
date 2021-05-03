@@ -21,7 +21,7 @@ public class Decoder5 extends Decoder {
         final String value = (rawData.getData()).toString();
         AsaStorage data = getContext().getAsaStorage();
         data.UNGBROKER = new ArrayList<Map<String, String>>();
-        data.GROBROKER = new ArrayList<Object>();
+        data.GROBROKER = new ArrayList<BrokerFirm>();
 
         if (value != null && value.trim() != "") {
             final List<String> brokerFirms = Arrays.asList(value.split("|"));
