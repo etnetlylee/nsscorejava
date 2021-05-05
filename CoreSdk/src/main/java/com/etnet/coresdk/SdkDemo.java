@@ -7,7 +7,10 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.etnet.coresdk.api.ApiFields;
+
 public class SdkDemo extends AppCompatActivity {
+    public final ApiFields apiFields = new ApiFields();
 
     private static final String TAG = "mySDKTest";
 
@@ -24,4 +27,7 @@ public class SdkDemo extends AppCompatActivity {
             }
         });
     }
+
 }
+
+

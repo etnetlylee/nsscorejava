@@ -9,8 +9,10 @@ import android.widget.Button;
 
 import com.etnet.coresdk.SdkDemo;
 
-public class MainActivity extends AppCompatActivity {
+import com.etnet.coresdk.api.ApiFields;
 
+public class MainActivity extends AppCompatActivity {
+    ApiFields a = new ApiFields();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

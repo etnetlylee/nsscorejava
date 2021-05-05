@@ -3,7 +3,6 @@
     package="com.etnet.coresdk">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:supportsRtl="true">
         <activity android:name=".SdkDemo">
