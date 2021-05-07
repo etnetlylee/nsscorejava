@@ -25,7 +25,7 @@ public class QuoteSubscriber extends CommonSubscriber {
     List<String> _willProcessCodeList = new ArrayList<String>();
     List<String> _willProcessFieldList = new ArrayList<String>();
 
-    OnQuoteDataReceived _onQuoteDataReceived;
+    static OnQuoteDataReceived _onQuoteDataReceived;
 
     public QuoteSubscriber(String name) {
         this._subscriberJava = new SubscriberJava(name, this);
@@ -57,8 +57,8 @@ public class QuoteSubscriber extends CommonSubscriber {
         return this._willProcessFieldList;
     }
 
-    public void setOnQuoteDataReceived(OnQuoteDataReceived onQuoteDataReceived) {
-        this._onQuoteDataReceived = onQuoteDataReceived;
+    public static void setOnQuoteDataReceived(OnQuoteDataReceived onQuoteDataReceived) {
+        _onQuoteDataReceived = onQuoteDataReceived;
     }
 
     public SubscriberJava getSubscriber() {

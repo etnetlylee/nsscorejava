@@ -56,7 +56,7 @@ import static com.etnet.coresdk.constants.AsaConstant.SINGLE_RESOURCE_DTDC_MAPPI
 
 
 public class DefaultAsaConfig {
-    public final AsaDecodersConfig DefaultAsaConfig = new AsaDecodersConfig(
+    public static final AsaDecodersConfig DefaultAsaConfig = new AsaDecodersConfig(
             ASA_FIELD_HK,
             new HashMap<String, AsaDecoder>() {{
                 put(RESOURCE_AHMAPPING, new AsaDecoder(RESOURCE_AHMAPPING, "", Decoder4.uniqueID, new Decoder4()));

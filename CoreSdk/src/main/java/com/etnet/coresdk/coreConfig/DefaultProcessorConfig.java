@@ -15,7 +15,7 @@ import com.etnet.coresdk.coreProcessor.ReconnectProcessor;
 import com.etnet.coresdk.coreProcessor.SortProcessor;
 
 public class DefaultProcessorConfig {
-    public final Map<String, ProcessorInfo> DefaultProcessorConfig = new HashMap<String, ProcessorInfo>() {{
+    public static final Map<String, ProcessorInfo> DefaultProcessorConfig = new HashMap<String, ProcessorInfo>() {{
         put(ProcessorId.PID_0, new ProcessorInfo("csv", HeartbeatProcessor.id, new HeartbeatProcessor()));
         put(ProcessorId.PID_1, new ProcessorInfo("csv", QuoteProcessor.id, new QuoteProcessor()));
         put(ProcessorId.PID_2, new ProcessorInfo("csv", SortProcessor.id, new SortProcessor()));

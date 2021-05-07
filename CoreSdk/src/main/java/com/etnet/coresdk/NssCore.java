@@ -19,6 +19,7 @@ import com.etnet.coresdk.coreModel.User;
 import com.etnet.coresdk.events.UserEvent;
 import com.etnet.coresdk.events.NssEvent;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -217,9 +218,9 @@ public class NssCore {
         return _context;
     }
 
-//    EventBus getEventService() {
-//        return _context.events;
-//    }
+    public Observable getObservableService() {
+        return _context.getObservable();
+    }
 
     public CoreConfig getConfig() {
         return _context.getConfig();

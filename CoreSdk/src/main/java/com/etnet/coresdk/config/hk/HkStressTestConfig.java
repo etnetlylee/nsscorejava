@@ -8,7 +8,7 @@ import com.etnet.coresdk.coreConfigInterface.InitiatorConfig;
 import com.etnet.coresdk.coreConfigInterface.ServerUrls;
 
 public class HkStressTestConfig {
-    public final CoreConfig HkConfig = new CoreConfig(
+    public static final CoreConfig HkStressTestConfig = new CoreConfig(
             "H5", // productName
             "TC", // lang:TC|SC|EN
             new ServerUrls(

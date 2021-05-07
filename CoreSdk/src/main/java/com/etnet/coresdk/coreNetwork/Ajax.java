@@ -11,7 +11,7 @@ public class Ajax {
 
     OkHttpClient client = new OkHttpClient();
 
-    Response run(String url) throws IOException {
+    public Response run(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .get()

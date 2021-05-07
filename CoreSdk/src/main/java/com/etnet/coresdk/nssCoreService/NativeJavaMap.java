@@ -9,7 +9,7 @@ import static com.etnet.coresdk.api.ApiFields.*;
 
 
 public class NativeJavaMap {
-    public static final Map<String, String> javaNativeMap = new HashMap<String, String>() {{
+    public static final Map<String, String> nativeJavaMap = new HashMap<String, String>() {{
         put(FKEY_CODE, FID_CODE);
         put(FKEY_TC_NAME, FID_TC_NAME);
         put(FKEY_SC_NAME, FID_SC_NAME);
@@ -310,7 +310,7 @@ public class NativeJavaMap {
 
     public void main() {
         List<String> list = new ArrayList<String>();
-        for (Map.Entry<String, String> entry : javaNativeMap.entrySet()) {
+        for (Map.Entry<String, String> entry : nativeJavaMap.entrySet()) {
             list.add(entry.getKey());
         }
         System.out.print(list.size());

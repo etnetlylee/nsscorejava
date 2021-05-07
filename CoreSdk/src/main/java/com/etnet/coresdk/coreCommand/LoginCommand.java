@@ -1,5 +1,6 @@
 package com.etnet.coresdk.coreCommand;
 
+import com.etnet.coresdk.events.NssEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.DataInput;
@@ -11,9 +12,11 @@ import com.etnet.coresdk.api.ContextProvider;
 import com.etnet.coresdk.coreInterfaceLogin.LoginResponse;
 import com.etnet.coresdk.coreModel.NssCoreContext;
 import com.etnet.coresdk.events.UserEvent;
+
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import okhttp3.Response;
+
 import com.etnet.coresdk.util.CommandBuilder;
 
 import static com.etnet.coresdk.constants.HttpParam.HTTPPARAM_COMPCODE;
@@ -86,16 +89,27 @@ public class LoginCommand extends ContextProvider {
                     .getController()
                     .getNetworkController()
                     .sendHttpGetRequest(url);
-            if (result.code() == 200){
+            if (result.code() == 200) {
                 ObjectMapper mapper = new ObjectMapper();
                 Map<String, Object> jsonResult = mapper.readValue((DataInput) result.body(), Map.class);
-                        LoginResponse response = LoginResponse.fromJson(jsonResult);
-                        if (response.isValid()) {
-//                            _context.events
-//                                    .fire(UserEvent(UserEvent.HttpLoginSuccess, response));
-                        } else {
-//                            _context.events.fire(UserEvent(UserEvent.HttpLoginFailed, null));
+                LoginResponse response = LoginResponse.fromJson(jsonResult);
+                if (response.isValid()) {
+                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
+                        @Override
+                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
+                            e.onNext(new UserEvent(UserEvent.HttpLoginSuccess, response));
+                            e.onComplete();
                         }
+                    });
+                } else {
+                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
+                        @Override
+                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
+                            e.onNext(new UserEvent(UserEvent.HttpLoginFailed, null));
+                            e.onComplete();
+                        }
+                    });
+                }
             }
 //                    .then((Response result) {
 //                try {
@@ -123,7 +137,13 @@ public class LoginCommand extends ContextProvider {
 //      });
         } catch (Exception e) {
             log.info(e.getMessage());
-//            _context.events.fire(UserEvent(UserEvent.HttpLoginFailed, null));
+            _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
+                @Override
+                public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
+                    e.onNext(new UserEvent(UserEvent.HttpLoginFailed, null));
+                    e.onComplete();
+                }
+            });
         }
     }
 

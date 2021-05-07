@@ -55,7 +55,7 @@ import static com.etnet.coresdk.constants.AsaConstant.RESOURCE_VCM_CAS_LIST;
 import static com.etnet.coresdk.constants.AsaConstant.SINGLE_RESOURCE_DTDC_MAPPING;
 
 public class HkAsaConfig {
-    public final AsaDecodersConfig HkAsaConfig = new AsaDecodersConfig(
+    public static final AsaDecodersConfig HkAsaConfig = new AsaDecodersConfig(
             ASA_FIELD_HK,
             new HashMap<String, AsaDecoder>() {{
                 put(RESOURCE_AHMAPPING, new AsaDecoder(RESOURCE_AHMAPPING, "", Decoder4.uniqueID, new Decoder4()));

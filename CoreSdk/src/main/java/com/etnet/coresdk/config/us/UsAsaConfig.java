@@ -22,7 +22,7 @@ import static com.etnet.coresdk.constants.AsaConstant.RESOURCE_US_TRADING_DATE;
 
 
 public class UsAsaConfig {
-    public final AsaDecodersConfig ShAsaConfig = new AsaDecodersConfig(
+    public static final AsaDecodersConfig UsAsaConfig = new AsaDecodersConfig(
             ASA_FIELD_US,
             new HashMap<String, AsaDecoder>() {{
                 put(RESOURCE_BLOCK_TRADE, new AsaDecoder(RESOURCE_BLOCK_TRADE, "", Decoder12.uniqueID,

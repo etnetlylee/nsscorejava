@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Environment {
-    final Map<String, Object> environment = new HashMap<String, Object>() {{
+    public static final Map<String, Object> environment = new HashMap<String, Object>() {{
         put("production", false);
         put("version", "0.1");
         put("apiUrl", "https://iq6pilot.etnet.com.hk");
