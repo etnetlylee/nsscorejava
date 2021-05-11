@@ -70,7 +70,7 @@ public class NetworkController extends ContextProvider implements ConnectionHand
 
     @Override
     public void onConnected() {
-//        String nssToken = _context.getUser().getToken();
+        String nssToken = _context.getUser().getToken();
 //        _context.events.fire(new NssEvent(NssEvent.NssConnect, DateTime.now()));
 //        _context.getController().getCommandController().sendLoginCommand(nssToken);
     }
@@ -84,7 +84,7 @@ public class NetworkController extends ContextProvider implements ConnectionHand
 
     @Override
     public void onDataReceived(String raw) {
-//        _context.getController().getProcessorController().process(raw);
+        _context.getController().getProcessorController().process(raw);
     }
 
     @Override

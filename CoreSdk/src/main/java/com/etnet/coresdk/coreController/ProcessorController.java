@@ -27,7 +27,7 @@ public class ProcessorController extends ContextProvider {
 //    FirstOccurrenceSettingsDetector _fosd;
     NssCoreContext _context;
 
-    ProcessorController() {
+    public ProcessorController() {
         /** set 'com.opencsv:opencsv:4.6' here
          * use JAVA csv instead of dart csv converter
          * */

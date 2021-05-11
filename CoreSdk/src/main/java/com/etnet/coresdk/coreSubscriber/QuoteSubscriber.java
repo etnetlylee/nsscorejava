@@ -57,7 +57,7 @@ public class QuoteSubscriber extends CommonSubscriber {
         return this._willProcessFieldList;
     }
 
-    public static void setOnQuoteDataReceived(OnQuoteDataReceived onQuoteDataReceived) {
+    public void setOnQuoteDataReceived(OnQuoteDataReceived onQuoteDataReceived) {
         _onQuoteDataReceived = onQuoteDataReceived;
     }
 

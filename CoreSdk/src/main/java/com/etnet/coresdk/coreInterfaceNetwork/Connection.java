@@ -19,7 +19,8 @@ public abstract class Connection extends ContextProvider {
 
     public abstract Connection withRetryStrategy(List<List<Integer>> strategy);
 
-    public abstract void connect(ConnectOptions options);
+    public void connect(ConnectOptions options) {
+    }
 
     public abstract void disconnect(int code, String reason);
 

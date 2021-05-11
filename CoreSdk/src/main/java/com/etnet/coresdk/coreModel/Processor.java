@@ -8,5 +8,7 @@ public abstract class Processor extends ContextProvider {
     }
 
     public void notify(NssPacket nssPacket, Object data) {
+        System.out.print(nssPacket);
+        System.out.print(data);
     }
 }
