@@ -21,7 +21,7 @@ public class Top10StockConnectTurnoverDecoder extends Decoder {
         Map<String, List> dayObject = new HashMap<String, List>();
         for (String rows : value) {
             List<String> row = Arrays.asList(rows.split(","));
-            if (row.size() >= 7) {
+            if (row != null && row.size() >= 7) {
                 if (previousTimeStamp != Integer.parseInt(row.get(0), 10)) {
                     data.add(dayObject);
                     dayObject = new HashMap<String, List>();

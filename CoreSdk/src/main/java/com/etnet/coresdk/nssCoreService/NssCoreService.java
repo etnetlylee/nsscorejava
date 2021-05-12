@@ -1,5 +1,7 @@
 package com.etnet.coresdk.nssCoreService;
 
+import android.os.StrictMode;
+
 import com.etnet.coresdk.NssCore;
 import com.etnet.coresdk.config.hk.HkAsaConfig;
 import com.etnet.coresdk.config.hk.HkConfig;
@@ -387,7 +389,7 @@ public class NssCoreService {
     }
 
     public void createConnection() {
-        if (_nssCore.getContext().getUser().isSessionEnd()) {
+        if (_nssCore.getContext().getUser() != null && _nssCore.getContext().getUser().isSessionEnd()) {
             log.info("no sesssion for nss");
         }
         String url =
@@ -395,27 +397,18 @@ public class NssCoreService {
                         "ipService"));
         log.info("get ip address");
 
-        Response result = new Controller().getNetworkController().sendHttpGetRequest(url);
-        if (result.code() == 200) {
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> jsonResult = null;
-            try {
-                jsonResult = mapper.readValue((DataInput) result.body(), Map.class);
-                ApiResponse apiResponse = ApiResponse.fromJson(jsonResult);
-                log.info("API Status" + apiResponse.getStatus());
-                if (apiResponse.getStatus() == "success") {
-                    IPGeoInfo ipGeoInfo = apiResponse.getData();
+        ApiResponse result = new Controller().getNetworkController().sendHttpGetRequest(url);
+        if (result != null){
+                log.info("API Status : " + result.getStatus());
+                if (result.getStatus().equals("success")) {
+                    IPGeoInfo ipGeoInfo = result.getData();
                     if (ipGeoInfo.getIsCn()) {
                         _nssCore.enableCensor(true);
                     }
-                    log.info("get ip success is_cn=" + ipGeoInfo.getIsCn());
+                    log.info("get ip success is_cn = " + ipGeoInfo.getIsCn());
                 } else {
                     log.info("get ip recv incorrect status code");
                 }
-                _nssCore.connect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

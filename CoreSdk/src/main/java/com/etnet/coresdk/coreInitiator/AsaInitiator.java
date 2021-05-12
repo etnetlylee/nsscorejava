@@ -79,7 +79,7 @@ public class AsaInitiator extends ContextProvider implements UpdateListener {
     public boolean anyAsaData() {
         boolean neeedSubscribe = false;
         for (List<String> list : _codeList.values()){
-            if (list.size() > 0) {
+            if (list != null && list.size() > 0) {
                 neeedSubscribe = true;
                 break;
             }

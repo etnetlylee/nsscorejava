@@ -40,7 +40,7 @@ public class TurnoverWarrDecoder extends Decoder {
             put("callPercent", null);
             put("putPercent", null);
         }};
-        if (values.size() == 2 && values.get(0).trim().length() > 0) {
+        if (values != null && values.size() == 2 && values.get(0).trim().length() > 0) {
             String callString = values.get(1);
             String putString = values.get(0);
             double call = 0.00;

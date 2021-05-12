@@ -1,5 +1,13 @@
 package com.etnet.coresdk.coreController;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import com.etnet.coresdk.api.ContextProvider;
@@ -8,6 +16,8 @@ import com.etnet.coresdk.coreInterfaceNetwork.ConnectionHandler;
 import com.etnet.coresdk.coreModel.NssCoreContext;
 import com.etnet.coresdk.coreNetwork.Ajax;
 import com.etnet.coresdk.coreNetwork.NssConnection;
+import com.etnet.coresdk.nssCoreService.ApiResponse;
+
 import okhttp3.Response;
 
 public class NetworkController extends ContextProvider implements ConnectionHandler {
@@ -100,12 +110,12 @@ public class NetworkController extends ContextProvider implements ConnectionHand
         }
     }
 
-   public Response sendHttpGetRequest(String url) {
-        return _ajax.sendRequest(url, null);
+    public ApiResponse sendHttpGetRequest(String url) {
+        return _ajax.sendRequest(url);
     }
 
-   public Response sendHttpPostRequest(String url, Object postData) {
-        return _ajax.sendRequest(url, postData);
+    public ApiResponse sendHttpPostRequest(String url, String postData) {
+        return _ajax.postRequest(url, postData);
     }
 
 }

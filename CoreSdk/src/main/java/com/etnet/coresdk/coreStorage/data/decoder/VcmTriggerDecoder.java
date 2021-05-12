@@ -25,7 +25,7 @@ public class VcmTriggerDecoder extends Decoder {
 
         for (String record : records){
             final List<String> fields = Arrays.asList(record.split("|"));
-            if (fields.size() == 7) {
+            if (fields != null && fields.size() == 7) {
                 VcmTriggerEvent vcmTriggerEvent = new VcmTriggerEvent();
                 final String seqNo = fields.get(0);
                 final String startTimeStr = fields.get(1); // HHMMSS

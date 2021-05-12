@@ -18,7 +18,7 @@ public class DailyQuotaDataDecoder extends Decoder {
         List<DailyQuotaData> data = new ArrayList<DailyQuotaData>();
         for (String rows : value) {
             final List<String> row = Arrays.asList(rows.split(","));
-            if (row.size() >= 12) {
+            if (row != null && row.size() >= 12) {
                 DailyQuotaData dailyData = new DailyQuotaData(
                         Integer.parseInt(row.get(0), 10),
                         Integer.parseInt(row.get(0), 10),

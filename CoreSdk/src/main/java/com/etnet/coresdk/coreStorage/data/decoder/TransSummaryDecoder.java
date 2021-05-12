@@ -22,7 +22,7 @@ public class TransSummaryDecoder extends Decoder {
 
         for (String row : value) {
             List<String> data = Arrays.asList(row.split(","));
-            if (data.size() >= 6) {
+            if (data != null && data.size() >= 6) {
                 Map<String, Double> item = new HashMap<String, Double>() {{
                     put("timestamp", Double.parseDouble(data.get(1)));
                     put("price", Double.parseDouble(data.get(2)));
@@ -31,7 +31,7 @@ public class TransSummaryDecoder extends Decoder {
                     put("othervolume", Double.parseDouble(data.get(5)));
                 }};
                 transSummaryItems.add(item);
-            } else if (data.size() >= 5) {
+            } else if (data != null && data.size() >= 5) {
                 Map<String, Double> amsItem = new HashMap<String, Double>() {{
                     put("timestamp", Double.parseDouble(data.get(1)));
                     put("price", Double.parseDouble(data.get(2)));
@@ -39,11 +39,11 @@ public class TransSummaryDecoder extends Decoder {
                     put("nonamsvolume", Double.parseDouble(data.get(4)));
                 }};
                 transSummaryItems.add(amsItem);
-            } else if (data.size() > 2) {
+            } else if (data != null && data.size() > 2) {
                 final double price = Double.parseDouble(data.get(1));
                 final double volumeAMS = Double.parseDouble(data.get(2));
                 double volumeNonAMS = 0;
-                if (data.size() > 4) {
+                if (data != null && data.size() > 4) {
                     volumeNonAMS = Double.parseDouble(data.get(4));
                 }
                 TransItem item = new TransItem(price, volumeAMS, volumeNonAMS);
@@ -51,7 +51,7 @@ public class TransSummaryDecoder extends Decoder {
             }
         }
         NssData nssData = new NssData(null);
-        if (transSummaryItems.size() > 0) {
+        if (transSummaryItems != null && transSummaryItems.size() > 0) {
             nssData.setData(transSummaryItems);
         } else {
             nssData.setData(transSummary);

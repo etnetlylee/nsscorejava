@@ -40,7 +40,7 @@ public class TurnoverCBBCDecoder extends Decoder {
             put("bearPercent", null);
         }};
 
-        if (values.size() == 2 && values.get(0).trim().length() > 0) {
+        if (values != null && values.size() == 2 && values.get(0).trim().length() > 0) {
             double call = Double.parseDouble(values.get(1));
             double put = Double.parseDouble(values.get(0));
             double total = call + put;

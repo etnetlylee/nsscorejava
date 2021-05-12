@@ -21,7 +21,7 @@ public class VcmTriggerPeriodDecoder extends Decoder {
         final List<String> fields = Arrays.asList(value.split("|"));
         Vcm vcm = new Vcm();
 
-        if (fields.size() == 7) {
+        if (fields != null && fields.size() == 7) {
             final int seqNo = Integer.parseInt(fields.get(0), 10);
             final String startTime = fields.get(1); // HHMMSS
             final String endTime = fields.get(2); // HHMMSS

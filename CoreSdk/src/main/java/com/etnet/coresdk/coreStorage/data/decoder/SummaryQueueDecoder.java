@@ -38,13 +38,13 @@ public class SummaryQueueDecoder extends Decoder {
 
         for (String val : bidAsk) {
             List<String> data = Arrays.asList(val.split("|"));
-            String pos;
+            String pos = "";
             String no = "";
             String vol = "";
             List<String> bidAskItem = Arrays.asList(vol, no);
-            String bidAskFlag;
+            String bidAskFlag = "";
 
-            if (data.size() == 4) {
+            if (data != null && data.size() == 4) {
                 // fieldId = 241
                 // 65000|5|A|0
                 bidAskFlag = data.get(2);
@@ -54,16 +54,18 @@ public class SummaryQueueDecoder extends Decoder {
                 bidAskItem = Arrays.asList(vol, no);
             } else {
                 // 65K  5|A|0
-                bidAskFlag = (data.size() > 1) ? data.get(1) : "";
-                pos = (data.size() > 2) ? data.get(2) : "";
-                if (data.get(0) != null && data.get(0) != "") {
-                    no = data.get(0).substring(data.get(0).length() - 3);
-                    vol = data.get(0).substring(0, data.get(0).length() - 3);
-                } else {
-                    no = "";
-                    vol = "";
+                if (data != null) {
+                    bidAskFlag = (data.size() > 1) ? data.get(1) : "";
+                    pos = (data.size() > 2) ? data.get(2) : "";
+                    if (data.get(0) != null && data.get(0) != "") {
+                        no = data.get(0).substring(data.get(0).length() - 3);
+                        vol = data.get(0).substring(0, data.get(0).length() - 3);
+                    } else {
+                        no = "";
+                        vol = "";
+                    }
+                    bidAskItem = Arrays.asList(vol, no);
                 }
-                bidAskItem = Arrays.asList(vol, no);
             }
 
 
@@ -86,18 +88,22 @@ public class SummaryQueueDecoder extends Decoder {
     }
 
     public void addOrUpdateList(List<Map> list, int pos, Map data) {
-        if (pos > list.size()) {
-            list.add(data);
-        } else {
-            list.add(pos, data);
+        if (list != null) {
+            if (pos > list.size()) {
+                list.add(data);
+            } else {
+                list.add(pos, data);
+            }
         }
     }
 
     public void removeSpread(List<Map> list, int pos) {
-        if (pos > list.size()) {
-            list.add(new HashMap());
-        } else {
-            list.add(pos, new HashMap());
+        if (list != null) {
+            if (pos > list.size()) {
+                list.add(new HashMap());
+            } else {
+                list.add(pos, new HashMap());
+            }
         }
     }
 }

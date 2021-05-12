@@ -66,7 +66,7 @@ public class OptionDecoder extends Decoder {
                     optionMap.addToMap(strike, optionStruct);
                 }
                 String realV;
-                if (realDatas.size() == 2) {
+                if (realDatas != null && realDatas.size() == 2) {
                     realV = realDatas.get(1);
                     if (target == TARGET_C) {
                         optionStruct.setCallValue(realV);
@@ -82,7 +82,7 @@ public class OptionDecoder extends Decoder {
         } else {
             if (value != null) {
                 List<String> strickInfo = Arrays.asList(rawData.getCode().split("_"));
-                if (strickInfo.size() == 2) {
+                if (strickInfo != null && strickInfo.size() == 2) {
                     final String target = strickInfo.get(1).substring(0, 1);
                     final String strike =
                             strickInfo.get(1).substring(1, strickInfo.get(1).length());

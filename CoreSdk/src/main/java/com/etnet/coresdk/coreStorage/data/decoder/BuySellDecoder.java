@@ -21,7 +21,7 @@ public class BuySellDecoder extends Decoder {
         final String value = (rawData.getData()).toString();
         final List<String> data = Arrays.asList(value.split("|"));
         Map<String, Double> newValue= new HashMap<String, Double>();
-        if (data.size() == 4) {
+        if (data != null && data.size() == 4) {
             final double bidAM = Double.parseDouble(data.get(0));
             final double askAM = Double.parseDouble(data.get(1));
             final double bidPM = Double.parseDouble(data.get(2));

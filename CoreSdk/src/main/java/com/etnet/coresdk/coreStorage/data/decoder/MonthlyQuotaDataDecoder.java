@@ -20,7 +20,7 @@ public class MonthlyQuotaDataDecoder extends Decoder {
         for (String rows : value) {
             final List<String> row = Arrays.asList(rows.split(","));
 
-            if (row.size() >= 12) {
+            if (row != null && row.size() >= 12) {
                 MonthlyQuotaData monthlyData = new MonthlyQuotaData(
                         Integer.parseInt(row.get(0), 10),
                         Integer.parseInt(row.get(0), 10),

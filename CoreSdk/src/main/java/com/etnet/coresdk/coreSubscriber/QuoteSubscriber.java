@@ -110,7 +110,7 @@ public class QuoteSubscriber extends CommonSubscriber {
 
         final boolean snapshot = _isSnapshot;
         final boolean broadcast = _isBroadcast;
-        if (_willProcessCodeList.size() > 0 && _willProcessFieldList.size() > 0) {
+        if (_willProcessCodeList != null && _willProcessCodeList.size() > 0 && _willProcessFieldList.size() > 0) {
             // add/remove both code and fields
             willAddCodes = new ArrayList<String>(_willProcessCodeList);
             willAddFields = new ArrayList<String>(_willProcessFieldList);
@@ -127,7 +127,7 @@ public class QuoteSubscriber extends CommonSubscriber {
                 }
             }
 
-            if (willSubscribeFields.size() == 0) {
+            if (willSubscribeFields != null && willSubscribeFields.size() == 0) {
                 // subscribe same fields as previous codes
                 createAndSubscribe(
                         willSubscribeCodes, _currentFieldList, snapshot, broadcast);
@@ -137,7 +137,7 @@ public class QuoteSubscriber extends CommonSubscriber {
             }
             _currentCodeList.addAll(willSubscribeCodes);
             _currentFieldList.addAll(willSubscribeFields);
-        } else if (_willProcessCodeList.size() > 0) {
+        } else if (_willProcessCodeList != null && _willProcessCodeList.size() > 0) {
             // add/remove code
             willAddCodes = new ArrayList<String>(_willProcessCodeList);
             willAddFields = new ArrayList<String>(_currentFieldList);
@@ -150,7 +150,7 @@ public class QuoteSubscriber extends CommonSubscriber {
             createAndSubscribe(
                     willSubscribeCodes, willAddFields, snapshot, broadcast);
             _currentCodeList.addAll(willSubscribeCodes);
-        } else if (_willProcessFieldList.size() > 0) {
+        } else if (_willProcessCodeList != null && _willProcessFieldList.size() > 0) {
             // add/remove field
             willAddCodes = new ArrayList<String>(_currentCodeList);
             willAddFields = new ArrayList<String>(_willProcessFieldList);
@@ -174,7 +174,7 @@ public class QuoteSubscriber extends CommonSubscriber {
         log.info("subscribe code: " + willAddCodes.toString());
         log.info("subscribe fields: " + willAddFields.toString());
 
-        if (willAddCodes.size() > 0 && willAddFields.size() > 0) {
+        if (willAddCodes != null && willAddCodes.size() > 0 && willAddFields.size() > 0) {
             if (isSnapshot) {
                 final QuoteRequest snapQuoteRequest = _nssCoreContext
                         .getController()
@@ -201,7 +201,7 @@ public class QuoteSubscriber extends CommonSubscriber {
 
     public void createAndUnsubscribe(
             List<String> willRemoveCodes, List<String> willRemoveFields) {
-        if (willRemoveCodes.size() > 0 && willRemoveFields.size() > 0) {
+        if (willRemoveCodes != null && willRemoveCodes.size() > 0 && willRemoveFields.size() > 0) {
             final QuoteRequest quoteRequest = _nssCoreContext
                     .getController()
                     .getRequestController()
@@ -215,7 +215,7 @@ public class QuoteSubscriber extends CommonSubscriber {
         List<String> willRemoveCodes = new ArrayList<String>();
         List<String> willRemoveFields = new ArrayList<String>();
 
-        if (_willProcessCodeList.size() > 0 && _willProcessFieldList.size() > 0) {
+        if (_willProcessCodeList != null && _willProcessCodeList.size() > 0 && _willProcessFieldList.size() > 0) {
             // remove code and field
 
             willRemoveCodes = new ArrayList<String>(_willProcessCodeList);
@@ -237,7 +237,7 @@ public class QuoteSubscriber extends CommonSubscriber {
             }
 
             createAndUnsubscribe(willUnsubscribeCodes, willUnsubscribeFields);
-            if (willUnsubscribeFields.size() == _currentFieldList.size()) {
+            if (willUnsubscribeFields != null && willUnsubscribeFields.size() == _currentFieldList.size()) {
                 // all fields are remove, we also remove those codes
                 List<String> _temp = new ArrayList<String>();
                 for (String code : _currentCodeList) {
@@ -248,10 +248,10 @@ public class QuoteSubscriber extends CommonSubscriber {
                 _currentCodeList.clear();
                 _currentCodeList.addAll(_temp);
             }
-            if (_currentCodeList.size() == 0) {
+            if (_currentCodeList != null && _currentCodeList.size() == 0) {
                 _currentFieldList = new ArrayList<String>();
             }
-        } else if (_willProcessCodeList.size() > 0) {
+        } else if (_willProcessCodeList != null && _willProcessCodeList.size() > 0) {
             // remove code
             willRemoveCodes = new ArrayList<String>(_willProcessCodeList);
             willRemoveFields = new ArrayList<String>(_currentFieldList);
@@ -276,10 +276,10 @@ public class QuoteSubscriber extends CommonSubscriber {
             // _currentCodeList = _currentCodeList
             //     .where((v) => !willUnsubscribeCodes.contains(v))
             //     .toList();
-            if (_currentCodeList.size() == 0) {
+            if (_currentCodeList != null && _currentCodeList.size() == 0) {
                 _currentFieldList = new ArrayList<String>();
             }
-        } else if (_willProcessFieldList.size() > 0) {
+        } else if (_willProcessFieldList != null && _willProcessFieldList.size() > 0) {
             // remove field
             willRemoveCodes = new ArrayList<String>(_currentCodeList);
             willRemoveFields = new ArrayList<String>(_willProcessFieldList);
@@ -303,7 +303,7 @@ public class QuoteSubscriber extends CommonSubscriber {
             // _currentFieldList = _currentFieldList
             //     .where((v) => !willUnsubscribeFields.contains(v))
             //     .toList();
-            if (_currentFieldList.size() == 0) {
+            if (_currentFieldList != null && _currentFieldList.size() == 0) {
                 _currentCodeList = new ArrayList<String>();
             }
         } else {
@@ -311,7 +311,7 @@ public class QuoteSubscriber extends CommonSubscriber {
             willRemoveCodes = new ArrayList<String>(_currentCodeList);
             willRemoveFields = new ArrayList<String>(_currentFieldList);
 
-            if (willRemoveCodes.size() > 0 && willRemoveFields.size() > 0) {
+            if (willRemoveCodes != null && willRemoveCodes.size() > 0 && willRemoveFields.size() > 0) {
                 final QuoteRequest quoteRequest = _nssCoreContext
                         .getController()
                         .getRequestController()

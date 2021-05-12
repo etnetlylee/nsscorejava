@@ -31,21 +31,22 @@ public class DecoderConfig {
             DecoderInfo decoderInfo = entry.getValue();
             _config.put(aliasFieldID, decoderInfo);
             final List<String> serverFieldIds = decoderInfo.getServerFieldIds();
-            if (serverFieldIds.size() == 1 && serverFieldIds.get(0) == aliasFieldID) {
+            if (serverFieldIds != null && serverFieldIds.size() == 1 && serverFieldIds.get(0) == aliasFieldID) {
                 // skip
             } else {
-                Collections.sort(serverFieldIds);
-                _reversedKeyMap.put(aliasFieldID, serverFieldIds);
+                if (serverFieldIds != null){
+                    Collections.sort(serverFieldIds);
+                    _reversedKeyMap.put(aliasFieldID, serverFieldIds);
+                    for (String fieldID : serverFieldIds) {
+                        if (_reversedConfig.get(fieldID) == null) {
+                            _reversedConfig.put(fieldID, new HashMap<String, DecoderInfo>());
+                        }
 
-                for (String fieldID : serverFieldIds) {
-                    if (_reversedConfig.get(fieldID) == null) {
-                        _reversedConfig.put(fieldID, new HashMap<String, DecoderInfo>());
-                    }
-
-                    final Map<String, DecoderInfo> aliasFieldIDsList = _reversedConfig.get(fieldID);
-                    aliasFieldIDsList.put(aliasFieldID, decoderInfo);
-                    if (aliasFieldIDsList.get(fieldID) == null) {
-                        aliasFieldIDsList.put(fieldID, decoderInfo);
+                        final Map<String, DecoderInfo> aliasFieldIDsList = _reversedConfig.get(fieldID);
+                        aliasFieldIDsList.put(aliasFieldID, decoderInfo);
+                        if (aliasFieldIDsList.get(fieldID) == null) {
+                            aliasFieldIDsList.put(fieldID, decoderInfo);
+                        }
                     }
                 }
             }

@@ -56,7 +56,7 @@ public class DayChartSubscriber extends GenericChartSubscriber
     List<Transaction> groupTransaction(
             String code, List<Transaction> data, String period, boolean snapshot) {
         List<Transaction> transactionList = new ArrayList<Transaction>();
-        for (Transaction row : data){
+        for (Transaction row : data) {
             // for each transaction
             int timestamp = row.getTimestamp();
             double nominal = row.getNominal();
@@ -109,18 +109,20 @@ public class DayChartSubscriber extends GenericChartSubscriber
                     record.setBaseVolume(row.getBaseVolume());
                 }
 
-                if (transactionList.size() == 0) {
-                    transactionList.add(record);
-                } else {
-                    // old to new
-                    if (groupTimestamp >
-                            transactionList.get(transactionList.size() - 1).getGroupTimestamp()) {
-                        // most
+                if (transactionList != null) {
+                    if (transactionList.size() == 0) {
                         transactionList.add(record);
-                    } else if (groupTimestamp < transactionList.get(0).getGroupTimestamp()) {
-                        transactionList.add(0, record); // I am the first one
                     } else {
-                        log.info("insertion error");
+                        // old to new
+                        if (groupTimestamp >
+                                transactionList.get(transactionList.size() - 1).getGroupTimestamp()) {
+                            // most
+                            transactionList.add(record);
+                        } else if (groupTimestamp < transactionList.get(0).getGroupTimestamp()) {
+                            transactionList.add(0, record); // I am the first one
+                        } else {
+                            log.info("insertion error");
+                        }
                     }
                 }
             }
@@ -142,7 +144,7 @@ public class DayChartSubscriber extends GenericChartSubscriber
             put(HttpParam.HTTPPARAM_ISTODAY, isTradingDayOnly() ? "1" : "0");
             put(HttpParam.HTTPPARAM_AH, isAHType ? "1" : "0");
             put(HttpParam.HTTPPARAM_MARKET, getContext().getConfig().getMarket());// HK/US
-    }};
+        }};
         if (getRange() != 0) {
             params.put(HttpParam.HTTPPARAM_LIMIT, String.valueOf(getRange()));
         }
@@ -185,60 +187,62 @@ public class DayChartSubscriber extends GenericChartSubscriber
     public void onDataUpdated(Object quoteDataList) {
         List<String> currentSubscribedCodes = super.currentCodes();
         List<String> currentSubscribedFields = super.currentFields();
-        if (currentSubscribedCodes.size() > 0 &&
-                currentSubscribedFields.size() > 0) {
-            String code = currentSubscribedCodes.get(0);
-            String fieldId = currentSubscribedFields.get(0);
-            String period = "";
-            boolean matchedPeriod = _periodRegExp.matcher(fieldId).matches();
-            if (matchedPeriod) {
-                period = _replaceRegExp.matcher(fieldId).replaceAll("");
-            } else {
-                log.info("no matching period");
-            }
+        if (currentSubscribedCodes != null && currentSubscribedFields != null){
+            if (currentSubscribedCodes.size() > 0 &&
+                    currentSubscribedFields.size() > 0) {
+                String code = currentSubscribedCodes.get(0);
+                String fieldId = currentSubscribedFields.get(0);
+                String period = "";
+                boolean matchedPeriod = _periodRegExp.matcher(fieldId).matches();
+                if (matchedPeriod) {
+                    period = _replaceRegExp.matcher(fieldId).replaceAll("");
+                } else {
+                    log.info("no matching period");
+                }
 
-            if (quoteDataList instanceof java.util.List){
-                List<QuoteData> processedQuoteDataList = (List<QuoteData>) quoteDataList;
+                if (quoteDataList instanceof java.util.List) {
+                    List<QuoteData> processedQuoteDataList = (List<QuoteData>) quoteDataList;
 
-                for(QuoteData quoteData : processedQuoteDataList){
-                    NssData nssData = quoteData.getNssData();
-                    boolean snapshot = nssData.getSnapshot();
-                    List<Transaction> data = (List<Transaction>) nssData.getData();
-                    if (data == null) {
-                        return;
-                    }
-                    try {
-                        // for 1,5,15,30,60 period
-                        // data is a group of historical transaction data from http
-                        // or a single transcation from open,high,low,close,volume
-
-                        // for daily,weekly,monthly period
-                        // data is group of historical transaction data from http
-                        // or a single groupped transaction of multiple transaction queue
-
-                        // we now group it in transaction list (this is still NOT the final list
-                        // which will send to front-end component), most of time, data is a single record list
-                        //  which represent it is a update from stream data
-
-                        // NOTE: week/month data will have latest day in grouping time!
-                        List<Transaction> transactionList =
-                                this.groupTransaction(code, data, period, snapshot);
-                        QuoteData fwQuoteData = new QuoteData(0, new NssData(transactionList));
-                        fwQuoteData.setCode(code);
-                        fwQuoteData.getNssData().setFieldID(fieldId);
-                        fwQuoteData.getNssData().setName(fieldId);
-                        fwQuoteData.getNssData().setData(transactionList);
-                        fwQuoteData.getNssData().setSnapshot(snapshot);
-                        fwQuoteData.getNssData().setReady(false);
-                        processedQuoteDataList.add(fwQuoteData);
-                        // order ASC(transNo)
-                        if (_onQuoteDataReceived != null) {
-                            _onQuoteDataReceived.onQuoteDataReceived(processedQuoteDataList);
+                    for (QuoteData quoteData : processedQuoteDataList) {
+                        NssData nssData = quoteData.getNssData();
+                        boolean snapshot = nssData.getSnapshot();
+                        List<Transaction> data = (List<Transaction>) nssData.getData();
+                        if (data == null) {
+                            return;
                         }
-                    } catch (Exception e) {
-                        log.warning(e.getMessage());
-                    }
+                        try {
+                            // for 1,5,15,30,60 period
+                            // data is a group of historical transaction data from http
+                            // or a single transcation from open,high,low,close,volume
 
+                            // for daily,weekly,monthly period
+                            // data is group of historical transaction data from http
+                            // or a single groupped transaction of multiple transaction queue
+
+                            // we now group it in transaction list (this is still NOT the final list
+                            // which will send to front-end component), most of time, data is a single record list
+                            //  which represent it is a update from stream data
+
+                            // NOTE: week/month data will have latest day in grouping time!
+                            List<Transaction> transactionList =
+                                    this.groupTransaction(code, data, period, snapshot);
+                            QuoteData fwQuoteData = new QuoteData(0, new NssData(transactionList));
+                            fwQuoteData.setCode(code);
+                            fwQuoteData.getNssData().setFieldID(fieldId);
+                            fwQuoteData.getNssData().setName(fieldId);
+                            fwQuoteData.getNssData().setData(transactionList);
+                            fwQuoteData.getNssData().setSnapshot(snapshot);
+                            fwQuoteData.getNssData().setReady(false);
+                            processedQuoteDataList.add(fwQuoteData);
+                            // order ASC(transNo)
+                            if (_onQuoteDataReceived != null) {
+                                _onQuoteDataReceived.onQuoteDataReceived(processedQuoteDataList);
+                            }
+                        } catch (Exception e) {
+                            log.warning(e.getMessage());
+                        }
+
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.etnet.coresdk.coreCommand;
 
 import com.etnet.coresdk.events.NssEvent;
+import com.etnet.coresdk.nssCoreService.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.DataInput;
@@ -85,32 +86,39 @@ public class LoginCommand extends ContextProvider {
             String url = _context.getConfig().getServer().getUms() +
                     _context.getConfig().getApiEndpoints().get("LoginUrl") +
                     urlParam;
-            Response result = _context
+            ApiResponse result = _context
                     .getController()
                     .getNetworkController()
                     .sendHttpGetRequest(url);
-            if (result.code() == 200) {
-                ObjectMapper mapper = new ObjectMapper();
-                Map<String, Object> jsonResult = mapper.readValue((DataInput) result.body(), Map.class);
-                LoginResponse response = LoginResponse.fromJson(jsonResult);
-                if (response.isValid()) {
-                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
-                        @Override
-                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
-                            e.onNext(new UserEvent(UserEvent.HttpLoginSuccess, response));
-                            e.onComplete();
-                        }
-                    });
-                } else {
-                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
-                        @Override
-                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
-                            e.onNext(new UserEvent(UserEvent.HttpLoginFailed, null));
-                            e.onComplete();
-                        }
-                    });
-                }
-            }
+            // todo : make login call API here
+//            if (result.code() == 200) {
+//                ObjectMapper mapper = new ObjectMapper();
+//                Map<String, Object> jsonResult = mapper.readValue((DataInput) result.body(), Map.class);
+//                LoginResponse response = LoginResponse.fromJson(jsonResult);
+//                if (response.isValid()) {
+//                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
+//                        @Override
+//                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
+//                            e.onNext(new UserEvent(UserEvent.HttpLoginSuccess, response));
+//                            e.onComplete();
+//                        }
+//                    });
+//                } else {
+//                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
+//                        @Override
+//                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
+//                            e.onNext(new UserEvent(UserEvent.HttpLoginFailed, null));
+//                            e.onComplete();
+//                        }
+//                    });
+//                }
+//            }
+
+
+
+
+
+
 //                    .then((Response result) {
 //                try {
 //                    if (result.statusCode == 200) {

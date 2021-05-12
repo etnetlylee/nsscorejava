@@ -26,7 +26,7 @@ public class NssCoreContext {
 
     Controller _controller;
     Storage _storage;
-    User _user;
+    User _user ;
     //    EventBus _events;
     StorageDecodeDispatcher _storageDecodeDispatcher;
     AsaStorage _asaStorage;

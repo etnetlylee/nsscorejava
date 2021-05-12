@@ -40,7 +40,7 @@ public class OrderRatioDecoder extends Decoder {
 
         for (String data: values){
             final List<String> datas = Arrays.asList(data.split("|"));
-            if (datas.size() == 4) {
+            if (datas != null && datas.size() == 4) {
                 BidAskSummary bidAskSummaryStruct = new BidAskSummary();
                 if (datas.get(3) != null && datas.get(3).length() > 0) {
                     // spread no is not blank or null.

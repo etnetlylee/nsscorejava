@@ -35,7 +35,7 @@ public class BidAskQtyDecoder extends Decoder {
             bidAskQtyStruct = ca;
         }
 
-        if (values.size() == 2) {
+        if (values != null && values.size() == 2) {
             bidAskQtyStruct.put("bid", values.get(1));
             bidAskQtyStruct.put("ask", values.get(0));
         }

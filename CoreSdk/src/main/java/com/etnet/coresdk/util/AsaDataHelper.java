@@ -2,6 +2,7 @@ package com.etnet.coresdk.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+//import java.util.Comparator;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class AsaDataHelper {
         List<Integer> tradingDayList =
                 AsaDataHelper.getMarketTradingDayList(securityMarket, context);
         int tradingDay = 0;
-        if (tradingDayList.size() >= 6) {
+        if (tradingDayList != null && tradingDayList.size() >= 6) {
             tradingDay = tradingDayList.get(tradingDayList.size() - 6);
         }
         return tradingDay;
@@ -349,7 +350,7 @@ public class AsaDataHelper {
                 context.getAsaStorage().TRADING_TIME_MAP;
         String type = key.split(".")[0];
         String code = key.split(".")[1];
-        if (!TRADING_TIME_MAP.isEmpty()) {
+        if (TRADING_TIME_MAP != null && !TRADING_TIME_MAP.isEmpty()) {
             TradingTimeInfo dateInfo = TRADING_TIME_MAP.get(type).get(code);
             if (dateInfo == null) {
                 dateInfo = TRADING_TIME_MAP.get(type).get("DEFAULT");
@@ -434,10 +435,14 @@ public class AsaDataHelper {
 
 class IndexBaseInfoComparator implements Comparator<IndexBaseInfo> {
     public int compare(IndexBaseInfo a, IndexBaseInfo b) {
-        if (Integer.parseInt(a.getCode()) > Integer.parseInt(b.getCode())) {
-            return 1;
-        } else if (Integer.parseInt(a.getCode()) < Integer.parseInt(b.getCode())) {
-            return -1;
+        if (a != null && b != null){
+            if (Integer.parseInt(a.getCode()) > Integer.parseInt(b.getCode())) {
+                return 1;
+            } else if (Integer.parseInt(a.getCode()) < Integer.parseInt(b.getCode())) {
+                return -1;
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }

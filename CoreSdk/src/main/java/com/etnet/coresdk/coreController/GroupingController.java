@@ -63,14 +63,14 @@ public class GroupingController extends ContextProvider {
         switch (secType) {
             case SecurityID.SECURITYID_STOCK_SH:
                 List<String> shStockCodes = Arrays.asList(code.split("."));
-                if (shStockCodes.size() == 2) {
+                if (shStockCodes != null && shStockCodes.size() == 2) {
                     tradingKey = SecurityTradeKey.TRADEKEY_STOCK_SH +
                             shStockCodes.get(1); // TRADING_TIME_TYPE_FOR_ASHARE_SH_STOCK
                 }
                 break;
             case SecurityID.SECURITYID_STOCK_SZ:
                 List<String> szStockCodes = Arrays.asList(code.split("."));
-                if (szStockCodes.size() == 2) {
+                if (szStockCodes != null && szStockCodes.size() == 2) {
                     tradingKey = SecurityTradeKey.TRADEKEY_STOCK_SZ +
                             szStockCodes.get(1); // TRADING_TIME_TYPE_FOR_ASHARE_SZ_STOCK
                 }

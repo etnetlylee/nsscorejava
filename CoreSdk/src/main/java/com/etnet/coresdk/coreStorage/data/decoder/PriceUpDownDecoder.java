@@ -25,7 +25,7 @@ public class PriceUpDownDecoder extends Decoder {
         priceUpDown.setUp(Double.parseDouble(values.get(0)));
         priceUpDown.setNoChange(Double.parseDouble(values.get(1)));
         priceUpDown.setDown(Double.parseDouble(values.get(2)));
-        if (values.size() == 4) {
+        if (values != null && values.size() == 4) {
             priceUpDown.setNoTurnover(Double.parseDouble(values.get(3)));
         }
 

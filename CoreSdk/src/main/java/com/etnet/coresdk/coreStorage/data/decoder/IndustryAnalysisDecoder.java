@@ -36,7 +36,7 @@ public class IndustryAnalysisDecoder extends Decoder {
                     new RegionPercentage("EU", values.get(5)),
                     new RegionPercentage("OTHERS", values.get(9))
             );
-            if (values.size() >= 11) {
+            if (values != null && values.size() >= 11) {
                 industryAnalysis.setAverage(Integer.parseInt(values.get(10)));
             }
             industryAnalysis.setRegion(regions);

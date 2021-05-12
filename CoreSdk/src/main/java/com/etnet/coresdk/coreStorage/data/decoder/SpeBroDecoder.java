@@ -19,7 +19,7 @@ public class SpeBroDecoder extends Decoder {
         for (String speString : value){
             SpeBroker speBroStruct = new SpeBroker();
             final List<String> values = Arrays.asList(speString.split(","));
-            if (values.size() >= 12) {
+            if (values != null && values.size() >= 12) {
                 speBroStruct.setStockCode(values.get(0));
                 speBroStruct.setTurnover(Double.parseDouble(values.get(1)));
                 speBroStruct.setVolume(Integer.parseInt(values.get(2), 10));

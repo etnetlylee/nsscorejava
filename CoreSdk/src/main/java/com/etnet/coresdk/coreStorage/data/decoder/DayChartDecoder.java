@@ -40,7 +40,7 @@ public class DayChartDecoder extends Decoder {
             // "1471939793000,204.200,205.400,202.400,203.600,8919309",
             for (String rows : value) {
                 final List<String> row = Arrays.asList(rows.split(","));
-                if (row.size() >= 6) {
+                if (row != null && row.size() >= 6) {
                     int timestamp = Math.abs(Integer.parseInt(row.get(0)));
                     transactionList.add(new Transaction(
                             0,

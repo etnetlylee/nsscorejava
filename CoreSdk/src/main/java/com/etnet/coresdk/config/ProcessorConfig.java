@@ -22,6 +22,6 @@ public class ProcessorConfig {
                 _processorConfig.put(key, config.get(key));
             }
         }
-        log.info("set config done: ${_processorConfig}");
+        log.info("set config done: " + _processorConfig);
     }
 }

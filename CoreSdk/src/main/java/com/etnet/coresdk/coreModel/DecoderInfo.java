@@ -19,7 +19,7 @@ public class DecoderInfo {
         this._name = name;
         this._ifAbsent = ifAbsent;
         this._uniqueId = uniqueId;
-        this._composite = (!_realIds.isEmpty() || fieldId != _realIds.get(0));
+        this._composite = ((_realIds != null && fieldId != null) && (!_realIds.isEmpty() || fieldId != _realIds.get(0)));
     }
 
     public String getUniqueId() {

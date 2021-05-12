@@ -128,9 +128,38 @@ public class NssConnection extends Connection implements NssCallback {
                     System.out.println("[TAG] onBinarytMessage length: " + binary.length);
 
                     String str = new String(binary, StandardCharsets.UTF_8);
-                    _context.getController().getProcessorController().process(str);
+//                    _context.getController().getProcessorController().process(str);
+
 //                    ProcessorController pc = new ProcessorController();
-//                    pc.process(str);
+//                    pc.process("2373,1,1\n1,108\n4,\"6806,A.000166,SZSE|1398,A.601398,SSE|347,A.000898,SZSE|1988,A" +
+//                            ".600016,SSE|995,A.600012,SSE|9989,A.002399,SZSE|598,A.601598,SSE|2009,A.601992,SSE|1898," +
+//                            "A.601898,SSE|6099,A.600999,SSE|6818,A.601818,SSE|1375,A.601375,SSE|2068,A.601068," +
+//                            "SSE|317,A.600685,SSE|3908,A.601995,SSE|3759,A.300759,SZSE|981,A.688981,SSE|1766,A" +
+//                            ".601766,SSE|1812,A.000488,SZSE|1635,A.600635,SSE|2866,A.601866,SSE|1186,A.601186," +
+//                            "SSE|1330,A.601330,SSE|588,A.601588,SSE|358,A.600362,SSE|2628,A.601628,SSE|564,A.601717," +
+//                            "SSE|323,A.600808,SSE|1088,A.601088,SSE|3606,A.600660,SSE|991,A.601991,SSE|719,A.000756," +
+//                            "SZSE|3958,A.600958,SSE|763,A.000063,SZSE|1919,A.601919,SSE|6116,A.603157,SSE|3369,A" +
+//                            ".601326,SSE|3988,A.601988,SSE|2333,A.601633,SSE|2727,A.601727,SSE|42,A.000585,SZSE|811,A" +
+//                            ".601811,SSE|956,A.600956,SSE|3347,A.300347,SZSE|390,A.601390,SSE|921,A.000921,SZSE|1776," +
+//                            "A.000776,SZSE|1171,A.600188,SSE|2899,A.601899,SSE|6030,A.600030,SSE|1055,A.600029," +
+//                            "SSE|2359,A.603259,SSE|1065,A.600874,SSE|6826,A.688366,SSE|2039,A.000039,SZSE|177,A" +
+//                            ".600377,SSE|1816,A.003816,SZSE|1963,A.601963,SSE|107,A.601107,SSE|1533,A.002910," +
+//                            "SZSE|1349,A.688505,SSE|1072,A.600875,SSE|2601,A.601601,SSE|1618,A.601618,SSE|3968,A" +
+//                            ".600036,SSE|998,A.601998,SSE|1288,A.601288,SSE|2196,A.600196,SSE|1658,A.601658,SSE|1336," +
+//                            "A.601336,SSE|1057,A.002703,SZSE|1211,A.002594,SZSE|187,A.600860,SSE|2202,A.000002," +
+//                            "SZSE|2218,A.605198,SSE|914,A.600585,SSE|895,A.002672,SZSE|2238,A.601238,SSE|1071,A" +
+//                            ".600027,SSE|553,A.600775,SSE|6690,A.600690,SSE|6178,A.601788,SSE|2600,A.601600,SSE|3969," +
+//                            "A.688009,SSE|1053,A.601005,SSE|2607,A.601607,SSE|168,A.600600,SSE|2208,A.002202,SZSE|38," +
+//                            "A.601038,SSE|6886,A.601688,SSE|6185,A.688185,SSE|1800,A.601800,SSE|753,A.601111,SSE|670," +
+//                            "A.600115,SSE|6837,A.600837,SSE|939,A.601939,SSE|2338,A.000338,SZSE|1138,A.600026," +
+//                            "SSE|548,A.600548,SSE|874,A.600332,SSE|1528,A.601828,SSE|6198,A.601298,SSE|6881,A.601881," +
+//                            "SSE|1157,A.000157,SZSE|6127,A.603127,SSE|3993,A.603993,SSE|568,A.002490,SZSE|525,A" +
+//                            ".601333,SSE|1513,A.000513,SZSE|1339,A.601319,SSE|6869,A.601869,SSE|1772,A.002460," +
+//                            "SZSE|2880,A.601880,SSE|2883,A.601808,SSE|1787,A.600547,SSE|3328,A.601328,SSE|1456,A" +
+//                            ".601456,SSE|6066,A.601066,SSE|6865,A.601865,SSE|857,A.601857,SSE|2016,A.601916,SSE|1108," +
+//                            "A.600876,SSE|3618,A.601077,SSE|338,A.600688,SSE|902,A.600011,SSE|6196,A.002936,SZSE|386," +
+//                            "A.600028,SSE|3866,A.002948,SZSE|2611,A.601211,SSE|2318,A.601318,SSE|1877,A.688180," +
+//                            "SSE|1033,A.600871,SSE");
                     System.out.print(str);
                 }
 

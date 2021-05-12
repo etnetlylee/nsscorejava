@@ -138,15 +138,17 @@ public class QuoteRequest extends Request {
                 }
             }
 
-            if (willSubscribeFieldsInThisLoop.size() == _fields.size()) {
-                // new code
-                willSubscribeCodes.add(code);
-            } else {
-                if (willSubscribeFieldsInThisLoop.size() > 0) {
-                    if (willSeperateSubscribe.get(code) != null) {
-                        willSeperateSubscribe.put(code, new ArrayList<String>());
+            if (willSubscribeFieldsInThisLoop != null) {
+                if (willSubscribeFieldsInThisLoop.size() == _fields.size()) {
+                    // new code
+                    willSubscribeCodes.add(code);
+                } else {
+                    if (willSubscribeFieldsInThisLoop.size() > 0) {
+                        if (willSeperateSubscribe.get(code) != null) {
+                            willSeperateSubscribe.put(code, new ArrayList<String>());
+                        }
+                        willSeperateSubscribe.get(code).addAll(willSubscribeFieldsInThisLoop);
                     }
-                    willSeperateSubscribe.get(code).addAll(willSubscribeFieldsInThisLoop);
                 }
             }
         }
@@ -205,7 +207,7 @@ public class QuoteRequest extends Request {
         log.info("ready to send nss command");
         log.info("[FU] = Full set of code-field, [SE] = Partial code-field");
         // Common code-fields
-        if (willSubscribeCodes.size() > 0) {
+        if (willSubscribeCodes != null && willSubscribeCodes.size() > 0) {
             // Command controller
             log.info(
                     "[FU]  " + StringUtils.join(willSubscribeCodes, "|") + " = " + StringUtils.join(_fields, "|"));
@@ -215,7 +217,7 @@ public class QuoteRequest extends Request {
                     .sendAddQuoteCommand(
                             getRequestId(), willSubscribeCodes, fieldList, _commandId);
         }
-        if (willSeperateSubscribe.size() > 0) {
+        if (willSeperateSubscribe != null && willSeperateSubscribe.size() > 0) {
             // Each code-fields will send seperately
             for (Map.Entry<String, List<String>> entry : willSeperateSubscribe.entrySet()) {
                 log.info(" [SE] " + entry.getKey() + " = " + StringUtils.join(entry.getValue(), ("|")));
@@ -263,7 +265,7 @@ public class QuoteRequest extends Request {
                                     // server
                                     // field
                                     // e.g. 82S1 and I60S deps on server field id 161
-                                    if (depsCount == 0 &&
+                                    if (quoteData.getSubscription() != null && depsCount == 0 &&
                                             quoteData.getSubscription().size() == 0) {
                                         // we could remove subscription from server e.g. server field 161
                                         willUnSubscribeFieldsInThisLoop.add(fieldId);
@@ -280,25 +282,27 @@ public class QuoteRequest extends Request {
                     }
                 }
             }
-            if (willUnSubscribeFieldsInThisLoop.size() != _fields.size()) {
-                // some no nned to be unsubscribed
-                if (willSeperateUnsubscribe.get(code) != null) {
-                    willSeperateUnsubscribe.put(code, new ArrayList<String>());
+            if (willUnSubscribeFieldsInThisLoop != null && _fields != null) {
+                if (willUnSubscribeFieldsInThisLoop.size() != _fields.size()) {
+                    // some no nned to be unsubscribed
+                    if (willSeperateUnsubscribe.get(code) != null) {
+                        willSeperateUnsubscribe.put(code, new ArrayList<String>());
 
+                    }
+                    willSeperateUnsubscribe.get(code).addAll(willUnSubscribeFieldsInThisLoop);
+                } else {
+                    willUnsubscribeCodes.add(code);
                 }
-                willSeperateUnsubscribe.get(code).addAll(willUnSubscribeFieldsInThisLoop);
-            } else {
-                willUnsubscribeCodes.add(code);
             }
         }
         if (!snap) {
             log.info("will unsubscribe from nss");
             // Common code-fields
-            if (willUnsubscribeCodes.size() > 0) {
+            if (willUnsubscribeCodes != null && willUnsubscribeCodes.size() > 0) {
                 // Command controller
                 final String codes = StringUtils.join(willUnsubscribeCodes, "|");
                 final String fields = StringUtils.join(_fields, "|");
-                if (!codes.isEmpty() && !fields.isEmpty()) {
+                if (codes != null && fields != null && !codes.isEmpty() && !fields.isEmpty()) {
                     log.info("    - " + codes + " = " + fields);
                     final CommandController commandController =
                             getNssCoreContext().getController().getCommandController();
@@ -308,10 +312,10 @@ public class QuoteRequest extends Request {
                     log.info("codes or fields are empty");
                 }
             }
-            if (willSeperateUnsubscribe.size() > 0) {
+            if (willSeperateUnsubscribe != null && willSeperateUnsubscribe.size() > 0) {
                 // Each code-fields will send seperately
                 for (Map.Entry<String, List<String>> entry : willSeperateUnsubscribe.entrySet()) {
-                    if (!entry.getKey().isEmpty() && entry.getValue().size() > 0) {
+                    if (entry.getKey() != null && !entry.getKey().isEmpty() && entry.getValue().size() > 0) {
                         log.info("    - " + entry.getKey() + " = " + StringUtils.join(entry.getValue(), "|"));
                         getNssCoreContext()
                                 .getController()
@@ -332,12 +336,12 @@ public class QuoteRequest extends Request {
         final List<String> fieldList = new ArrayList<String>();
         final Map<String, DecoderInfo> decoderConfig =
                 getNssCoreContext().getDecoderConfig().getConfig();
-        for (String fid : fieldIDs){
+        for (String fid : fieldIDs) {
             final DecoderInfo decoder = decoderConfig.get(fid);
             final List<String> serverFieldIds = decoder.getServerFieldIds();
             if (serverFieldIds != null && !serverFieldIds.isEmpty()) {
-                for (String serverFieldId : serverFieldIds){
-                    if (!fieldList.contains(serverFieldId)){
+                for (String serverFieldId : serverFieldIds) {
+                    if (!fieldList.contains(serverFieldId)) {
                         fieldList.add(serverFieldId);
                     }
                 }

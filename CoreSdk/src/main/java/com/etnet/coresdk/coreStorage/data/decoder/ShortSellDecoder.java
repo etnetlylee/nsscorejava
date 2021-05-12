@@ -20,7 +20,7 @@ public class ShortSellDecoder extends Decoder {
         List<Map<String, Double>> data = new ArrayList<Map<String, Double>>();
         for (int i = 0; i < value.length(); i++) {
             List<String> row = Arrays.asList(Character.toString(value.charAt(i)).split(","));
-            if (row.size() >= 7) {
+            if (row != null && row.size() >= 7) {
                 Map<String, Double> daybar = new HashMap<String, Double>() {{
                     put("timestamp", Double.parseDouble(row.get(1)));
                     put("boardsumtrn", Double.parseDouble(row.get(2)));

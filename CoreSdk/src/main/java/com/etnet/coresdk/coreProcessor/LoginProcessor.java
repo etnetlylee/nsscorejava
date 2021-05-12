@@ -29,7 +29,7 @@ public class LoginProcessor extends Processor {
         final Map<Integer, Map<Integer, String>> _temp = (Map<Integer, Map<Integer, String>>) nssPacket.getParsedBody();
         final Map<Integer, String> content = _temp.get(0);
         UserEvent userEvent;
-        if (content.size() == 1) {
+        if (content != null && content.size() == 1) {
             log.info("status code " + content.get(0));
 
             if (content.get(0) == LoginProcessor.LOGIN_SUCESS) {

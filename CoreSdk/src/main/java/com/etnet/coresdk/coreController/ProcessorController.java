@@ -128,13 +128,13 @@ public class ProcessorController extends ContextProvider {
             final int reqId = Integer.parseInt(headers.get(1));
             int seqNo = -1;
             int size = 0;
-            if (headers.size() > 2 && headers.get(2).length() > 0) {
+            if (headers != null && headers != null && headers.size() > 2 && headers.get(2).length() > 0) {
                 if (headers.get(2) != "null") {
                     seqNo = Integer.parseInt(headers.get(2));
                 }
             }
 
-            if (headers.size() > 3 && headers.get(3).length() > 0) {
+            if (headers != null && headers.size() > 3 && headers.get(3).length() > 0) {
                 size = Integer.parseInt(headers.get(3));
             }
 

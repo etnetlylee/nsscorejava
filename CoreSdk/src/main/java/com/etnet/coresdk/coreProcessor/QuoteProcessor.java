@@ -37,10 +37,11 @@ public class QuoteProcessor extends Processor {
         Map<String, List<String>> _tempList = (Map<String, List<String>>) nssPacket.getParsedBody();
         final List<String> fieldIds = new ArrayList<String>(_tempList.get(0));
         final List<List<String>> contents = new ArrayList<List<String>>();
-
-        for (int k = 1; k < _tempList.size(); k++) {
-            if (_tempList.get(k).size() > 0) {
-                contents.add(new ArrayList<String>(_tempList.get(k)));
+        if (_tempList != null) {
+            for (int k = 1; k < _tempList.size(); k++) {
+                if (_tempList.get(k).size() > 0) {
+                    contents.add(new ArrayList<String>(_tempList.get(k)));
+                }
             }
         }
 
@@ -60,12 +61,14 @@ public class QuoteProcessor extends Processor {
                     fieldValue.put("1", code);
                 }
 
-                for (int i = 0; i < fieldIds.size(); i++) {
-                    if (fieldIds.get(i) == "1") {
-                        continue;
+                if (fieldIds != null) {
+                    for (int i = 0; i < fieldIds.size(); i++) {
+                        if (fieldIds.get(i) == "1") {
+                            continue;
+                        }
+                        final String fieldId = fieldIds.get(i);
+                        fields.put(fieldId, stock.get(i));
                     }
-                    final String fieldId = fieldIds.get(i);
-                    fields.put(fieldId, stock.get(i));
                 }
             }
         }

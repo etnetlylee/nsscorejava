@@ -20,7 +20,7 @@ public class ChartWarDecoder extends Decoder {
         // 16074,1496246400000,0.217,320000,0.215,320000,0,0.000,640000,200000000,34.653,0.000,0.000,0.000,21.516,0.202,
         for (String rows : value) {
             final List<String> row = Arrays.asList(rows.split(","));
-            if (row.size() >= 16) {
+            if (row != null && row.size() >= 16) {
                 WarrantChartRecord chartRecord = new WarrantChartRecord(
                         Integer.parseInt(row.get(1), 10),
                         Double.parseDouble(row.get(2)),

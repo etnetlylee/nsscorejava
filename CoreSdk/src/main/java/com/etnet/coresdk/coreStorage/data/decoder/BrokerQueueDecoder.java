@@ -55,7 +55,7 @@ public class BrokerQueueDecoder extends Decoder {
             final List<String> queueBrokers = Arrays.asList(queue.get(2).split(","));
             Map<String, BrokerInfo> brokerMap = new HashMap<String, BrokerInfo>(); // spreadNum -> BrokerInfo
 
-            if (queue.size() < 2 || queue.size() > 3) {
+            if (queue != null && (queue.size() < 2 || queue.size() > 3)) {
                 continue;
             }
             for (String qb : queueBrokers) {
@@ -111,7 +111,7 @@ public class BrokerQueueDecoder extends Decoder {
             if (spreadNo != null) {
                 int intSpreadNo = Math.abs(Integer.parseInt(spreadNo));
                 if ("A" == queueType) {
-                    if (queueBrokers.get(0) == "-1" && queueBrokers.size() == 1) {
+                    if (queueBrokers != null && (queueBrokers.get(0) == "-1" && queueBrokers.size() == 1)) {
                         log.info("remove ask spread " +
                                 spreadNo +
                                 " list len=" +
@@ -131,7 +131,7 @@ public class BrokerQueueDecoder extends Decoder {
                                 bidAskQueue.getAskBrokersQueue().size());
                     }
                 } else if ("B" == queueType) {
-                    if (queueBrokers.get(0) == "-1" && queueBrokers.size() == 1) {
+                    if (queueBrokers != null && queueBrokers.get(0) == "-1" && queueBrokers.size() == 1) {
                         removeSpread(bidAskQueue.getAskBrokersQueue(), intSpreadNo);
                         log.info("remove bid spread " +
                                 spreadNo +
@@ -162,27 +162,32 @@ public class BrokerQueueDecoder extends Decoder {
 
     public void addOrUpdateSpread(
             List<BrokerSpread> spreadList, int spreadNo, BrokerSpread spread) {
-        int end = spreadNo >= spreadList.size() ? spreadNo : spreadNo + 1;
-        if (spreadList.isEmpty()) {
-            List<BrokerSpread> growableList = new ArrayList<BrokerSpread>();
-            for(int i =0; i<end; i++){
-                growableList.add(spread);
-            }
-            spreadList = growableList;
-        } else {
-            if (spreadNo > spreadList.size()) {
-                spreadList.add(spread);
+        if (spreadList != null) {
+            int end = spreadNo >= spreadList.size() ? spreadNo : spreadNo + 1;
+            if (spreadList.isEmpty()) {
+                List<BrokerSpread> growableList = new ArrayList<BrokerSpread>();
+                for (int i = 0; i < end; i++) {
+                    growableList.add(spread);
+                }
+                spreadList = growableList;
             } else {
-                spreadList.add(spreadNo, spread);
+                if (spreadNo > spreadList.size()) {
+                    spreadList.add(spread);
+                } else {
+                    spreadList.add(spreadNo, spread);
+                }
             }
         }
     }
 
     public void removeSpread(List<BrokerSpread> spreadList, int spreadNo) {
-        if (spreadNo > spreadList.size()) {
-            spreadList.add(new BrokerSpread(null, null, null));
-        } else {
-            spreadList.add(spreadNo, new BrokerSpread(null, null, null));
+        if (spreadList != null) {
+            if (spreadNo > spreadList.size()) {
+                spreadList.add(new BrokerSpread(null, null, null));
+            } else {
+                spreadList.add(spreadNo, new BrokerSpread(null, null, null));
+            }
+
         }
     }
 }

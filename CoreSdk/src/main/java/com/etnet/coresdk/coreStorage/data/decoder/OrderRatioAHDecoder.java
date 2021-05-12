@@ -38,7 +38,7 @@ public class OrderRatioAHDecoder extends Decoder {
         final List<String> values = Arrays.asList(value.split("#"));
         for (String data : values){
             final List<String> datas = Arrays.asList(data.split("|"));
-            if (datas.size() == 5) {
+            if (datas != null && datas.size() == 5) {
                 BidAskSummary bidAskSummaryStruct = new BidAskSummary();
 
                 if (datas.get(3) != null && datas.get(3).length() > 0) {

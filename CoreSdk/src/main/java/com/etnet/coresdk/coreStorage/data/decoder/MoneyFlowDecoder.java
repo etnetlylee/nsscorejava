@@ -20,7 +20,7 @@ public class MoneyFlowDecoder extends Decoder {
         List<Map<String, Double>> data = new ArrayList<Map<String, Double>>();
         for (String rows : value){
             final List<String> row = Arrays.asList(rows.split(","));
-            if (row.size() >= 12) {
+            if (row != null && row.size() >= 12) {
                 Map<String, Double> daybar = new HashMap<String, Double>() {{
                     put("timestamp", Double.parseDouble(row.get(0)));
                     put("amturnoverbuy", Double.parseDouble(row.get(1)));

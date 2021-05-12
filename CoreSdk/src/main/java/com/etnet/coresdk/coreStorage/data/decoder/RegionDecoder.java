@@ -16,7 +16,7 @@ public class RegionDecoder extends Decoder {
         final List<String> value = (List<String>) rawData.getData();
         Region region = new Region();
         NssData nssData = new NssData(null);
-        if (value.size() > 0) {
+        if (value != null && value.size() > 0) {
             for (String row : value) {
                 final List<String> items = Arrays.asList(row.split(","));
                 for (String item : items){

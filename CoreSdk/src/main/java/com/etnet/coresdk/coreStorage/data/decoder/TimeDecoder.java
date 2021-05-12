@@ -20,7 +20,7 @@ public class TimeDecoder extends Decoder {
         final List<String> values = Arrays.asList(value.split(":"));
 
         String newTimeFormat = "";
-        if (values.size() == 2) {
+        if (values != null && values.size() == 2) {
             final int hour = Integer.parseInt(values.get(0),10);
             final int min = Integer.parseInt(values.get(1), 10);
 

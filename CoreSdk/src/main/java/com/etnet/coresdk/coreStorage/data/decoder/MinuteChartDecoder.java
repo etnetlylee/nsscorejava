@@ -37,7 +37,7 @@ public class MinuteChartDecoder extends Decoder {
             // 1470381840000,8.760,8.760,8.750,8.750,5000"
             for (String val : value) {
                 final List<String> structInfo = Arrays.asList(val.split(","));
-                if (structInfo.size() >= 5) {
+                if (structInfo != null && structInfo.size() >= 5) {
                     int timestamp = Math.abs(Integer.parseInt(structInfo.get(0)));
                     // Data are sort by date ASC
                     transactionList.add(new Transaction(

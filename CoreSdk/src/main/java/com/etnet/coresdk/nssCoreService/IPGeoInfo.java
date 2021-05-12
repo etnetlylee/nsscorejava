@@ -4,19 +4,19 @@ package com.etnet.coresdk.nssCoreService;
 import java.util.Map;
 
 public class IPGeoInfo {
-    boolean _is_cn;
-    boolean _is_loopback;
-    String _type;
-    boolean _is_local;
-    String _ip;
+    boolean is_cn;
+    boolean is_loopback;
+    String type;
+    boolean is_local;
+    String ip;
 
     public IPGeoInfo(
-            boolean is_cn, boolean is_local, String type, boolean is_loopback, String ip) {
-        this._is_cn = is_cn;
-        this._is_local = is_local;
-        this._type = type;
-        this._is_loopback = is_loopback;
-        this._ip = ip;
+            boolean _is_cn, boolean _is_local, String _type, boolean _is_loopback, String _ip) {
+        this.is_cn = _is_cn;
+        this.is_local = _is_local;
+        this.type = _type;
+        this.is_loopback = _is_loopback;
+        this.ip = _ip;
     }
 
     public static IPGeoInfo fromJson(Map<String, Object> data) {
@@ -26,22 +26,22 @@ public class IPGeoInfo {
     }
 
     public boolean getIsCn() {
-        return this._is_cn;
+        return this.is_cn;
     }
 
     public boolean getIsLoopback() {
-        return this._is_loopback;
+        return this.is_loopback;
     }
 
     public String getIsType() {
-        return this._type;
+        return this.type;
     }
 
     public boolean getIsLocal() {
-        return this._is_local;
+        return this.is_local;
     }
 
     public String getIsIp() {
-        return this._ip;
+        return this.ip;
     }
 }

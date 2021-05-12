@@ -1,5 +1,9 @@
 package com.etnet.coresdk.nssCoreService;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.etnet.coresdk.events.NssEvent;
 import com.etnet.coresdk.events.UserEvent;
 import com.etnet.coresdk.marketConfig.StockMarket;
@@ -122,13 +126,16 @@ public class NssMain {
             }
         };
         //  TODO: hk
-        // _nssCoreService_hk = new NssCoreService(StockMarket.HK, false ,_appContextHK, _eventBus_hk);
+         _nssCoreService_hk = new NssCoreService(StockMarket.HK, false ,_appContextHK, _eventBus_hk);
         // TODO: us
         _nssCoreService_us =
                 new NssCoreService(StockMarket.US, true, _appContextUS, _eventBus_us);
 
-        // _nssCoreService_hk.init();
-        _nssCoreService_us.init();
+         _nssCoreService_hk.init();
+//        _nssCoreService_us.init();
+         _nssCoreService_hk.initCoreConfig();
+         _nssCoreService_hk.createConnection();
+
 
 //     subscription_hk.add(_eventBus_hk.on<UserEvent>().listen((UserEvent userEvent) {
 //       if (userEvent.event() == UserEvent.HttpLoginSuccess) {

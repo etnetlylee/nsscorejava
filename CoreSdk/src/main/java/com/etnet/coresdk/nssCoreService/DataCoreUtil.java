@@ -2,7 +2,7 @@ package com.etnet.coresdk.nssCoreService;
 
 import java.util.logging.Logger;
 
-public class DataCoreUtil{
+public class DataCoreUtil {
     final Logger log = Logger.getLogger("DataCoreUtil");
     final NssMain nssMain;
 
@@ -12,10 +12,25 @@ public class DataCoreUtil{
 //    get methodChannel => _mChannel;
 
     // TODO: Constructor
-    public DataCoreUtil(NssMain nssMain){
+    public DataCoreUtil(NssMain nssMain) {
         this.nssMain = nssMain;
+//        test();
 //        receiveNssCoreHandler();
     }
+
+//    public void test() {
+//
+//        // Handling the packed stockList
+//        sStockCodeList(sCodePackage["subscribeStockList"]);
+//        // Handling the packed stockFieldIDList
+//        sStockFieldIDList(
+//                rFieldIDList:sCodePackage["subscribeStockFieldID"]);
+//        // QuoteSubscriber ---> Resubscribe
+//        quoteSubscriberControllerHK.quoteReSubscribe(
+//                updatedStockCodeList:sCodeList,
+//                updatedStockSubscribeFieldID:sFieldIDList);
+//
+//    }
 
     // Example : Get info Data from platformSide
     // Future<String> get platformVersion async {
@@ -55,7 +70,8 @@ public class DataCoreUtil{
 //                    NssCoreService nssCoreServiceUS = nssMain.getNssCoreServiceUS;
 //                    /**
 //                     * methodCall.arguments (HashMap<String, Object>)
-//                     *  ->  methodCall.arguments["userInfo"]  ->  HashMap<String, String> -> {"username": username, "password": password}
+//                     *  ->  methodCall.arguments["userInfo"]  ->  HashMap<String, String> -> {"username": username,
+//                     "password": password}
 //                     *  ->  methodCall.arguments["subscribeStockList"]  ->  ArrayList<String>
 //                     *  ->  methodCall.arguments["subscribeStockFieldID"] ->  ArrayList<String>
 //                     */
@@ -70,7 +86,8 @@ public class DataCoreUtil{
 //                        //print("debug sub"+ sCodePackage["subscribeStockFieldID"]);
 //                        sStockFieldIDList(rFieldIDList: sCodePackage["subscribeStockFieldID"]);
 //
-//                        nssCoreServiceUS.nssCore.login(sCodePackage["userInfo"][0], sCodePackage["userInfo"][1], false);
+//                        nssCoreServiceUS.nssCore.login(sCodePackage["userInfo"][0], sCodePackage["userInfo"][1],
+//                        false);
 //                        // nssCoreServiceHK.nssCore.login("DEV49", "IQDEV49", false);
 //                        // nssCoreServiceUS.nssCore.login("uscomp1", "uscomp1", false);
 //                    }

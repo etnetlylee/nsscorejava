@@ -28,8 +28,8 @@ public class QuoteCommand extends ContextProvider {
         cmd.append(StringUtils.join(codes, "|"));
         cmd.append(StringUtils.join(fieldIds, "|"));
 
-        assert (codes.size() > 0);
-        assert (fieldIds.size() > 0);
+        assert (codes != null && codes.size() > 0);
+        assert (fieldIds != null && fieldIds.size() > 0);
 
         _nssCoreContext.getController().getNetworkController().send(cmd.toString());
         log.info("send add quote command: " + cmd.toString().trim());
@@ -43,8 +43,8 @@ public class QuoteCommand extends ContextProvider {
         cmd.append(StringUtils.join(codes, "|"));
         cmd.append(StringUtils.join(fieldIds, "|"));
 
-        assert (codes.size() > 0);
-        assert (fieldIds.size() > 0);
+        assert (codes != null && codes.size() > 0);
+        assert (fieldIds != null && fieldIds.size() > 0);
 
         _nssCoreContext.getController().getNetworkController().send(cmd.toString());
         log.info("send remove quote command: " + cmd.toString().trim());

@@ -70,7 +70,7 @@ public class TransactionDecoder extends Decoder {
                     put("type", "TransactionDecoder");
                     put("tradingDay", tradingDay);
                 }};
-                if (dataArray.size() > 0) {
+                if (dataArray != null && dataArray.size() > 0) {
                     if ((int) data.get("transNo") > (int) dataArray.get(dataArray.size() - 1).get("transNo")) {
                         dataArray.add(data);
                     }
@@ -82,7 +82,7 @@ public class TransactionDecoder extends Decoder {
         }
 
         // maintain cached 20 records
-        if (dataArray.size() > 20) {
+        if (dataArray != null && dataArray.size() > 20) {
             dataArray.subList(0, dataArray.size() - 20).clear();
         }
         nssData.setData(dataArray);

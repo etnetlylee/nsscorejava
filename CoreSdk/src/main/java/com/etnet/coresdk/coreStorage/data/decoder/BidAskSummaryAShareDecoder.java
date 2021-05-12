@@ -35,7 +35,7 @@ public class BidAskSummaryAShareDecoder extends Decoder {
         final List<String> values = Arrays.asList(value.split("#"));
         for (String data : values) {
             final List<String> datas = Arrays.asList(data.split("|"));
-            if (datas.size() >= 4) {
+            if (datas != null && datas.size() >= 4) {
                 Map<String, String> bidAskSummaryStruct = new HashMap<String, String>() {{
                     put("spreadNo", null);
                     put("no", null);
@@ -45,7 +45,7 @@ public class BidAskSummaryAShareDecoder extends Decoder {
                 if (datas.get(3) != null && datas.get(3).trim().length() > 0) {
                     // spread no is not blank or null.
                     String price = "";
-                    if (datas.size() == 5) {
+                    if (datas != null && datas.size() == 5) {
                         price = datas.get(4);
                     }
                     bidAskSummaryStruct.put("no", datas.get(0));

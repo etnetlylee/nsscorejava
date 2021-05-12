@@ -27,7 +27,7 @@ public class TickChartDecoder extends Decoder {
                 AsaDataHelper.getMarketTradingDay(securityMarket, getContext());
         if (tradingDay == 0) {
             log.info("invalid trading day");
-        } else if (value.size() > 0) {
+        } else if (value != null && value.size() > 0) {
             for (String row : value) {
                 // "1800,92000,1,U, ,98000,8.570"
                 // code, time, transNo, transType, bidaskflag, vol, price
