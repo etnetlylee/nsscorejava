@@ -1,7 +1,5 @@
 package com.etnet.coresdk.coreNetwork;
 
-import android.os.AsyncTask;
-
 import com.etnet.coresdk.nssCoreService.ApiResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -50,7 +48,6 @@ public class Ajax {
         result = gson.fromJson(object, ApiResponse.class);
         return result;
     }
-
 
     public ApiResponse postRequest(String url, String json) {
         final Logger log = Logger.getLogger("Ajax");

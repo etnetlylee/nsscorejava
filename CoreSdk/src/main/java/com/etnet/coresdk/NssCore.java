@@ -18,6 +18,7 @@ import com.etnet.coresdk.coreModel.QuoteData;
 import com.etnet.coresdk.coreModel.User;
 import com.etnet.coresdk.events.UserEvent;
 import com.etnet.coresdk.events.NssEvent;
+
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
@@ -26,6 +27,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
+
 import com.etnet.coresdk.network.ConnectOptions;
 
 public class NssCore {
@@ -252,7 +254,10 @@ public class NssCore {
             log.info("init connection");
             _context.getController().getNetworkController().initConnection();
         }
-
+        // todo : remove hard code User()
+        _context.setUser(new User("name", "%13v%3E%C3%BC%C2%8D%C2%86l%C3%B1%15%16%C2%A7%C2%A1%C2%BA%07%C2%B1i%C2%A1" +
+                "%1B%C3%87%C2%B4u%C3%84%1B%1F", "%13v%3E%C3%BC%C2%8D%C2%86l%C3%B16%C2%86%C2%AC%1E%C3%B5%C2%968%C3%84" +
+                "%C3%982%C3%96%C2%BFok%17x"));
         if (_context.getUser() != null) {
             log.info("user object exists");
             // if (_nssCore.getContext().getUser().isSessionEnd()) {

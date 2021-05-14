@@ -1,6 +1,7 @@
 package com.etnet.coresdk.nssCoreService;
 
 import android.os.Build;
+import android.os.StrictMode;
 
 import androidx.annotation.RequiresApi;
 
@@ -206,15 +207,15 @@ public class NssMain {
         //   }
         // }));
 
-        Disposable subscribe1 = _eventBus_us.subscribe(
+        Disposable subscribe1 = _eventBus_hk.subscribe(
                 new Consumer<UserEvent>() {
                     @Override
                     public void accept(@NonNull UserEvent userEvent) throws Exception {
                         if (userEvent.event() == UserEvent.HttpLoginSuccess) {
                             log.info("http login success");
 //                            _sendCoreEventCode({200: "http login success"});
-                            _nssCoreService_us.initCoreConfig();
-                            _nssCoreService_us.createConnection();
+                            _nssCoreService_hk.initCoreConfig();
+                            _nssCoreService_hk.createConnection();
 //        systemNotifier.updateNssCoreStatus(updateNssCoreStatus: NssCoreStatus.alreadyLogin);
                             _nssStatus = NssStatus.Authenticated;
 
@@ -249,7 +250,7 @@ public class NssMain {
         );
 
 
-        Disposable subscribe2 = _eventBus_us.subscribe(
+        Disposable subscribe2 = _eventBus_hk.subscribe(
                 new Consumer<NssEvent>() {
                     @Override
                     public void accept(@NonNull NssEvent nssEvent) throws Exception {
@@ -259,16 +260,17 @@ public class NssMain {
                             log.info("nss asa progress");
                         } else if (nssEvent.event() == NssEvent.NssAsaLoad) {
                             log.info("nss asa load");
-                            _appContextUS.asaLoadCompleted.onNext(true);
+//                            _appContextUS.asaLoadCompleted.onNext(true);
+                            _appContextHK.asaLoadCompleted.onNext(true);
                             System.out.print("All ASA Loading is finished ... Kick Start Quote-Subscriber");
-                            Util.quoteSubscriberControllerUS.QuoteSubscriberControllerInit(
+                            Util.quoteSubscriberControllerHK.QuoteSubscriberControllerInit(
                                     "QuoteSubscriberData",
-                                    _nssCoreService_us,
-                                    _appContextUS,
+                                    _nssCoreService_hk,
+                                    _appContextHK,
                                     Util.sCodeList,
                                     Util.sFieldIDList);
                         } else if (nssEvent.event() == NssEvent.NssDisconnect) {
-                            _appContextUS.asaLoadCompleted.onNext(false);
+                            _appContextHK.asaLoadCompleted.onNext(false);
                         } else {
                             log.info("nss event");
                         }
@@ -287,8 +289,8 @@ public class NssMain {
                 }
         );
 
-        subscription_us.add(subscribe1);
-        subscription_us.add(subscribe2);
+        subscription_hk.add(subscribe1);
+        subscription_hk.add(subscribe2);
 
 //        ProcessSignal.sigint.watch().listen((ProcessSignal signal) {
 //            // subscription_hk.forEach((event) {

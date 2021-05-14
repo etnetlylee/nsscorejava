@@ -1,5 +1,9 @@
 package com.etnet.coresdk.coreCommand;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.etnet.coresdk.events.NssEvent;
 import com.etnet.coresdk.nssCoreService.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,28 +95,29 @@ public class LoginCommand extends ContextProvider {
                     .getNetworkController()
                     .sendHttpGetRequest(url);
             // todo : make login call API here
-//            if (result.code() == 200) {
-//                ObjectMapper mapper = new ObjectMapper();
-//                Map<String, Object> jsonResult = mapper.readValue((DataInput) result.body(), Map.class);
-//                LoginResponse response = LoginResponse.fromJson(jsonResult);
-//                if (response.isValid()) {
-//                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
-//                        @Override
-//                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
-//                            e.onNext(new UserEvent(UserEvent.HttpLoginSuccess, response));
-//                            e.onComplete();
-//                        }
-//                    });
-//                } else {
-//                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
-//                        @Override
-//                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
-//                            e.onNext(new UserEvent(UserEvent.HttpLoginFailed, null));
-//                            e.onComplete();
-//                        }
-//                    });
-//                }
-//            }
+
+            if (result.getStatus().equals("success")) {
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, Object> jsonResult = mapper.readValue((DataInput) result.getData(), Map.class);
+                LoginResponse response = LoginResponse.fromJson(jsonResult);
+                if (response.isValid()) {
+                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
+                        @Override
+                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
+                            e.onNext(new UserEvent(UserEvent.HttpLoginSuccess, response));
+                            e.onComplete();
+                        }
+                    });
+                } else {
+                    _context.getObservable().create(new ObservableOnSubscribe<UserEvent>() {
+                        @Override
+                        public void subscribe(ObservableEmitter<UserEvent> e) throws Exception {
+                            e.onNext(new UserEvent(UserEvent.HttpLoginFailed, null));
+                            e.onComplete();
+                        }
+                    });
+                }
+            }
 
 
 

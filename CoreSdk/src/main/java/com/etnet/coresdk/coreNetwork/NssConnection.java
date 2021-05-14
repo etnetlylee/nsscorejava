@@ -7,10 +7,13 @@ import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.etnet.coresdk.coreCommand.QuoteCommand;
 import com.etnet.coresdk.coreController.ProcessorController;
 import com.etnet.coresdk.coreInterfaceNetwork.Connection;
 import com.etnet.coresdk.coreInterfaceNetwork.ConnectionHandler;
@@ -88,6 +91,128 @@ public class NssConnection extends Connection implements NssCallback {
         return this;
     }
 
+   public void _createWebsocketInstance(String nssUrl){
+       WebSocketFactory factory = new WebSocketFactory().setConnectionTimeout(5000);
+
+       // Create a WebSocket. The timeout value set above is used.
+       try {
+           ws = factory.createSocket("wss://ws01.etnet.com.hk/websocket");
+
+           ws.addListener(new WebSocketAdapter() {
+               @Override
+               public void onTextMessage(WebSocket websocket, String message) throws Exception {
+                   System.out.println("[TAG] onTextMessage: " + message);
+               }
+
+               @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+               public void onBinaryMessage(WebSocket websocket, byte[] binary) throws Exception {
+                   onMessage(binary);
+//                   System.out.println("[TAG] onBinarytMessage length: " + binary.length);
+//
+//                   String str = new String(binary, StandardCharsets.UTF_8);
+//                   System.out.print(str);
+               }
+
+               public void onConnected(WebSocket websocket, Map<String, List<String>> headers) {
+                   onOpen();
+                   System.out.println("[TAG] onConnected " + headers);
+                   // send sample text
+
+//                   ws.sendText("-1,8,0,1,%13v%3E%C3%BC%C2%8D%C2%86l%C3%B16%C2%86%C2%AC%1E%C3%B5%C2%968%C3%84%C3%982%C3%96%C2%BFok%17x,1");  // token
+//                   _cmd.sendAddQuoteCommand(2, Arrays.asList("700"),Arrays.asList("531", "429", "423"), 0);
+//                   // request data
+//                   ws.sendText("-1,1,1,1,4,108");
+//                   ws.sendText("-1,1,2,1,5,108");
+//                   ws.sendText("-1,1,3,1,6,108");
+//                   ws.sendText("-1,1,4,2,7,108");
+//                   ws.sendText("-1,1,5,1,8,108");
+//                   ws.sendText("-1,1,6,1,9,108");
+//                   ws.sendText("-1,1,7,1,10,108");
+//                   ws.sendText("-1,1,8,1,11,108");
+//                   ws.sendText("-1,1,9,1,12,108");
+//                   ws.sendText("-1,1,10,2,17,108");
+//                   ws.sendText("-1,1,11,1,18,108");
+//                   ws.sendText("-1,1,12,1,19,108");
+//                   ws.sendText("-1,1,13,1,25,108");
+//                   ws.sendText("-1,1,14,1,29,108");
+//                   ws.sendText("-1,1,15,1,88,108");
+//                   ws.sendText("-1,1,16,1,31,108");
+//                   ws.sendText("-1,1,17,2,RFR,108");
+//                   ws.sendText("-1,1,18,1,36,108");
+//                   ws.sendText("-1,1,19,1,40,108");
+//                   ws.sendText("-1,1,20,1,83,108");
+//                   ws.sendText("-1,1,21,1,85,108");
+//                   ws.sendText("-1,1,22,1,87,108");
+//                   ws.sendText("-1,1,23,2,24,108");
+//                   ws.sendText("-1,1,24,1,92,108");
+//                   ws.sendText("-1,1,25,1,37,108");
+//                   ws.sendText("-1,1,26,1,38,108");
+//                   ws.sendText("-1,1,27,1,39,108");
+//                   ws.sendText("-1,1,28,1,41,108");
+//                   ws.sendText("-1,1,29,1,42,108");
+//                   ws.sendText("-1,1,30,1,60,108");
+//                   ws.sendText("-1,1,31,1,61,108");
+//                   ws.sendText("-1,1,32,1,62,108");
+//                   ws.sendText("-1,1,33,1,63,108");
+//                   ws.sendText("-1,1,34,1,65,108");
+//                   ws.sendText("-1,1,35,1,70,108");
+//                   ws.sendText("-1,1,36,1,71,108");
+//                   ws.sendText("-1,1,37,1,73,108");
+//                   ws.sendText("-1,1,38,1,75,108");
+//                   ws.sendText("-1,1,39,2,HSI,292");
+//                   ws.sendText("-1,9,40,2,293");
+//                   ws.sendText("-1,1,41,2,HSI.202105|HS1.202105,292|34|36|40|38|409");
+//                   ws.sendText("-1,1,42,2,HSI,34|36|40|38|409");
+//                   ws.sendText("-1,1,43,2,HSIS.AOI|MAIN,37|93|94|160|78|419");
+//                   ws.sendText("-1,1,44,2,GLOBAL.CS300|GLOBAL.SHCI,34|36|40");
+//                   ws.sendText("-1,1,45,2,GLOBAL.SHEA|GLOBAL.SHEB|GLOBAL.SZEA|GLOBAL.SZEB|GLOBAL.SZCI|GLOBAL.SZPI," +
+//                           "34|36|40");
+//                   ws.sendText("-1,1,46,2,HSIS.HSI,34|36|40|37");
+//                   ws.sendText("-1,1,47,2,HSIS.AOI,34|36|40");
+//                   ws.sendText("-1,1,48,2,HSIS.CEI,34|36|40");
+//                   ws.sendText("-1,1,49,2,700,34|40|36|327");
+//                   ws.sendText("-1,1,50,3,700,34|40|36|327");
+//                   ws.sendText("-1,1,51,2,700|200|24|1470|6618|9988|1,34|40|36|327");
+//                   ws.sendText("-1,1,52,2,700,531|429|423");
+//                   ws.sendText("-1,1,53,2,700,97");
+//                   ws.sendText("-1,1,54,2,700,85");
+//                   ws.sendText("-1,1,55,2,700,54|41|42|49|9|10|11|12");
+//                   ws.sendText("-1,1,56,2,700,38|37|39|84|86|50|51|5|6|7|18|43|57|55|56|17|41|42|49|58|59|241|209" +
+//                           "|210|45|44|78|420|419|227|8|418|406|407");
+//                   ws.sendText("-1,1,57,2,700,424|425|426|427|435|530|529|528|527|427|526|525|422");
+//                   ws.sendText("-1,1,58,2,700,53|52|286|234|201");
+//                   ws.sendText("-1,1,59,2,700,87");
+//                   ws.sendText("-1,1,60,2,700,161");
+//                   ws.sendText("-1,1,61,2,700,88");
+//                   ws.sendText("-1,1,62,2,700,2|4|3|315");
+//                   ws.sendText("-1,1,63,2,700,421|80|219|220|221|222|223");
+//                   ws.sendText("-1,1,64,2,700,90|91|319|437|107");
+//                   ws.sendText("-1,1,65,0,700,161");
+//                   ws.sendText("-1,1,66,0,9988,161");
+//                   ws.sendText("-1,1,67,2,200,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429" +
+//                           "|423|422");
+//                   ws.sendText("-1,1,68,2,24,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429|423" +
+//                           "|422");
+//                   ws.sendText("-1,1,69,2,1470,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429" +
+//                           "|423|422");
+//                   ws.sendText("-1,1,70,2,6618,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429" +
+//                           "|423|422");
+//                   ws.sendText("-1,1,71,2,9988,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429" +
+//                           "|423|422");
+//                   ws.sendText("-1,1,72,2,1,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429|423" +
+//                           "|422");
+//                   ws.sendText("-1,1,73,2,700,205|206|207|208|83");
+//                   ws.sendText("-1,1,74,2,7002,160");
+
+               }
+           });
+
+           ws.connectAsynchronously();
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+    }
+
     @Override
     public void connect(ConnectOptions options) {
         log.info("start connecting to nss");
@@ -108,160 +233,8 @@ public class NssConnection extends Connection implements NssCallback {
         } else {
             log.info("connect to default server");
             String nssUrl = options.getDefaultServer();
-//            _createWebsocketInstance(nssUrl);
+            _createWebsocketInstance(nssUrl);
         }
-
-        WebSocketFactory factory = new WebSocketFactory().setConnectionTimeout(5000);
-
-        // Create a WebSocket. The timeout value set above is used.
-        try {
-            ws = factory.createSocket("wss://ws01.etnet.com.hk/websocket");
-
-            ws.addListener(new WebSocketAdapter() {
-                @Override
-                public void onTextMessage(WebSocket websocket, String message) throws Exception {
-                    System.out.println("[TAG] onTextMessage: " + message);
-                }
-
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                public void onBinaryMessage(WebSocket websocket, byte[] binary) throws Exception {
-                    System.out.println("[TAG] onBinarytMessage length: " + binary.length);
-
-                    String str = new String(binary, StandardCharsets.UTF_8);
-//                    _context.getController().getProcessorController().process(str);
-
-//                    ProcessorController pc = new ProcessorController();
-//                    pc.process("2373,1,1\n1,108\n4,\"6806,A.000166,SZSE|1398,A.601398,SSE|347,A.000898,SZSE|1988,A" +
-//                            ".600016,SSE|995,A.600012,SSE|9989,A.002399,SZSE|598,A.601598,SSE|2009,A.601992,SSE|1898," +
-//                            "A.601898,SSE|6099,A.600999,SSE|6818,A.601818,SSE|1375,A.601375,SSE|2068,A.601068," +
-//                            "SSE|317,A.600685,SSE|3908,A.601995,SSE|3759,A.300759,SZSE|981,A.688981,SSE|1766,A" +
-//                            ".601766,SSE|1812,A.000488,SZSE|1635,A.600635,SSE|2866,A.601866,SSE|1186,A.601186," +
-//                            "SSE|1330,A.601330,SSE|588,A.601588,SSE|358,A.600362,SSE|2628,A.601628,SSE|564,A.601717," +
-//                            "SSE|323,A.600808,SSE|1088,A.601088,SSE|3606,A.600660,SSE|991,A.601991,SSE|719,A.000756," +
-//                            "SZSE|3958,A.600958,SSE|763,A.000063,SZSE|1919,A.601919,SSE|6116,A.603157,SSE|3369,A" +
-//                            ".601326,SSE|3988,A.601988,SSE|2333,A.601633,SSE|2727,A.601727,SSE|42,A.000585,SZSE|811,A" +
-//                            ".601811,SSE|956,A.600956,SSE|3347,A.300347,SZSE|390,A.601390,SSE|921,A.000921,SZSE|1776," +
-//                            "A.000776,SZSE|1171,A.600188,SSE|2899,A.601899,SSE|6030,A.600030,SSE|1055,A.600029," +
-//                            "SSE|2359,A.603259,SSE|1065,A.600874,SSE|6826,A.688366,SSE|2039,A.000039,SZSE|177,A" +
-//                            ".600377,SSE|1816,A.003816,SZSE|1963,A.601963,SSE|107,A.601107,SSE|1533,A.002910," +
-//                            "SZSE|1349,A.688505,SSE|1072,A.600875,SSE|2601,A.601601,SSE|1618,A.601618,SSE|3968,A" +
-//                            ".600036,SSE|998,A.601998,SSE|1288,A.601288,SSE|2196,A.600196,SSE|1658,A.601658,SSE|1336," +
-//                            "A.601336,SSE|1057,A.002703,SZSE|1211,A.002594,SZSE|187,A.600860,SSE|2202,A.000002," +
-//                            "SZSE|2218,A.605198,SSE|914,A.600585,SSE|895,A.002672,SZSE|2238,A.601238,SSE|1071,A" +
-//                            ".600027,SSE|553,A.600775,SSE|6690,A.600690,SSE|6178,A.601788,SSE|2600,A.601600,SSE|3969," +
-//                            "A.688009,SSE|1053,A.601005,SSE|2607,A.601607,SSE|168,A.600600,SSE|2208,A.002202,SZSE|38," +
-//                            "A.601038,SSE|6886,A.601688,SSE|6185,A.688185,SSE|1800,A.601800,SSE|753,A.601111,SSE|670," +
-//                            "A.600115,SSE|6837,A.600837,SSE|939,A.601939,SSE|2338,A.000338,SZSE|1138,A.600026," +
-//                            "SSE|548,A.600548,SSE|874,A.600332,SSE|1528,A.601828,SSE|6198,A.601298,SSE|6881,A.601881," +
-//                            "SSE|1157,A.000157,SZSE|6127,A.603127,SSE|3993,A.603993,SSE|568,A.002490,SZSE|525,A" +
-//                            ".601333,SSE|1513,A.000513,SZSE|1339,A.601319,SSE|6869,A.601869,SSE|1772,A.002460," +
-//                            "SZSE|2880,A.601880,SSE|2883,A.601808,SSE|1787,A.600547,SSE|3328,A.601328,SSE|1456,A" +
-//                            ".601456,SSE|6066,A.601066,SSE|6865,A.601865,SSE|857,A.601857,SSE|2016,A.601916,SSE|1108," +
-//                            "A.600876,SSE|3618,A.601077,SSE|338,A.600688,SSE|902,A.600011,SSE|6196,A.002936,SZSE|386," +
-//                            "A.600028,SSE|3866,A.002948,SZSE|2611,A.601211,SSE|2318,A.601318,SSE|1877,A.688180," +
-//                            "SSE|1033,A.600871,SSE");
-                    System.out.print(str);
-                }
-
-                public void onConnected(WebSocket websocket, Map<String, List<String>> headers) {
-                    System.out.println("[TAG] onConnected " + headers);
-                    // send sample text
-
-                    ws.sendText("-1,8,0,1,%13v%3E%C3%BC%C2%8D%C2%86l%C3%B17hbf%12%C2%88M%C3%B1%C2%99%C3%BB%C2%81K%7F%22%0An,1");  // token
-
-                    // request data
-                    ws.sendText("-1,1,1,1,4,108");
-                    ws.sendText("-1,1,2,1,5,108");
-                    ws.sendText("-1,1,3,1,6,108");
-                    ws.sendText("-1,1,4,2,7,108");
-                    ws.sendText("-1,1,5,1,8,108");
-                    ws.sendText("-1,1,6,1,9,108");
-                    ws.sendText("-1,1,7,1,10,108");
-                    ws.sendText("-1,1,8,1,11,108");
-                    ws.sendText("-1,1,9,1,12,108");
-                    ws.sendText("-1,1,10,2,17,108");
-                    ws.sendText("-1,1,11,1,18,108");
-                    ws.sendText("-1,1,12,1,19,108");
-                    ws.sendText("-1,1,13,1,25,108");
-                    ws.sendText("-1,1,14,1,29,108");
-                    ws.sendText("-1,1,15,1,88,108");
-                    ws.sendText("-1,1,16,1,31,108");
-                    ws.sendText("-1,1,17,2,RFR,108");
-                    ws.sendText("-1,1,18,1,36,108");
-                    ws.sendText("-1,1,19,1,40,108");
-                    ws.sendText("-1,1,20,1,83,108");
-                    ws.sendText("-1,1,21,1,85,108");
-                    ws.sendText("-1,1,22,1,87,108");
-                    ws.sendText("-1,1,23,2,24,108");
-                    ws.sendText("-1,1,24,1,92,108");
-                    ws.sendText("-1,1,25,1,37,108");
-                    ws.sendText("-1,1,26,1,38,108");
-                    ws.sendText("-1,1,27,1,39,108");
-                    ws.sendText("-1,1,28,1,41,108");
-                    ws.sendText("-1,1,29,1,42,108");
-                    ws.sendText("-1,1,30,1,60,108");
-                    ws.sendText("-1,1,31,1,61,108");
-                    ws.sendText("-1,1,32,1,62,108");
-                    ws.sendText("-1,1,33,1,63,108");
-                    ws.sendText("-1,1,34,1,65,108");
-                    ws.sendText("-1,1,35,1,70,108");
-                    ws.sendText("-1,1,36,1,71,108");
-                    ws.sendText("-1,1,37,1,73,108");
-                    ws.sendText("-1,1,38,1,75,108");
-                    ws.sendText("-1,1,39,2,HSI,292");
-                    ws.sendText("-1,9,40,2,293");
-                    ws.sendText("-1,1,41,2,HSI.202105|HS1.202105,292|34|36|40|38|409");
-                    ws.sendText("-1,1,42,2,HSI,34|36|40|38|409");
-                    ws.sendText("-1,1,43,2,HSIS.AOI|MAIN,37|93|94|160|78|419");
-                    ws.sendText("-1,1,44,2,GLOBAL.CS300|GLOBAL.SHCI,34|36|40");
-                    ws.sendText("-1,1,45,2,GLOBAL.SHEA|GLOBAL.SHEB|GLOBAL.SZEA|GLOBAL.SZEB|GLOBAL.SZCI|GLOBAL.SZPI," +
-                            "34|36|40");
-                    ws.sendText("-1,1,46,2,HSIS.HSI,34|36|40|37");
-                    ws.sendText("-1,1,47,2,HSIS.AOI,34|36|40");
-                    ws.sendText("-1,1,48,2,HSIS.CEI,34|36|40");
-                    ws.sendText("-1,1,49,2,700,34|40|36|327");
-                    ws.sendText("-1,1,50,3,700,34|40|36|327");
-                    ws.sendText("-1,1,51,2,700|200|24|1470|6618|9988|1,34|40|36|327");
-                    ws.sendText("-1,1,52,2,700,531|429|423");
-                    ws.sendText("-1,1,53,2,700,97");
-                    ws.sendText("-1,1,54,2,700,85");
-                    ws.sendText("-1,1,55,2,700,54|41|42|49|9|10|11|12");
-                    ws.sendText("-1,1,56,2,700,38|37|39|84|86|50|51|5|6|7|18|43|57|55|56|17|41|42|49|58|59|241|209" +
-                            "|210|45|44|78|420|419|227|8|418|406|407");
-                    ws.sendText("-1,1,57,2,700,424|425|426|427|435|530|529|528|527|427|526|525|422");
-                    ws.sendText("-1,1,58,2,700,53|52|286|234|201");
-                    ws.sendText("-1,1,59,2,700,87");
-                    ws.sendText("-1,1,60,2,700,161");
-                    ws.sendText("-1,1,61,2,700,88");
-                    ws.sendText("-1,1,62,2,700,2|4|3|315");
-                    ws.sendText("-1,1,63,2,700,421|80|219|220|221|222|223");
-                    ws.sendText("-1,1,64,2,700,90|91|319|437|107");
-                    ws.sendText("-1,1,65,0,700,161");
-                    ws.sendText("-1,1,66,0,9988,161");
-                    ws.sendText("-1,1,67,2,200,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429" +
-                            "|423|422");
-                    ws.sendText("-1,1,68,2,24,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429|423" +
-                            "|422");
-                    ws.sendText("-1,1,69,2,1470,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429" +
-                            "|423|422");
-                    ws.sendText("-1,1,70,2,6618,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429" +
-                            "|423|422");
-                    ws.sendText("-1,1,71,2,9988,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429" +
-                            "|423|422");
-                    ws.sendText("-1,1,72,2,1,41|42|9|10|11|12|421|80|219|220|221|222|223|315|286|525|531|435|429|423" +
-                            "|422");
-                    ws.sendText("-1,1,73,2,700,205|206|207|208|83");
-                    ws.sendText("-1,1,74,2,7002,160");
-
-                }
-            });
-
-            ws.connectAsynchronously();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
     @Override
@@ -315,7 +288,7 @@ public class NssConnection extends Connection implements NssCallback {
 
     @Override
     public void setHandler(ConnectionHandler handler) {
-
+        this._handler = handler;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.etnet.coresdk.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,14 +21,16 @@ public class CommandBuilder {
     }
 
     public CommandBuilder append(String value) {
+        List<String> _tempList = new ArrayList<String>(_strings);;
         if (value != null) {
             if (_strings.size() > 0) {
-                _strings.add(",");
+                _tempList.add(",");
             }
-            _strings.add(value);
+            _tempList.add(value);
         } else {
-            _strings.add(",");
+            _tempList.add(",");
         }
+        _strings = new ArrayList<>(_tempList);
         return this;
     }
 

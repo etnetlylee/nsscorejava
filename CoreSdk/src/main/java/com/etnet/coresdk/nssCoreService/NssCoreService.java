@@ -1,6 +1,9 @@
 package com.etnet.coresdk.nssCoreService;
 
+import android.os.Build;
 import android.os.StrictMode;
+
+import androidx.annotation.RequiresApi;
 
 import com.etnet.coresdk.NssCore;
 import com.etnet.coresdk.config.hk.HkAsaConfig;
@@ -410,6 +413,7 @@ public class NssCoreService {
                     log.info("get ip recv incorrect status code");
                 }
         }
+        _nssCore.connect();
     }
 
     public void destroy() {

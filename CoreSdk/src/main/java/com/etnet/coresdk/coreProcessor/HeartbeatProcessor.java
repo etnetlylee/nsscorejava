@@ -1,6 +1,9 @@
 package com.etnet.coresdk.coreProcessor;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -21,13 +24,16 @@ public class HeartbeatProcessor extends Processor {
 
     @Override
     public Integer process(NssPacket nssPacket) {
-        Map<Integer, List<Integer>> _tem = (Map<Integer, List<Integer>>) nssPacket.getParsedBody();
-        final int timestamp = Integer.parseInt(String.valueOf(_tem.get(0).get(0)));
+        String _temp = "";
+        String[] cid = (String[]) ((LinkedList) nssPacket.getParsedBody()).get(0);
+        _temp = cid[0];
+
+        final int timestamp = Integer.parseInt(String.valueOf(String.valueOf(_temp.charAt(0)).charAt(0)));
         Calendar t = Calendar.getInstance();
         t.setTimeInMillis(timestamp * 1000);
 
 
-        log.info(timestamp + " " + t);
+        log.info(timestamp + " " + t.getTime());
 
         return timestamp;
     }

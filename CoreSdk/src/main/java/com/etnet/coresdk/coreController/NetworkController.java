@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.Calendar;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -16,8 +17,12 @@ import com.etnet.coresdk.coreInterfaceNetwork.ConnectionHandler;
 import com.etnet.coresdk.coreModel.NssCoreContext;
 import com.etnet.coresdk.coreNetwork.Ajax;
 import com.etnet.coresdk.coreNetwork.NssConnection;
+import com.etnet.coresdk.events.NssCloseReason;
+import com.etnet.coresdk.events.NssEvent;
 import com.etnet.coresdk.nssCoreService.ApiResponse;
 
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import okhttp3.Response;
 
 public class NetworkController extends ContextProvider implements ConnectionHandler {
@@ -81,14 +86,28 @@ public class NetworkController extends ContextProvider implements ConnectionHand
     @Override
     public void onConnected() {
         String nssToken = _context.getUser().getToken();
+        this._context.getObservable().create(new ObservableOnSubscribe<NssEvent>() {
+            @Override
+            public void subscribe(ObservableEmitter<NssEvent> e) throws Exception {
+                e.onNext(new NssEvent(NssEvent.NssConnect, Calendar.getInstance().getTime()));
+                e.onComplete();
+            }
+        });
 //        _context.events.fire(new NssEvent(NssEvent.NssConnect, DateTime.now()));
-//        _context.getController().getCommandController().sendLoginCommand(nssToken);
+        _context.getController().getCommandController().sendLoginCommand(nssToken);
     }
 
     @Override
     public void onDisConnected(int code, String reason) {
-//        final data =NssCloseReason(code, reason);
-//        NssEvent nssEvent = new NssEvent(NssEvent.NssDisconnect, data);
+        final NssCloseReason data = new NssCloseReason(code, reason);
+        NssEvent nssEvent = new NssEvent(NssEvent.NssDisconnect, data);
+        this._context.getObservable().create(new ObservableOnSubscribe<NssEvent>() {
+            @Override
+            public void subscribe(ObservableEmitter<NssEvent> e) throws Exception {
+                e.onNext(nssEvent);
+                e.onComplete();
+            }
+        });
 //        _context.events.fire(nssEvent);
     }
 

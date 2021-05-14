@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -70,9 +71,9 @@ public class ProcessorController extends ContextProvider {
                  * */
                 CSVReader reader = null;
                 List res = null;
-                File csvfile = new File(body);
+//                File csvfile = new File(body);
                 try {
-                    reader = new CSVReader(new FileReader(csvfile));
+                    reader = new CSVReader(new StringReader(body));
                     res = reader.readAll();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

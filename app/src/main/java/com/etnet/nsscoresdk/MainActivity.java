@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.etnet.coresdk.SdkDemo;
 
 import com.etnet.coresdk.api.ApiFields;
+import com.etnet.coresdk.config.hk.HkAsaConfig;
 import com.etnet.coresdk.coreController.ProcessorController;
 import com.etnet.coresdk.coreModel.NssPacket;
 import com.etnet.coresdk.coreModel.Processor;
@@ -43,12 +44,32 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         Button button = (Button)findViewById(R.id.button);
+
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                final NssMain _nssMain = new NssMain();
+                final DataCoreUtil dataCoreUtil = new DataCoreUtil(_nssMain);
+            }
+        });
+        thread1.start();
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final NssMain _nssMain = new NssMain();
+//                Thread thread1 = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        final NssMain _nssMain = new NssMain();
+//                        final DataCoreUtil dataCoreUtil = new DataCoreUtil(_nssMain);
+//                    }
+//                });
+//                thread1.start();
 
-//                final DataCoreUtil dataCoreUtil = new DataCoreUtil(_nssMain);
+
+
 
 
 //                nssConnection.connect(new ConnectOptions(new User("user name", "web token", "nss token"),"US", "test url", false));
