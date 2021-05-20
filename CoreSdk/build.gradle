@@ -67,4 +67,9 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'org.bouncycastle:bcpkix-jdk15to18:1.68'
+    implementation 'apache-log4j:log4j:1.2.15'
+    implementation  'org.apache.commons:commons-lang3:3.4'
+    implementation  'cz.msebera.android:httpclient:4.4.1.2'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
